@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <title>ASK Websolutions - Admin Dashboard</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="icon" href="./img/WhatsApp Image 2026-02-06 at 6.20.59 AM.jpeg" sizes="any">
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+    <link rel="stylesheet" type="text/css" href="./loader.css">
+    <link rel="stylesheet" type="text/css" href="./plugins.css">
+    <link rel="stylesheet" type="text/css" href="./main.css">
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#FAF7F6">
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#161616">
+    <style>
+        /* Fix admin header spacing and remove any nav conflicts */
+        .mxd-header {
+            position: relative !important;
+            z-index: 200 !important;
+            padding: 20px 30px !important;
+        }
+        
+        /* Remove any hamburger menu that might be causing conflict */
+        .mxd-nav__wrap {
+            display: none !important;
+        }
+        
+        /* Fix page content spacing */
+        .mxd-page-content {
+            padding-top: 0 !important;
+            margin-top: 0 !important;
+        }
+        
+        /* Main layout with sidebar */
+        .admin-layout {
+            display: flex;
+            gap: 0;
+            min-height: 100vh;
+            transition: all var(--_animspeed-medium);
+            position: relative;
+            margin-top: 0 !important;
+            overflow: visible;
+        }
+        
+        .admin-main {
+            flex: 1;
+            transition: all var(--_animspeed-medium);
+            margin-left: 300px;
+            position: relative;
+            left: -300px;
+        }
+        
+        .admin-main.collapsed {
+            margin-left: 90px;
+            left: -90px;
+        }
+        
+        /* Sidebar styles */
+        .admin-sidebar {
+            width: 300px;
+            background: var(--base-tint);
+            padding: 40px 20px 30px;
+            border-right: 2px solid var(--st-muted);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            position: relative;
+            transition: width var(--_animspeed-medium), padding var(--_animspeed-medium);
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        
+        .admin-sidebar.collapsed {
+            width: 100px;
+            padding: 40px 15px 30px;
+        }
+        
+        /* Toggle button - improved visibility */
+        .sidebar-toggle {
+            position: absolute;
+            top: 20px;
+            right: -20px;
+            background: var(--accent);
+            border: 3px solid var(--base);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--t-opp-bright);
+            transition: all var(--_animspeed-medium);
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .sidebar-toggle:hover {
+            transform: scale(1.15);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+        }
+        
+        .sidebar-toggle i {
+            font-size: 22px;
+            font-weight: bold;
+        }
+        
+        .admin-sidebar.collapsed .sidebar-toggle {
+            right: -20px;
+        }
+        
+        .admin-sidebar.collapsed .sidebar-toggle i {
+            transform: rotate(180deg);
+        }
+        
+        /* Hide text when collapsed */
+        .admin-sidebar.collapsed .sidebar-section-title,
+        .admin-sidebar.collapsed .admin-nav-btn > span:not(.icon-wrapper),
+        .admin-sidebar.collapsed .dropdown-item,
+        .admin-sidebar.collapsed .logout-btn > span:not(.icon-wrapper) {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            position: absolute;
+        }
+        
+        /* Hide dropdown completely when collapsed */
+        .admin-sidebar.collapsed .sidebar-dropdown {
+            display: none;
+        }
+        
+        /* Adjust nav buttons when collapsed - icon only */
+        .admin-sidebar.collapsed .admin-nav-btn {
+            justify-content: center;
+            padding: 20px 10px;
+        }
+        
+        .admin-sidebar.collapsed .admin-nav-btn .icon-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+        
+        .admin-sidebar.collapsed .admin-nav-btn i {
+            font-size: 24px;
+        }
+        
+        /* Hide dropdown icon when collapsed */
+        .admin-sidebar.collapsed .dropdown-icon {
+            display: none;
+        }
+        
+        .sidebar-section-title {
+            font: var(--fw-semibold) 2rem var(--_font-accent);
+            color: var(--t-bright);
+            margin-bottom: 10px;
+            padding-top: 20px;
+        }
+        
+        .admin-nav-btn {
+            width: 100%;
+            background: transparent;
+            border: 2px solid var(--st-muted);
+            border-radius: var(--_radius-m);
+            padding: 14px 20px;
+            font: var(--fw-medium) 1.7rem var(--_font-accent);
+            color: var(--t-bright);
+            cursor: pointer;
+            transition: all var(--_animspeed-medium) var(--_animbezier);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        
+        .admin-nav-btn i,
+        .dropdown-item i {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        
+        .admin-nav-btn .icon-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .dropdown-item {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-left: 2px solid var(--st-muted);
+            padding: 10px 15px;
+            margin: 5px 0;
+            font: var(--fw-medium) 1.5rem var(--_font-accent);
+            color: var(--t-medium);
+            cursor: pointer;
+            transition: all var(--_animspeed-medium);
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .admin-nav-btn:hover, .admin-nav-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--t-opp-bright);
+            transform: translateX(5px);
+        }
+        
+        .dropdown-icon {
+            transition: transform var(--_animspeed-medium);
+        }
+        
+        .admin-nav-btn.open .dropdown-icon {
+            transform: rotate(180deg);
+        }
+        
+        .sidebar-dropdown {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height var(--_animspeed-medium);
+            padding-left: 20px;
+        }
+        
+        .sidebar-dropdown.open {
+            max-height: 500px;
+        }
+        
+        .dropdown-item {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-left: 2px solid var(--st-muted);
+            padding: 10px 15px;
+            margin: 5px 0;
+            font: var(--fw-medium) 1.5rem var(--_font-accent);
+            color: var(--t-medium);
+            cursor: pointer;
+            transition: all var(--_animspeed-medium);
+            text-align: left;
+        }
+        
+        .dropdown-item:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateX(5px);
+        }
+        
+        /* Main content area */
+        .admin-main {
+            flex: 1;
+            padding: 40px 30px;
+            max-width: 1400px;
+        }
+        
+        .admin-header {
+            margin-bottom: 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .admin-section {
+            display: none;
+        }
+        
+        .admin-section.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 24px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font: var(--fw-medium) 1.8rem var(--_font-accent);
+            color: var(--t-bright);
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 18px 20px;
+            background: var(--base-tint);
+            border: 2px solid var(--st-muted);
+            border-radius: var(--_radius-m);
+            font: var(--fw-regular) 1.8rem var(--_font-accent);
+            color: var(--t-bright);
+            outline: none;
+            transition: all var(--_animspeed-medium);
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(159, 139, 231, 0.1);
+        }
+        
+        .file-upload-area {
+            border: 2px dashed var(--st-muted);
+            border-radius: var(--_radius-m);
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all var(--_animspeed-medium);
+        }
+        
+        .file-upload-area:hover {
+            border-color: var(--accent);
+            background: rgba(159, 139, 231, 0.05);
+        }
+        
+        .submit-btn {
+            background: var(--accent);
+            border: none;
+            border-radius: var(--_radius-m);
+            padding: 18px 40px;
+            font: var(--fw-semibold) 1.8rem var(--_font-accent);
+            color: var(--t-opp-bright);
+            cursor: pointer;
+            transition: all var(--_animspeed-medium);
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(159, 139, 231, 0.4);
+        }
+        
+        .items-list {
+            margin-top: 40px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+        }
+        
+        .item-card {
+            background: var(--base-tint);
+            border-radius: var(--_radius-m);
+            padding: 28px;
+            border: 2px solid var(--st-muted);
+            transition: all var(--_animspeed-medium);
+        }
+        
+        .item-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .item-card h4 {
+            font: var(--fw-semibold) 2.2rem var(--_font-accent);
+            color: var(--t-bright);
+            margin-bottom: 12px;
+        }
+        
+        .item-card-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+        
+        .delete-btn {
+            background: #ff4444;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 24px;
+            color: white;
+            font: var(--fw-medium) 1.6rem var(--_font-accent);
+            cursor: pointer;
+            transition: all var(--_animspeed-medium);
+        }
+        
+        .delete-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 68, 68, 0.3);
+        }
+        
+        .logout-btn {
+            background: var(--additional);
+            border: none;
+            border-radius: var(--_radius-m);
+            padding: 16px 32px;
+            font: var(--fw-semibold) 1.8rem var(--_font-accent);
+            color: var(--t-opp-bright);
+            cursor: pointer;
+            transition: all var(--_animspeed-medium);
+        }
+        
+        .logout-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(40, 211, 197, 0.3);
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        /* Fix spacing below header */
+        .mxd-page-content {
+            padding-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Loader Start -->
+    <div id="loader" class="loader">
+        <div class="loader__wrapper">
+            <div class="loader__content">
+                <div class="loader__count">
+                    <span class="count__text">0</span>
+                    <span class="count__percent">%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Loader End -->
+
+    <!-- Header Start -->
+    <!-- <header id="header" class="mxd-header">
+        <div class="mxd-header__logo loading__fade">
+            <a href="index.html" class="mxd-logo">
+                <img class="mxd-logo__image" src="./img/logo pic.jpeg" alt="">
+                <span class="mxd-logo__text">ASK<br>Websolutions</span>
+            </a>
+        </div>
+        <div class="mxd-header__controls loading__fade">
+            <button id="color-switcher" class="mxd-color-switcher" type="button" role="switch" aria-label="light/dark mode" aria-checked="true">
+                <i class="ph ph-sun icon-light"></i>
+                <i class="ph ph-moon icon-dark"></i>
+            </button>
+        </div>
+    </header> -->
+    <!-- Header End -->
+
+    <!-- Main Content -->
+    <main id="mxd-page-content" class="mxd-page-content">
+        <div class="mxd-section padding-grid">
+            <div class="mxd-container" style="max-width: 100%; padding: 0;">
+                <!-- Login Page -->
+                <div id="login-page" class="loading-wrap">
+                    <div style="max-width: 500px; margin: 0 auto; padding: 80px 0;">
+                        <h2 class="reveal-type loading__item" style="text-align: center; margin-bottom: 40px;">Admin Login</h2>
+                        <form id="login-form" class="anim-uni-in-up">
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" id="login-email" required placeholder="admin@askwebsolutions.com">
+                            </div>
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input type="password" id="login-password" required placeholder="password123">
+                            </div>
+                            <button type="submit" class="submit-btn btn-anim">Login</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Dashboard -->
+                <div id="dashboard" class="hidden loading-wrap">
+                    <div class="admin-layout">
+                        <!-- Sidebar -->
+                        <aside class="admin-sidebar anim-uni-in-up">
+                            <button class="sidebar-toggle" id="sidebar-toggle">
+                                <i class="ph ph-caret-left"></i>
+                            </button>
+                            
+                            <h3 class="sidebar-section-title" style="padding-top: 20px; margin-bottom: 20px;">Dashboard</h3>
+                            
+                            <button class="admin-nav-btn active" data-section="projects">
+                                <span class="icon-wrapper"><i class="ph ph-folder"></i></span>
+                                <span>Projects</span>
+                            </button>
+                            <button class="admin-nav-btn" data-section="services">
+                                <span class="icon-wrapper"><i class="ph ph-briefcase"></i></span>
+                                <span>Services</span>
+                            </button>
+                            <button class="admin-nav-btn" data-section="faqs">
+                                <span class="icon-wrapper"><i class="ph ph-question"></i></span>
+                                <span>FAQs</span>
+                            </button>
+                            <button class="admin-nav-btn" data-section="reviews">
+                                <span class="icon-wrapper"><i class="ph ph-star"></i></span>
+                                <span>Reviews</span>
+                            </button>
+                            <button class="admin-nav-btn" data-section="careers">
+                                <span class="icon-wrapper"><i class="ph ph-users"></i></span>
+                                <span>Careers</span>
+                            </button>
+                            
+                            <h3 class="sidebar-section-title">Works</h3>
+                            <button class="admin-nav-btn" id="works-dropdown-btn">
+                                <span class="icon-wrapper"><i class="ph ph-suitcase"></i></span>
+                                <span>Works</span>
+                                <span class="dropdown-icon">
+                                    <i class="ph ph-caret-down"></i>
+                                </span>
+                            </button>
+                            <div class="sidebar-dropdown" id="works-dropdown">
+                                <button class="dropdown-item" data-section="web-development">
+                                    <i class="ph ph-globe"></i>
+                                    Web Development
+                                </button>
+                                <button class="dropdown-item" data-section="app-development">
+                                    <i class="ph ph-device-mobile"></i>
+                                    App Development
+                                </button>
+                                <button class="dropdown-item" data-section="graphic-designing">
+                                    <i class="ph ph-palette"></i>
+                                    Graphic Designing
+                                </button>
+                                <button class="dropdown-item" data-section="video-editing">
+                                    <i class="ph ph-video"></i>
+                                    Video Editing
+                                </button>
+                                <button class="dropdown-item" data-section="digital-marketing">
+                                    <i class="ph ph-chart-line-up"></i>
+                                    Digital Marketing
+                                </button>
+                                <button class="dropdown-item" data-section="ecommerce">
+                                    <i class="ph ph-shopping-cart"></i>
+                                    E-commerce
+                                </button>
+                                <button class="dropdown-item" data-section="ai-and-security">
+                                    <i class="ph ph-shield-check"></i>
+                                    AI and Security
+                                </button>
+                                <button class="dropdown-item" data-section="others">
+                                    <i class="ph ph-dots-three-circle"></i>
+                                    Others
+                                </button>
+                            </div>
+                            
+                            <!-- Light/Dark Mode Toggle Button -->
+                            <button id="color-switcher" class="admin-nav-btn" style="margin-top: auto;">
+                                <span class="icon-wrapper">
+                                    <i class="ph ph-sun icon-light" style="display: block;"></i>
+                                    <i class="ph ph-moon icon-dark" style="display: none;"></i>
+                                </span>
+                                <span>Theme</span>
+                            </button>
+                            
+                            <!-- Logout Button at Bottom -->
+                            <button id="logout-btn" class="logout-btn btn-anim" style="margin-bottom: 20px;">
+                                <span class="icon-wrapper"><i class="ph ph-sign-out"></i></span>
+                                <span>Logout</span>
+                            </button>
+                        </aside>
+                        
+                        <!-- Main Content Area -->
+                        <div class="admin-main">
+                            <div style="padding: 40px 30px 20px 5px;">
+                                <h2 class="reveal-type loading__item" style="font-size: 5rem; font-weight: 700; color: var(--t-bright);">Admin Dashboard</h2>
+                            </div>
+                            
+                            <!-- Projects Section -->
+                            <section id="projects" class="admin-section active">
+                                <h3 class="reveal-type" style="margin-bottom: 30px;">Manage Projects</h3>
+                                <form id="project-form" class="anim-uni-in-up">
+                                    <div class="form-group">
+                                        <label>Title</label>
+                                        <input type="text" id="project-title" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Slug</label>
+                                        <input type="text" id="project-slug" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Category</label>
+                                        <input type="text" id="project-category" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Image URL (or upload)</label>
+                                        <input type="text" id="project-image">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Upload Image/Video</label>
+                                        <input type="file" id="project-image-upload" accept="image/*,video/*">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Description</label>
+                                        <textarea id="project-description" rows="4"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Featured?</label>
+                                        <select id="project-is-featured">
+                                            <option value="false">No</option>
+                                            <option value="true">Yes</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="submit-btn btn-anim">Add Project</button>
+                                </form>
+                                <div id="projects-list" class="items-list"></div>
+                            </section>
+
+                            <!-- Services Section -->
+                            <section id="services" class="admin-section">
+                                <h3 class="reveal-type" style="margin-bottom: 30px;">Manage Services</h3>
+                                <form id="service-form" class="anim-uni-in-up">
+                                    <div class="form-group">
+                                        <label>Title</label>
+                                        <input type="text" id="service-title" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Image URL (or upload)</label>
+                                        <input type="text" id="service-image">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Upload Image</label>
+                                        <input type="file" id="service-image-upload" accept="image/*">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Description</label>
+                                        <textarea id="service-description" rows="4"></textarea>
+                                    </div>
+                                    <button type="submit" class="submit-btn btn-anim">Add Service</button>
+                                </form>
+                                <div id="services-list" class="items-list"></div>
+                            </section>
+
+                            <!-- FAQs Section -->
+                            <section id="faqs" class="admin-section">
+                                <h3 class="reveal-type" style="margin-bottom: 30px;">Manage FAQs</h3>
+                                <form id="faq-form" class="anim-uni-in-up">
+                                    <div class="form-group">
+                                        <label>Question</label>
+                                        <input type="text" id="faq-question" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Answer</label>
+                                        <textarea id="faq-answer" rows="4" required></textarea>
+                                    </div>
+                                    <button type="submit" class="submit-btn btn-anim">Add FAQ</button>
+                                </form>
+                                <div id="faqs-list" class="items-list"></div>
+                            </section>
+
+                            <!-- Reviews Section -->
+                            <section id="reviews" class="admin-section">
+                                <h3 class="reveal-type" style="margin-bottom: 30px;">Manage Reviews</h3>
+                                <form id="review-form" class="anim-uni-in-up">
+                                    <div class="form-group">
+                                        <label>Name</label>
+                                        <input type="text" id="review-name" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Company</label>
+                                        <input type="text" id="review-company">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Rating (1-5)</label>
+                                        <input type="number" id="review-rating" min="1" max="5" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Review Text</label>
+                                        <textarea id="review-text" rows="4" required></textarea>
+                                    </div>
+                                    <button type="submit" class="submit-btn btn-anim">Add Review</button>
+                                </form>
+                                <div id="reviews-list" class="items-list"></div>
+                            </section>
+
+                            <!-- Careers Section -->
+                            <section id="careers" class="admin-section">
+                                <h3 class="reveal-type" style="margin-bottom: 30px;">Manage Careers</h3>
+                                <form id="career-form" class="anim-uni-in-up">
+                                    <div class="form-group">
+                                        <label>Title</label>
+                                        <input type="text" id="career-title" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Department</label>
+                                        <input type="text" id="career-department" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Type (Full-time, etc.)</label>
+                                        <input type="text" id="career-type" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Location</label>
+                                        <input type="text" id="career-location" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Description</label>
+                                        <textarea id="career-description" rows="4" required></textarea>
+                                    </div>
+                                    <button type="submit" class="submit-btn btn-anim">Add Career Opening</button>
+                                </form>
+                                <div id="careers-list" class="items-list"></div>
+                            </section>
+                            
+                            <!-- Works Sections -->
+                            <section id="web-development" class="admin-section">
+                                <h3 class="reveal-type" style="margin-bottom: 30px;">Web Development Works</h3>
+                                <p class="anim-uni-in-up" style="color: var(--t-medium); font-size: 1.7rem;">Manage web development projects here</p>
+                            </section>
+                            <section id="app-development" class="admin-section">
+                                <h3 class="reveal-type" style="margin-bottom: 30px;">App Development Works</h3>
+                                <p class="anim-uni-in-up" style="color: var(--t-medium); font-size: 1.7rem;">Manage app development projects here</p>
+                            </section>
+                            <section id="graphic-designing" class="admin-section">
+                                <h3 class="reveal-type" style="margin-bottom: 30px;">Graphic Designing Works</h3>
+                                <p class="anim-uni-in-up" style="color: var(--t-medium); font-size: 1.7rem;">Manage graphic design projects here</p>
+                            </section>
+                            <section id="video-editing" class="admin-section">
+                                <h3 class="reveal-type" style="margin-bottom: 30px;">Video Editing Works</h3>
+                                <p class="anim-uni-in-up" style="color: var(--t-medium); font-size: 1.7rem;">Manage video editing projects here</p>
+                            </section>
+                            <section id="digital-marketing" class="admin-section">
+                                <h3 class="reveal-type" style="margin-bottom: 30px;">Digital Marketing Works</h3>
+                                <p class="anim-uni-in-up" style="color: var(--t-medium); font-size: 1.7rem;">Manage digital marketing projects here</p>
+                            </section>
+                            <section id="ecommerce" class="admin-section">
+                                <h3 class="reveal-type" style="margin-bottom: 30px;">E-commerce Works</h3>
+                                <p class="anim-uni-in-up" style="color: var(--t-medium); font-size: 1.7rem;">Manage e-commerce projects here</p>
+                            </section>
+                            <section id="ai-and-security" class="admin-section">
+                                <h3 class="reveal-type" style="margin-bottom: 30px;">AI and Security Works</h3>
+                                <p class="anim-uni-in-up" style="color: var(--t-medium); font-size: 1.7rem;">Manage AI and security projects here</p>
+                            </section>
+                            <section id="others" class="admin-section">
+                                <h3 class="reveal-type" style="margin-bottom: 30px;">Other Works</h3>
+                                <p class="anim-uni-in-up" style="color: var(--t-medium); font-size: 1.7rem;">Manage other projects here</p>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="./libs.min.js"></script>
+    <script src="./app.js"></script>
+    <script>
+        const API_BASE = 'http://localhost:9000/api';
+        let authToken = localStorage.getItem('token');
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (authToken) {
+                showDashboard();
+                loadAllData();
+            }
+            
+            // Sidebar toggle
+            const sidebarToggle = document.getElementById('sidebar-toggle');
+            const sidebar = document.querySelector('.admin-sidebar');
+            const mainContent = document.querySelector('.admin-main');
+            
+            sidebarToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('collapsed');
+                mainContent.classList.toggle('collapsed');
+                
+                // Save state to localStorage
+                localStorage.setItem('sidebar-collapsed', sidebar.classList.contains('collapsed'));
+            });
+            
+            // Load sidebar state from localStorage
+            const isSidebarCollapsed = localStorage.getItem('sidebar-collapsed') === 'true';
+            if (isSidebarCollapsed) {
+                sidebar.classList.add('collapsed');
+                mainContent.classList.add('collapsed');
+            }
+            
+            // Works dropdown
+            const worksBtn = document.getElementById('works-dropdown-btn');
+            const worksDropdown = document.getElementById('works-dropdown');
+            
+            worksBtn.addEventListener('click', () => {
+                worksBtn.classList.toggle('open');
+                worksDropdown.classList.toggle('open');
+            });
+            
+            // Dropdown item clicks
+            document.querySelectorAll('.dropdown-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const section = item.getAttribute('data-section');
+                    switchSection(section);
+                });
+            });
+        });
+        
+        // Function to switch sections
+        function switchSection(sectionId) {
+            // Remove active from all nav buttons
+            document.querySelectorAll('.admin-nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Remove active from all sections
+            document.querySelectorAll('.admin-section').forEach(sec => {
+                sec.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        // Login form
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+
+            try {
+                const res = await fetch(`${API_BASE}/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await res.json();
+                
+                if (data.success) {
+                    authToken = data.data.token;
+                    localStorage.setItem('token', authToken);
+                    showDashboard();
+                    loadAllData();
+                } else {
+                    alert(data.message);
+                }
+            } catch (err) {
+                alert('Login failed');
+            }
+        });
+
+        // Logout
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            authToken = null;
+            localStorage.removeItem('token');
+            document.getElementById('login-page').classList.remove('hidden');
+            document.getElementById('dashboard').classList.add('hidden');
+        });
+
+        // Nav button handlers
+        document.querySelectorAll('.admin-nav-btn').forEach(btn => {
+            if (btn.getAttribute('data-section')) {
+                btn.addEventListener('click', () => {
+                    const section = btn.getAttribute('data-section');
+                    switchSection(section);
+                    btn.classList.add('active');
+                });
+            }
+        });
+
+        // File upload helper
+        async function uploadFile(fileInputId) {
+            const fileInput = document.getElementById(fileInputId);
+            if (fileInput.files.length > 0) {
+                const formData = new FormData();
+                formData.append('file', fileInput.files[0]);
+                
+                try {
+                    const res = await fetch(`${API_BASE}/upload`, {
+                        method: 'POST',
+                        headers: { 'Authorization': `Bearer ${authToken}` },
+                        body: formData
+                    });
+                    const data = await res.json();
+                    return data.success ? data.data.url : null;
+                } catch (err) {
+                    console.error('File upload failed');
+                    return null;
+                }
+            }
+            return null;
+        }
+
+        // Helper to make authenticated requests
+        async function apiRequest(endpoint, options = {}) {
+            const headers = {
+                'Authorization': `Bearer ${authToken}`,
+                ...options.headers
+            };
+            
+            if (!(options.body instanceof FormData)) {
+                headers['Content-Type'] = 'application/json';
+            }
+            
+            const res = await fetch(`${API_BASE}${endpoint}`, {
+                ...options,
+                headers
+            });
+            return res.json();
+        }
+
+        // Show dashboard
+        function showDashboard() {
+            document.getElementById('login-page').classList.add('hidden');
+            document.getElementById('dashboard').classList.remove('hidden');
+        }
+
+        // Load all data
+        async function loadAllData() {
+            await Promise.all([
+                loadProjects(),
+                loadServices(),
+                loadFAQs(),
+                loadReviews(),
+                loadCareers()
+            ]);
+        }
+
+        // ---------------------- Projects ----------------------
+        async function loadProjects() {
+            const data = await apiRequest('/projects');
+            if (data.success) {
+                const list = document.getElementById('projects-list');
+                list.innerHTML = data.data.map((p, index) => `
+                    <div class="item-card anim-uni-in-up" style="animation-delay: ${index * 0.1}s;">
+                        <h4>${p.title}</h4>
+                        <p style="color: var(--t-medium);">${p.category || ''}</p>
+                        ${p.isFeatured ? '<span style="color: var(--accent);">⭐ Featured</span>' : ''}
+                        <div class="item-card-actions">
+                            <button class="delete-btn" onclick="deleteProject('${p._id}')">Delete</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        document.getElementById('project-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            let imageUrl = document.getElementById('project-image').value;
+            
+            if (!imageUrl) {
+                imageUrl = await uploadFile('project-image-upload');
+            }
+
+            const data = await apiRequest('/projects', {
+                method: 'POST',
+                body: JSON.stringify({
+                    title: document.getElementById('project-title').value,
+                    slug: document.getElementById('project-slug').value,
+                    category: document.getElementById('project-category').value,
+                    image: imageUrl,
+                    description: document.getElementById('project-description').value,
+                    isFeatured: document.getElementById('project-is-featured').value === 'true',
+                    isActive: true
+                })
+            });
+
+            if (data.success) {
+                loadProjects();
+                e.target.reset();
+            } else {
+                alert(data.message);
+            }
+        });
+
+        window.deleteProject = async function(id) {
+            if (confirm('Are you sure you want to delete this project?')) {
+                await apiRequest(`/projects/${id}`, { method: 'DELETE' });
+                loadProjects();
+            }
+        };
+
+        // ---------------------- Services ----------------------
+        async function loadServices() {
+            const data = await apiRequest('/services');
+            if (data.success) {
+                const list = document.getElementById('services-list');
+                list.innerHTML = data.data.map((s, index) => `
+                    <div class="item-card anim-uni-in-up" style="animation-delay: ${index * 0.1}s;">
+                        <h4>${s.title}</h4>
+                        <div class="item-card-actions">
+                            <button class="delete-btn" onclick="deleteService('${s._id}')">Delete</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        document.getElementById('service-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            let imageUrl = document.getElementById('service-image').value;
+            
+            if (!imageUrl) {
+                imageUrl = await uploadFile('service-image-upload');
+            }
+
+            const data = await apiRequest('/services', {
+                method: 'POST',
+                body: JSON.stringify({
+                    title: document.getElementById('service-title').value,
+                    image: imageUrl,
+                    description: document.getElementById('service-description').value,
+                    isActive: true
+                })
+            });
+
+            if (data.success) {
+                loadServices();
+                e.target.reset();
+            } else {
+                alert(data.message);
+            }
+        });
+
+        window.deleteService = async function(id) {
+            if (confirm('Are you sure you want to delete this service?')) {
+                await apiRequest(`/services/${id}`, { method: 'DELETE' });
+                loadServices();
+            }
+        };
+
+        // ---------------------- FAQs ----------------------
+        async function loadFAQs() {
+            const data = await apiRequest('/faqs');
+            if (data.success) {
+                const list = document.getElementById('faqs-list');
+                list.innerHTML = data.data.map((f, index) => `
+                    <div class="item-card anim-uni-in-up" style="animation-delay: ${index * 0.1}s;">
+                        <h4>${f.question}</h4>
+                        <p style="color: var(--t-medium);">${f.answer}</p>
+                        <div class="item-card-actions">
+                            <button class="delete-btn" onclick="deleteFAQ('${f._id}')">Delete</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        document.getElementById('faq-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = await apiRequest('/faqs', {
+                method: 'POST',
+                body: JSON.stringify({
+                    question: document.getElementById('faq-question').value,
+                    answer: document.getElementById('faq-answer').value,
+                    isActive: true
+                })
+            });
+
+            if (data.success) {
+                loadFAQs();
+                e.target.reset();
+            } else {
+                alert(data.message);
+            }
+        });
+
+        window.deleteFAQ = async function(id) {
+            if (confirm('Are you sure you want to delete this FAQ?')) {
+                await apiRequest(`/faqs/${id}`, { method: 'DELETE' });
+                loadFAQs();
+            }
+        };
+
+        // ---------------------- Reviews ----------------------
+        async function loadReviews() {
+            const data = await apiRequest('/reviews');
+            if (data.success) {
+                const list = document.getElementById('reviews-list');
+                list.innerHTML = data.data.map((r, index) => `
+                    <div class="item-card anim-uni-in-up" style="animation-delay: ${index * 0.1}s;">
+                        <h4>${r.name}${r.company ? ' - ' + r.company : ''}</h4>
+                        <p style="color: var(--accent);">${'⭐'.repeat(r.rating)}</p>
+                        <p style="color: var(--t-medium);">${r.text}</p>
+                        <div class="item-card-actions">
+                            <button class="delete-btn" onclick="deleteReview('${r._id}')">Delete</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        document.getElementById('review-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = await apiRequest('/reviews', {
+                method: 'POST',
+                body: JSON.stringify({
+                    name: document.getElementById('review-name').value,
+                    company: document.getElementById('review-company').value,
+                    rating: parseInt(document.getElementById('review-rating').value),
+                    text: document.getElementById('review-text').value,
+                    isActive: true
+                })
+            });
+
+            if (data.success) {
+                loadReviews();
+                e.target.reset();
+            } else {
+                alert(data.message);
+            }
+        });
+
+        window.deleteReview = async function(id) {
+            if (confirm('Are you sure you want to delete this review?')) {
+                await apiRequest(`/reviews/${id}`, { method: 'DELETE' });
+                loadReviews();
+            }
+        };
+
+        // ---------------------- Careers ----------------------
+        async function loadCareers() {
+            const data = await apiRequest('/careers');
+            if (data.success) {
+                const list = document.getElementById('careers-list');
+                list.innerHTML = data.data.map((c, index) => `
+                    <div class="item-card anim-uni-in-up" style="animation-delay: ${index * 0.1}s;">
+                        <h4>${c.title}</h4>
+                        <p style="color: var(--t-medium);">${c.department} - ${c.type}</p>
+                        <p style="color: var(--t-medium);">${c.location}</p>
+                        <div class="item-card-actions">
+                            <button class="delete-btn" onclick="deleteCareer('${c._id}')">Delete</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        document.getElementById('career-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = await apiRequest('/careers', {
+                method: 'POST',
+                body: JSON.stringify({
+                    title: document.getElementById('career-title').value,
+                    department: document.getElementById('career-department').value,
+                    type: document.getElementById('career-type').value,
+                    location: document.getElementById('career-location').value,
+                    description: document.getElementById('career-description').value,
+                    isActive: true
+                })
+            });
+
+            if (data.success) {
+                loadCareers();
+                e.target.reset();
+            } else {
+                alert(data.message);
+            }
+        });
+
+        window.deleteCareer = async function(id) {
+            if (confirm('Are you sure you want to delete this career opening?')) {
+                await apiRequest(`/careers/${id}`, { method: 'DELETE' });
+                loadCareers();
+            }
+        };
+    </script>
+</body>
+</html>
