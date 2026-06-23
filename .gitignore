@@ -1,0 +1,12 @@
+# Ignore large video files over 100MB
+videos/video 26.mp4
+videos/video 34 (13).mp4
+videos/*.mp4
+videos/*.MOV
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Node modules
+node_modules
