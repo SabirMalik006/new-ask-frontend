@@ -52,14 +52,14 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <!-- Custom Browser Color End -->
   <style>
+    /* Play icon overlay style on grid items */
     .video-container {
       position: relative;
       cursor: pointer;
-      border: 1px solid black;
+      overflow: hidden;
     }
-
+    
     .menu-video {
-      /* background-color: #898989; */
       background-color: white !important;
       object-fit: contain;
       width: 100%;
@@ -72,7 +72,7 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      font-size: 50px;
+      font-size: 30px;
       color: white;
       background: rgba(0, 0, 0, 0.6);
       width: 70px;
@@ -82,6 +82,93 @@
       justify-content: center;
       align-items: center;
       cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 5;
+    }
+
+    .video-container:hover .play-button {
+      background: var(--accent) !important;
+      transform: translate(-50%, -50%) scale(1.1);
+    }
+
+    /* Lightbox Modal CSS */
+    .video-lightbox-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.95);
+      z-index: 99999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    
+    .video-lightbox-modal.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    
+    .lightbox-content {
+      position: relative;
+      width: 90%;
+      max-width: 1000px;
+      aspect-ratio: 16/9;
+      background: #000;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #333;
+    }
+    
+    .lightbox-content video {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    
+    .lightbox-close {
+      position: absolute;
+      top: 30px;
+      right: 40px;
+      color: #fff;
+      font-size: 4rem;
+      font-weight: 300;
+      cursor: pointer;
+      z-index: 100000;
+      transition: color 0.2s ease;
+    }
+    
+    .lightbox-close:hover {
+      color: var(--accent);
+    }
+    
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #fff;
+      font-size: 3.5rem;
+      cursor: pointer;
+      padding: 20px;
+      z-index: 100000;
+      user-select: none;
+      transition: color 0.2s ease;
+    }
+    
+    .lightbox-nav:hover {
+      color: var(--accent);
+    }
+    
+    .lightbox-prev {
+      left: 30px;
+    }
+    
+    .lightbox-next {
+      right: 30px;
     }
   </style>
 </head>
@@ -375,670 +462,18 @@
     </div>
     <!-- Section - Inner Page Headline End -->
 
-
-
-    <!-- Section - Project Details Start -->
-    <div class="mxd-section mxd-project overflow-hidden">
+    <!-- Section - Project Details Start (Dynamic Video Grid) -->
+    <div class="mxd-section mxd-project overflow-hidden" style="padding-top: 0;">
       <div class="mxd-container grid-container">
-
-
-        <!-- Project Block - Images Cards Start -->
         <div class="mxd-project__block no-margin">
-          <div class="mxd-project-cards">
-            <div class="container-fluid px-0">
-              <div class="row gx-0">
-                <!-- item -->
-                <div class="col-12 col-xl-5 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-right">
-                  <div class="mxd-project-cards__inner align-end bg-accent radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 1.mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-
-
-                  </div>
-                </div>
-
-                <!-- item -->
-                <div class="col-12 col-xl-7 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-left">
-                  <div class="mxd-project-cards__inner align-end bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 2.mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-
-
-
-
-                  </div>
-                </div>
-                <!-- item -->
-                <div class="col-12 col-xl-7 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-right">
-                  <div class="mxd-project-cards__inner bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata" poster="./img/poster 1.jpeg">
-                      <source type="video/mp4" src="./videos/video 3.mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                <!-- item -->
-                <div class="col-12 col-xl-5 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-left">
-                  <div class="mxd-project-cards__inner bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 4.mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                <!-- item -->
-                <div class="col-12 col-xl-5 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-right">
-                  <div class="mxd-project-cards__inner align-end bg-accent radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 5.mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-
-                <!-- item -->
-                <div class="col-12 col-xl-7 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-left">
-                  <div class="mxd-project-cards__inner align-end bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 18.mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                <!-- item -->
-                <div class="col-12 col-xl-7 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-right">
-                  <div class="mxd-project-cards__inner bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 30.mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                <!-- item -->
-                <div class="col-12 col-xl-5 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-left">
-                  <div class="mxd-project-cards__inner bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 8.mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                  <!-- item -->
-                <div class="col-12 col-xl-5 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-left">
-                  <div class="mxd-project-cards__inner bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 36.MP4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                 <!-- item -->
-                <div class="col-12 col-xl-7 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-right">
-                  <div class="mxd-project-cards__inner bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 37.MP4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                 <!-- item -->
-                <div class="col-12 col-xl-7 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-right">
-                  <div class="mxd-project-cards__inner bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 38.MP4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                <!-- item -->
-                <div class="col-12 col-xl-5 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-left">
-                  <div class="mxd-project-cards__inner bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 39.MP4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                  <!-- item -->
-                <div class="col-12 col-xl-5 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-left">
-                  <div class="mxd-project-cards__inner bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 40.MOV">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                 <!-- item -->
-                <div class="col-12 col-xl-7 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-right">
-                  <div class="mxd-project-cards__inner bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 41.MP4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                
-                <!-- item -->
-                <div class="col-12 col-xl-5 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-right">
-                  <div class="mxd-project-cards__inner align-end bg-accent radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 9.mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                <!-- item -->
-                <div class="col-12 col-xl-7 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-left">
-                  <div class="mxd-project-cards__inner align-end bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 10.mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                <!-- item -->
-                <div class="col-12 col-xl-7 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-right">
-                  <div class="mxd-project-cards__inner bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 26.mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                <!-- item -->
-                <div class="col-12 col-xl-5 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-left">
-                  <div class="mxd-project-cards__inner bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 28.mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                <!-- item -->
-                <div class="col-12 col-xl-5 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-right">
-                  <div class="mxd-project-cards__inner align-end bg-accent radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 27.mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                <!-- item -->
-                <div class="col-12 col-xl-7 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-left">
-                  <div class="mxd-project-cards__inner align-end bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 31.mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                <!-- item -->
-                <div class="col-12 col-xl-7 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-right">
-                  <div class="mxd-project-cards__inner bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 33.mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                <!-- item -->
-                <div class="col-12 col-xl-5 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-left">
-                  <div class="mxd-project-cards__inner bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 32.mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                <!-- item -->
-                <div class="col-12 col-xl-5 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-right">
-                  <div class="mxd-project-cards__inner align-end bg-accent radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 17.mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                <!-- item -->
-                <div class="col-12 col-xl-7 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-left">
-                  <div class="mxd-project-cards__inner align-end bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 15.mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                <!-- item -->
-                <div class="col-12 col-xl-7 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-right">
-                  <div class="mxd-project-cards__inner bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 19.mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                <!-- item -->
-                <div class="col-12 col-xl-5 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-left">
-                  <div class="mxd-project-cards__inner bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 20.mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                <!-- item -->
-                <div class="col-12 col-xl-5 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-right">
-                  <div class="mxd-project-cards__inner align-end bg-accent radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 21.mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                <!-- item -->
-                <div class="col-12 col-xl-7 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-left">
-                  <div class="mxd-project-cards__inner align-end bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 22.mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                <!-- item -->
-                <div class="col-12 col-xl-7 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-right">
-                  <div class="mxd-project-cards__inner bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 23.mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                <!-- item -->
-                <div class="col-12 col-xl-5 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-left">
-                  <div class="mxd-project-cards__inner bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 24.mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                <!-- item -->
-                <div class="col-12 col-xl-5 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-left">
-                  <div class="mxd-project-cards__inner bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 25.mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                 <!-- item -->
-                <div class="col-12 col-xl-7 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-right">
-                  <div class="mxd-project-cards__inner bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 11.mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                 <!-- item -->
-                <div class="col-12 col-xl-7 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-right">
-                  <div class="mxd-project-cards__inner bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 13.mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                <!-- item -->
-                <div class="col-12 col-xl-5 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-left">
-                  <div class="mxd-project-cards__inner bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 12.mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                <!-- item -->
-                <div class="col-12 col-xl-5 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-left">
-                  <div class="mxd-project-cards__inner bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 6.mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                 <!-- item -->
-                <div class="col-12 col-xl-7 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-right">
-                  <div class="mxd-project-cards__inner bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 7.mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                 <!-- item -->
-                <div class="col-12 col-xl-7 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-right">
-                  <div class="mxd-project-cards__inner bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 16.mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                <!-- item -->
-                <div class="col-12 col-xl-5 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-left">
-                  <div class="mxd-project-cards__inner bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 29.mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                 <!-- item -->
-                <div class="col-12 col-xl-5 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-left">
-                  <div class="mxd-project-cards__inner bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 34 (1).mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                 <!-- item -->
-                <div class="col-12 col-xl-7 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-right">
-                  <div class="mxd-project-cards__inner bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 34 (2).mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                 <!-- item -->
-                <div class="col-12 col-xl-7 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-right">
-                  <div class="mxd-project-cards__inner bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 35 (1).mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                <!-- item -->
-                <div class="col-12 col-xl-5 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-left">
-                  <div class="mxd-project-cards__inner bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 34 (4).mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                 <!-- item -->
-                <div class="col-12 col-xl-5 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-left">
-                  <div class="mxd-project-cards__inner bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 34 (5).mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                 <!-- item -->
-                <div class="col-12 col-xl-7 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-right">
-                  <div class="mxd-project-cards__inner bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 34 (6).mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                 <!-- item -->
-                <div class="col-12 col-xl-7 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-right">
-                  <div class="mxd-project-cards__inner bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 34 (7).mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                <!-- item -->
-                <div class="col-12 col-xl-5 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-left">
-                  <div class="mxd-project-cards__inner bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 34 (8).mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                 <!-- item -->
-                <div class="col-12 col-xl-5 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-left">
-                  <div class="mxd-project-cards__inner bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 34 (9).mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                 <!-- item -->
-                <div class="col-12 col-xl-7 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-right">
-                  <div class="mxd-project-cards__inner bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 34 (10).mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                 <!-- item -->
-                <div class="col-12 col-xl-7 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-right">
-                  <div class="mxd-project-cards__inner bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 34 (11).mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                <!-- item -->
-                <div class="col-12 col-xl-5 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-left">
-                  <div class="mxd-project-cards__inner bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 34 (12).mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                 <!-- item -->
-                <div class="col-12 col-xl-5 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-left">
-                  <div class="mxd-project-cards__inner bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 34 (13).mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                 <!-- item -->
-                <div class="col-12 col-xl-7 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-right">
-                  <div class="mxd-project-cards__inner bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 34 (14).mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                 <!-- item -->
-                <div class="col-12 col-xl-7 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-right">
-                  <div class="mxd-project-cards__inner bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 35 (2).mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                <!-- item -->
-                <div class="col-12 col-xl-5 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-left">
-                  <div class="mxd-project-cards__inner bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 35 (3).mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                 <!-- item -->
-                <div class="col-12 col-xl-5 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-left">
-                  <div class="mxd-project-cards__inner bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 35 (4).mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                 <!-- item -->
-                <div class="col-12 col-xl-7 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-right">
-                  <div class="mxd-project-cards__inner bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 35 (5).mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                 <!-- item -->
-                <div class="col-12 col-xl-7 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-right">
-                  <div class="mxd-project-cards__inner bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 35 (6).mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-                <!-- item -->
-                <div class="col-12 col-xl-5 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-left">
-                  <div class="mxd-project-cards__inner bg-base-tint radius-m video-container">
-                    <video class="menu-video" id="inner-video" preload="metadata">
-                      <source type="video/mp4" src="./videos/video 35 (7).mp4">
-                      <source type="video/webm" src="video/540x310_video.webm">
-                      <source type="video/ogv" src="video/540x310_video.ogv">
-                    </video>
-                    <div class="play-button">▶</div>
-                  </div>
-                </div>
-
-              </div>
-            </div>
+          <div class="mxd-project-cards-masonry" id="dynamic-video-masonry">
+            <!-- Dynamic masonry grid items populated by script -->
           </div>
         </div>
+      </div>
+    </div>
+    <!-- Section - Project Details End -->
+
         <!-- Project Block - Images Cards End -->
 
 
@@ -1319,40 +754,231 @@
   </a>
   <!-- To Top Button End -->
 
+  <!-- Video Lightbox Modal Start -->
+  <div id="video-lightbox" class="video-lightbox-modal" style="display: none;">
+    <span class="lightbox-close">&times;</span>
+    <div class="lightbox-nav lightbox-prev">&#10094;</div>
+    <div class="lightbox-nav lightbox-next">&#10095;</div>
+    <div class="lightbox-content">
+      <video id="lightbox-video" controls autoplay playsinline></video>
+    </div>
+  </div>
+  <!-- Video Lightbox Modal End -->
+
+
+
   <!-- Load Scripts Start -->
   <script src="libs.min.js"></script>
   <script src="app.js"></script>
-
   <!-- Load Scripts End -->
+
   <script>
+    const API_ROOT = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+      ? 'http://localhost:9000/api'
+      : '/api';
 
-    document.querySelectorAll(".video-container").forEach(container => {
+    const category = "Video Editing";
+    let allVideos = [];
+    let currentVideoIndex = -1;
 
-      const video = container.querySelector(".menu-video");
-      const btn = container.querySelector(".play-button");
+    const lightbox = document.getElementById('video-lightbox');
+    const lightboxVideo = document.getElementById('lightbox-video');
+    const closeBtn = document.querySelector('.lightbox-close');
+    const prevBtn = document.querySelector('.lightbox-prev');
+    const nextBtn = document.querySelector('.lightbox-next');
 
-      // Click on play button
-      btn.addEventListener("click", e => {
-        e.stopPropagation(); // prevent bubbling
-        video.play();
-        btn.style.display = "none";
+    // Function to open lightbox at specific index
+    function openLightbox(index) {
+      if (index < 0 || index >= allVideos.length) return;
+      currentVideoIndex = index;
+      const videoData = allVideos[index];
+      
+      // Update video source
+      lightboxVideo.src = videoData.url;
+      lightboxVideo.load();
+      
+      // Play
+      lightboxVideo.play().catch(err => {
+        console.warn('Auto-play blocked or failed:', err);
       });
+      
+      // Show modal
+      lightbox.style.display = 'flex';
+      // Force repaint to allow transition
+      lightbox.offsetHeight;
+      lightbox.classList.add('active');
+    }
 
-      // Click on video to toggle play/pause
-      video.addEventListener("click", () => {
-        if (video.paused) {
-          video.play();
-          btn.style.display = "none";
-        } else {
-          video.pause();
-          btn.style.display = "flex";
-        }
-      });
+    // Function to close lightbox
+    function closeLightbox() {
+      lightbox.classList.remove('active');
+      setTimeout(() => {
+        lightbox.style.display = 'none';
+        lightboxVideo.pause();
+        lightboxVideo.src = '';
+      }, 300);
+    }
 
+    // Navigation helper functions
+    function showNextVideo() {
+      if (allVideos.length === 0) return;
+      let nextIndex = currentVideoIndex + 1;
+      if (nextIndex >= allVideos.length) {
+        nextIndex = 0; // Wrap around
+      }
+      openLightbox(nextIndex);
+    }
+
+    // Function to show prev video
+    function showPrevVideo() {
+      if (allVideos.length === 0) return;
+      let prevIndex = currentVideoIndex - 1;
+      if (prevIndex < 0) {
+        prevIndex = allVideos.length - 1; // Wrap around
+      }
+      openLightbox(prevIndex);
+    }
+
+    // Bind event listeners for lightbox
+    closeBtn.addEventListener('click', closeLightbox);
+    
+    // Close on click outside the video content
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) {
+        closeLightbox();
+      }
     });
 
-  </script>
+    prevBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      showPrevVideo();
+    });
 
+    nextBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      showNextVideo();
+    });
+
+    // Keyboard controls
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('active')) return;
+      if (e.key === 'Escape') {
+        closeLightbox();
+      } else if (e.key === 'ArrowRight') {
+        showNextVideo();
+      } else if (e.key === 'ArrowLeft') {
+        showPrevVideo();
+      }
+    });
+
+    async function fetchAndRenderVideos() {
+      const container = document.getElementById('dynamic-video-masonry');
+      try {
+        const res = await fetch(`${API_ROOT}/work?category=${encodeURIComponent(category)}`);
+        const result = await res.json();
+        
+        if (result.success && result.data && result.data.length > 0) {
+          // Sort items by order
+          const sortedWorks = result.data.sort((a, b) => (a.order || 0) - (b.order || 0));
+          
+          // Combine media from all video editing documents
+          allVideos = [];
+          sortedWorks.forEach(work => {
+            if (work.media && work.media.length > 0) {
+              allVideos = allVideos.concat(work.media);
+            }
+          });
+          
+          if (allVideos.length === 0) {
+            container.innerHTML = `
+              <div style="text-align: center; padding: 100px 20px; color: var(--t-medium); width: 100%;">
+                <p style="font-size: 1.6rem;">No video files found for ${category}.</p>
+              </div>
+            `;
+            return;
+          }
+
+          // Render masonry grid cells
+          container.innerHTML = allVideos.map((m, idx) => {
+            const isLeft = (idx % 2 === 0);
+            const gridClass = isLeft ? 'anim-uni-scale-in-right' : 'anim-uni-scale-in-left';
+            return `
+              <div class="mxd-project-cards__item mxd-grid-item ${gridClass}" data-video-index="${idx}" style="opacity: 0;">
+                <div class="mxd-project-cards__inner bg-base-tint radius-m video-container" style="position: relative; overflow: hidden; border-radius: var(--_radius-m);">
+                  <img src="${m.poster || 'https://dummyimage.com/600x400/5d5d5d/737373&text=Video'}" 
+                       alt="Video Thumbnail" 
+                       loading="lazy" 
+                       style="width: 100%; height: auto; display: block; border-radius: inherit; transition: transform 0.5s ease;">
+                  <div class="play-button">▶</div>
+                </div>
+              </div>
+            `;
+          }).join('');
+
+          // Bind click handler for each grid item to trigger lightbox
+          container.querySelectorAll('.mxd-project-cards__item').forEach(item => {
+            item.addEventListener('click', () => {
+              const index = parseInt(item.getAttribute('data-video-index'), 10);
+              openLightbox(index);
+            });
+          });
+
+          // Trigger dynamic reveal scroll animation using GSAP ScrollTrigger (identical matching rule)
+          setTimeout(() => {
+            if (window.gsap && window.ScrollTrigger) {
+              const masonryItems = container.querySelectorAll('.mxd-project-cards__item');
+              masonryItems.forEach((element, imgIndex) => {
+                const isLeft = (imgIndex % 2 === 0);
+                gsap.fromTo(element, {
+                  opacity: 0,
+                  y: 50,
+                  x: isLeft ? -50 : 50,
+                  scale: 1.05,
+                }, {
+                  y: 0,
+                  x: 0,
+                  opacity: 1,
+                  scale: 1,
+                  duration: 0.7,
+                  ease: 'power2.out',
+                  scrollTrigger: {
+                    trigger: element,
+                    start: 'top 95%',
+                    once: true
+                  }
+                });
+              });
+            } else {
+              // Fallback if GSAP is not loaded/fails
+              container.querySelectorAll('.mxd-project-cards__item').forEach(el => {
+                el.style.opacity = 1;
+              });
+            }
+          }, 100);
+
+        } else {
+          container.innerHTML = `
+            <div style="text-align: center; padding: 100px 20px; color: var(--t-medium); width: 100%;">
+              <p style="font-size: 1.6rem;">No dynamic case studies found for ${category}.</p>
+            </div>
+          `;
+        }
+      } catch (err) {
+        console.error('Failed to load dynamic video showcase:', err);
+        container.innerHTML = `
+          <div style="text-align: center; padding: 100px 20px; color: var(--t-medium); width: 100%;">
+            <p style="font-size: 1.6rem;">Error fetching video showcase items. Please try again later.</p>
+          </div>
+        `;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', fetchAndRenderVideos);
+    // Explicit trigger in case DOMContentLoaded has already fired
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+      fetchAndRenderVideos();
+    }
+  </script>
 
 </body>
 

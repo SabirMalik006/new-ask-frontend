@@ -23300,7 +23300,7 @@ form textarea:required:valid {
  margin-top: 60rem;
 }
 #career-card {
-  margin-top: 30rem;
+  margin-top: 0rem;
 }
 @media only screen and (max-width: 1199px) {
   #dreamers-and-doers {

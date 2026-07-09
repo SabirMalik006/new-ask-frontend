@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Background matching dark theme -->
+  <rect width="200" height="200" fill="#161616"/>
+  <!-- Circle container for the avatar -->
+  <circle cx="100" cy="100" r="80" fill="#222222" stroke="#333333" stroke-width="2"/>
+  <!-- Head silhouette -->
+  <circle cx="100" cy="85" r="24" fill="#666666"/>
+  <!-- Shoulder silhouette -->
+  <path d="M56 150c0-20 16-36 36-36h16c20 0 36 16 36 36v10H56v-10z" fill="#666666"/>
+</svg>

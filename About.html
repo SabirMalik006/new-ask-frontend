@@ -53,6 +53,17 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <!-- Custom Browser Color End -->
 
+  <style>
+    .mxd-credential-card {
+        transition: transform var(--_animspeed-medium) var(--_animbezier), border-color var(--_animspeed-medium), background var(--_animspeed-medium), box-shadow var(--_animspeed-medium) !important;
+    }
+    .mxd-credential-card:hover {
+        transform: translateY(-5px) scale(1.02);
+        background: rgba(255, 255, 255, 0.08) !important;
+        border-color: var(--accent) !important;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    }
+  </style>
 </head>
 
 <body>
@@ -357,12 +368,31 @@
                   </div>
                 </div>
                 <div class="col-12 col-xl-4 mxd-values__item order-1 order-xl-2 mxd-grid-item no-margin animate-card-2">
-                  <div class="mxd-values__image image-large-desktop image-values-1 parallax-img-small" style="object-fit: cover;"><img src="./img/FBR cerificate.jpg" alt="" ></div>
+                  <div class="mxd-credential-card anim-uni-in-up" onclick="openLightbox('./img/FBR cerificate.jpg', 'FBR Taxpayer Registration Certificate')" style="cursor: pointer; background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); border: 2px solid var(--st-muted); border-radius: var(--_radius-m); padding: 40px 30px; height: 100%; display: flex; flex-direction: column; justify-content: space-between; transition: all var(--_animspeed-medium);">
+                    <div>
+                      <div class="mxd-credential-icon" style="font-size: 3.5rem; color: var(--accent); margin-bottom: 25px;"><i class="ph ph-file-text"></i></div>
+                      <h4 class="t-bright" style="font-size: 2.4rem; font-weight: 600; margin-bottom: 15px; letter-spacing: -0.02em;">FBR Registration</h4>
+                      <p style="color: var(--t-medium); font-size: 1.5rem; line-height: 1.6;">Official Taxpayer Registration Certificate from the Federal Board of Revenue, Government of Pakistan.</p>
+                    </div>
+                    <div style="margin-top: 30px; display: flex; align-items: center; gap: 8px; color: var(--accent); font-weight: 500; font-size: 1.5rem;">
+                      <span>View Certificate</span>
+                      <i class="ph ph-arrow-up-right"></i>
+                    </div>
+                  </div>
                 </div>
-                <div
-                  class="col-12 col-xl-6 mxd-values__item order-3 order-xl-3 mobile-reverse mxd-grid-item no-margin animate-card-2">
-                  <div class="mxd-values__image image-small-desktop image-values-2 parallax-img-small"><img src="./img/certificate.png" alt=""  style="border: 1px solid black; background-color: #9F8BE7; object-fit: contain;"></div>
-                  <div class="mxd-values__descr has-top-list anim-uni-in-up">
+                <div class="col-12 col-xl-6 mxd-values__item order-3 order-xl-3 mobile-reverse mxd-grid-item no-margin animate-card-2" style="display: flex; flex-direction: column; gap: 30px;">
+                  <div class="mxd-credential-card anim-uni-in-up" onclick="openLightbox('./img/certificate.png', 'SECP Incorporation & PSEB Certificate')" style="cursor: pointer; background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); border: 2px solid var(--st-muted); border-radius: var(--_radius-m); padding: 40px 30px; transition: all var(--_animspeed-medium); display: flex; flex-direction: column; justify-content: space-between; height: auto;">
+                    <div>
+                      <div class="mxd-credential-icon" style="font-size: 3.5rem; color: var(--accent); margin-bottom: 25px;"><i class="ph ph-certificate"></i></div>
+                      <h4 class="t-bright" style="font-size: 2.4rem; font-weight: 600; margin-bottom: 15px; letter-spacing: -0.02em;">SECP & PSEB Licenses</h4>
+                      <p style="color: var(--t-medium); font-size: 1.5rem; line-height: 1.6;">Certificate of Incorporation from the Securities and Exchange Commission of Pakistan (SECP) & Pakistan Software Export Board (PSEB) license.</p>
+                    </div>
+                    <div style="margin-top: 30px; display: flex; align-items: center; gap: 8px; color: var(--accent); font-weight: 500; font-size: 1.5rem;">
+                      <span>View Licenses</span>
+                      <i class="ph ph-arrow-up-right"></i>
+                    </div>
+                  </div>
+                  <div class="mxd-values__descr has-top-list anim-uni-in-up" style="margin-top: 0;">
                     <p class="t-bright t-large reveal-type">We are a creative digital agency specializing
                       in innovative design and cutting-edge development. We help businesses stand out and
                       thrive in the modern landscape.</p>
@@ -1221,6 +1251,52 @@
         $(".mxd-header").addClass("is-hidden");
       } else {
         $(".mxd-header").removeClass("is-hidden");
+      }
+    });
+  </script>
+
+  <!-- Lightbox Modal for Certificates -->
+  <div id="cert-lightbox" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.95); z-index: 9999; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s ease; backdrop-filter: blur(10px);">
+    <button onclick="closeLightbox()" style="position: absolute; top: 30px; right: 30px; background: none; border: none; color: white; font-size: 36px; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 55px; height: 55px; border-radius: 50%; background: rgba(255,255,255,0.08); transition: background 0.2s; border: 1px solid rgba(255,255,255,0.1);" onmouseover="this.style.background='rgba(255,255,255,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.08)'">&times;</button>
+    <div style="max-width: 90%; max-height: 90%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;">
+      <h4 id="lightbox-title" style="color: white; font-size: 2.2rem; margin: 0; font-weight: 500; text-align: center; font-family: var(--_font-accent);"></h4>
+      <img id="lightbox-img" src="" style="max-width: 100%; max-height: 78vh; object-fit: contain; border-radius: var(--_radius-m); border: 2px solid var(--st-muted); box-shadow: 0 20px 50px rgba(0,0,0,0.6);">
+    </div>
+  </div>
+
+  <script>
+    function openLightbox(src, title) {
+      const lightbox = document.getElementById('cert-lightbox');
+      const img = document.getElementById('lightbox-img');
+      const titleEl = document.getElementById('lightbox-title');
+      
+      img.src = src;
+      titleEl.textContent = title;
+      lightbox.style.display = 'flex';
+      setTimeout(() => {
+        lightbox.style.opacity = '1';
+      }, 50);
+    }
+    
+    function closeLightbox() {
+      const lightbox = document.getElementById('cert-lightbox');
+      lightbox.style.opacity = '0';
+      setTimeout(() => {
+        lightbox.style.display = 'none';
+      }, 300);
+    }
+    
+    // Close lightbox on escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeLightbox();
+      }
+    });
+
+    // Close lightbox when clicking outside the image
+    document.getElementById('cert-lightbox').addEventListener('click', (e) => {
+      if (e.target === document.getElementById('cert-lightbox')) {
+        closeLightbox();
       }
     });
   </script>

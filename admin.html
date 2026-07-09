@@ -59,10 +59,25 @@
             display: flex;
             flex-direction: column;
             gap: 12px;
-            position: relative;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow: visible;
             transition: width var(--_animspeed-medium), padding var(--_animspeed-medium);
-            overflow: hidden;
             flex-shrink: 0;
+            z-index: 100;
+        }
+
+        /* Hide logo text when collapsed */
+        .admin-sidebar.collapsed .admin-sidebar-logo .mxd-logo__text {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            position: absolute;
+        }
+        
+        .admin-sidebar.collapsed .admin-sidebar-logo {
+            justify-content: center;
         }
         
         .admin-sidebar.collapsed {
@@ -111,7 +126,7 @@
         /* Hide text when collapsed */
         .admin-sidebar.collapsed .sidebar-section-title,
         .admin-sidebar.collapsed .admin-nav-btn > span:not(.icon-wrapper),
-        .admin-sidebar.collapsed .dropdown-item,
+        .admin-sidebar.collapsed .dropdown-item > span,
         .admin-sidebar.collapsed .logout-btn > span:not(.icon-wrapper) {
             opacity: 0;
             visibility: hidden;
@@ -119,9 +134,15 @@
             position: absolute;
         }
         
-        /* Hide dropdown completely when collapsed */
+        /* Adjust dropdown indent when collapsed */
         .admin-sidebar.collapsed .sidebar-dropdown {
-            display: none;
+            padding-left: 0;
+        }
+        
+        .admin-sidebar.collapsed .dropdown-item {
+            justify-content: center;
+            padding: 12px 10px;
+            border-left: none;
         }
         
         /* Adjust nav buttons when collapsed - icon only */
@@ -165,8 +186,8 @@
             transition: all var(--_animspeed-medium) var(--_animbezier);
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            gap: 10px;
+            justify-content: flex-start;
+            gap: 14px;
         }
         
         .admin-nav-btn i,
@@ -208,6 +229,7 @@
         
         .dropdown-icon {
             transition: transform var(--_animspeed-medium);
+            margin-left: auto;
         }
         
         .admin-nav-btn.open .dropdown-icon {
@@ -410,7 +432,7 @@
             display: inline-flex;
             align-items: center;
             background: var(--accent);
-            color: #fff;
+            color: var(--t-opp-bright);
             padding: 6px 12px;
             border-radius: 20px;
             font-size: 1.2rem;
@@ -523,10 +545,19 @@
                                 <i class="ph ph-caret-left"></i>
                             </button>
                             
-                            <h3 class="sidebar-section-title" style="padding-top: 20px; margin-bottom: 20px;">Dashboard</h3>
+                            <!-- Logo Section -->
+                            <div class="admin-sidebar-logo" style="margin-bottom: 20px; display: flex; align-items: center; gap: 10px; transition: all var(--_animspeed-medium);">
+                                <a href="index.html" class="mxd-logo" style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
+                                    <img class="mxd-logo__image" src="./img/logo pic.jpeg" alt="ASK Websolutions" style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover;">
+                                    <span class="mxd-logo__text" style="font: var(--fw-semibold) 1.8rem var(--_font-accent); color: var(--t-bright); line-height: 1.2; transition: opacity var(--_animspeed-medium);">ASK<br>Websolutions</span>
+                                </a>
+                            </div>
+
+                            <div class="sidebar-scroll-container" style="display: flex; flex-direction: column; gap: 12px; height: calc(100vh - 120px); overflow-y: auto; overflow-x: hidden; width: 100%; padding-right: 4px;">
+                                <h3 class="sidebar-section-title" style="padding-top: 10px; margin-bottom: 10px;">Dashboard</h3>
                             
                             <!-- Single "Work" nav item that expands into the 8 categories -->
-                            <button class="admin-nav-btn active" id="works-dropdown-btn">
+                            <button class="admin-nav-btn active" id="works-dropdown-btn" title="Work">
                                 <span class="icon-wrapper"><i class="ph ph-suitcase"></i></span>
                                 <span>Work</span>
                                 <span class="dropdown-icon">
@@ -534,42 +565,54 @@
                                 </span>
                             </button>
                             <div class="sidebar-dropdown open" id="works-dropdown" style="display: block;">
-                                <button class="dropdown-item active" data-category="Portfolio">
+                                <button class="dropdown-item active" data-category="Portfolio" title="Portfolio">
                                     <i class="ph ph-folder"></i>
-                                    Portfolio
+                                    <span>Portfolio</span>
                                 </button>
-                                <button class="dropdown-item" data-category="Web Development">
+                                <button class="dropdown-item" data-category="Web Development" title="Web Development">
                                     <i class="ph ph-globe"></i>
-                                    Web Development
+                                    <span>Web Development</span>
                                 </button>
-                                <button class="dropdown-item" data-category="App Development">
+                                <button class="dropdown-item" data-category="App Development" title="App Development">
                                     <i class="ph ph-device-mobile"></i>
-                                    App Development
+                                    <span>App Development</span>
                                 </button>
-                                <button class="dropdown-item" data-category="Digital Marketing">
+                                <button class="dropdown-item" data-category="Digital Marketing" title="Digital Marketing">
                                     <i class="ph ph-chart-line-up"></i>
-                                    Digital Marketing
+                                    <span>Digital Marketing</span>
                                 </button>
-                                <button class="dropdown-item" data-category="Graphic Designing">
+                                <button class="dropdown-item" data-category="Graphic Designing" title="Graphic Designing">
                                     <i class="ph ph-palette"></i>
-                                    Graphic Designing
+                                    <span>Graphic Designing</span>
                                 </button>
-                                <button class="dropdown-item" data-category="E-commerce">
+                                <button class="dropdown-item" data-category="E-commerce" title="E-commerce">
                                     <i class="ph ph-shopping-cart"></i>
-                                    E-commerce
+                                    <span>E-commerce</span>
                                 </button>
-                                <button class="dropdown-item" data-category="UI/UX">
+                                <button class="dropdown-item" data-category="UI/UX" title="UI/UX">
                                     <i class="ph ph-layout"></i>
-                                    UI/UX
+                                    <span>UI/UX</span>
                                 </button>
-                                <button class="dropdown-item" data-category="Video Editing">
+                                <button class="dropdown-item" data-category="Video Editing" title="Video Editing">
                                     <i class="ph ph-video"></i>
-                                    Video Editing
+                                    <span>Video Editing</span>
                                 </button>
                             </div>
                             
+                            <!-- Team Nav Button -->
+                            <button class="admin-nav-btn" id="team-nav-btn" style="margin-top: 10px;" title="Team">
+                                <span class="icon-wrapper"><i class="ph ph-users"></i></span>
+                                <span>Team</span>
+                            </button>
+                            
+                            <!-- Services Nav Button -->
+                            <button class="admin-nav-btn" id="services-nav-btn" style="margin-top: 10px;" title="Services">
+                                <span class="icon-wrapper"><i class="ph ph-wrench"></i></span>
+                                <span>Services</span>
+                            </button>
+                            
                             <!-- Light/Dark Mode Toggle Button -->
-                            <button id="color-switcher" class="admin-nav-btn" style="margin-top: auto;">
+                            <button id="color-switcher" class="admin-nav-btn" style="margin-top: auto;" title="Theme">
                                 <span class="icon-wrapper">
                                     <i class="ph ph-sun icon-light" style="display: block;"></i>
                                     <i class="ph ph-moon icon-dark" style="display: none;"></i>
@@ -578,10 +621,11 @@
                             </button>
                             
                             <!-- Logout Button at Bottom -->
-                            <button id="logout-btn" class="logout-btn btn-anim" style="margin-bottom: 20px;">
+                            <button id="logout-btn" class="logout-btn btn-anim" style="margin-bottom: 20px;" title="Logout">
                                 <span class="icon-wrapper"><i class="ph ph-sign-out"></i></span>
                                 <span>Logout</span>
                             </button>
+                            </div> <!-- End sidebar-scroll-container -->
                         </aside>
                         
                         <!-- Main Content Area -->
@@ -658,27 +702,29 @@
                                          </div>
 
                                          <div id="marketing-fields-group" style="display: none;">
-                                             <!-- platforms -->
-                                             <div class="form-group" style="margin-bottom: 20px;">
-                                                 <label>Platforms</label>
-                                                 <input type="text" id="work-platforms" placeholder="e.g. Facebook, Instagram, TikTok, Google, YouTube">
-                                             </div>
+                                              <!-- platforms -->
+                                              <div class="form-group" style="margin-bottom: 20px;">
+                                                  <label>Platforms</label>
+                                                  <input type="text" id="work-platforms" placeholder="e.g. Facebook, Instagram, TikTok, Google, YouTube">
+                                              </div>
 
-                                             <!-- contentStrategy -->
-                                             <div class="form-group" style="margin-bottom: 20px;">
-                                                 <label>Content & Strategy</label>
-                                                 <input type="text" id="work-contentStrategy" placeholder="e.g. Brand Growth & Online Presence">
-                                             </div>
+                                              <!-- contentStrategy -->
+                                              <div class="form-group" style="margin-bottom: 20px;">
+                                                  <label>Content & Strategy</label>
+                                                  <input type="text" id="work-contentStrategy" placeholder="e.g. Brand Growth & Online Presence">
+                                              </div>
+                                          </div>
 
-                                             <!-- serviceList -->
-                                             <div class="form-group" style="margin-bottom: 20px;">
-                                                 <label>Service List (Offerings)</label>
-                                                 <div class="tags-input-container" id="servicelist-input-container" style="display: flex; flex-wrap: wrap; gap: 8px; padding: 8px; border: 2px solid var(--st-muted); border-radius: var(--_radius-s); background: var(--base); min-height: 48px; align-items: center;">
-                                                     <!-- Chips will be rendered here -->
-                                                     <input type="text" id="servicelist-input" placeholder="Type service and press Enter" style="border: none; outline: none; background: transparent; flex: 1; min-width: 150px; font-size: 1.4rem; color: var(--t-bright); padding: 4px;">
-                                                 </div>
-                                                 <small style="color: var(--t-medium); margin-top: 5px; display: block;">Press Enter or type a comma to add a service offering. Click a service offering to remove it.</small>
-                                             </div>
+                                          <!-- Service List (Offerings) Group (Shared by Marketing & Video Editing) -->
+                                          <div id="servicelist-group" style="display: none;">
+                                              <div class="form-group" style="margin-bottom: 20px;">
+                                                  <label>Service List (Offerings)</label>
+                                                  <div class="tags-input-container" id="servicelist-input-container" style="display: flex; flex-wrap: wrap; gap: 8px; padding: 8px; border: 2px solid var(--st-muted); border-radius: var(--_radius-s); background: var(--base); min-height: 48px; align-items: center;">
+                                                      <!-- Chips will be rendered here -->
+                                                      <input type="text" id="servicelist-input" placeholder="Type service and press Enter" style="border: none; outline: none; background: transparent; flex: 1; min-width: 150px; font-size: 1.4rem; color: var(--t-bright); padding: 4px;">
+                                                  </div>
+                                                  <small style="color: var(--t-medium); margin-top: 5px; display: block;">Press Enter or type a comma to add a service offering. Click a service offering to remove it.</small>
+                                              </div>
                                           </div>
 
                                           <div id="ecommerce-fields-group" style="display: none;">
@@ -704,6 +750,26 @@
                                               <div class="form-group" style="margin-bottom: 20px;">
                                                   <label>Business Models</label>
                                                   <input type="text" id="work-businessModels" placeholder="e.g. FBA • FBM • Dropshipping">
+                                              </div>
+                                          </div>
+
+                                          <div id="video-fields-group" style="display: none;">
+                                              <!-- Video Editing Services -->
+                                              <div class="form-group" style="margin-bottom: 20px;">
+                                                  <label>Service</label>
+                                                  <input type="text" id="work-video-services" placeholder="e.g. Video Editing">
+                                              </div>
+
+                                              <!-- Video Editing Platforms -->
+                                              <div class="form-group" style="margin-bottom: 20px;">
+                                                  <label>Platforms</label>
+                                                  <input type="text" id="work-video-platforms" placeholder="e.g. CapCut, Filmora, Adobe Premiere Pro, Canva">
+                                              </div>
+
+                                              <!-- Video Editing Specialization -->
+                                              <div class="form-group" style="margin-bottom: 20px;">
+                                                  <label>Specialization</label>
+                                                  <input type="text" id="work-specialization" placeholder="e.g. Branding & Social Media Content">
                                               </div>
                                           </div>
 
@@ -779,7 +845,154 @@
                                  <div id="works-list" class="items-list">
                                      <!-- Dynamic list of work items -->
                                  </div>
-                             </section>
+                              </section>
+
+                              <!-- Team Manager Section -->
+                              <section id="team-manager" class="admin-section">
+                                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+                                      <h3 class="reveal-type" style="margin: 0;">Manage Team Members</h3>
+                                      <button id="add-team-btn" class="submit-btn btn-anim" style="width: auto; padding: 12px 25px;">+ Add Team Member</button>
+                                  </div>
+
+                                  <!-- Collapsible Add/Edit Team Form Panel -->
+                                  <div id="team-form-container" class="anim-uni-in-up" style="display: none; background: var(--base-tint); border: 2px solid var(--st-muted); border-radius: var(--_radius-m); padding: 30px; margin-bottom: 40px;">
+                                      <h4 id="team-form-action-title" style="margin-top: 0; margin-bottom: 25px; font-size: 2rem; color: var(--t-bright);">Add New Team Member</h4>
+                                      <form id="team-form" enctype="multipart/form-data">
+                                          <input type="hidden" id="team-id">
+                                          
+                                          <!-- 1. Name -->
+                                          <div class="form-group" style="margin-bottom: 20px;">
+                                              <label>Name *</label>
+                                              <input type="text" id="team-name" required placeholder="e.g. Zain Raza">
+                                          </div>
+
+                                          <!-- 2. Position -->
+                                          <div class="form-group" style="margin-bottom: 20px;">
+                                              <label>Position *</label>
+                                              <input type="text" id="team-position" required placeholder="e.g. Frontend Developer">
+                                          </div>
+
+                                          <!-- 3. LinkedIn URL -->
+                                          <div class="form-group" style="margin-bottom: 20px;">
+                                              <label>LinkedIn URL</label>
+                                              <div style="display: flex; gap: 10px;">
+                                                  <input type="url" id="team-linkedinUrl" placeholder="e.g. https://www.linkedin.com/in/username" style="flex: 1;">
+                                                  <button type="button" id="import-linkedin-photo-btn" class="submit-btn btn-anim" style="width: auto; padding: 10px 15px; font-size: 1.4rem; white-space: nowrap;">Import Photo</button>
+                                              </div>
+                                          </div>
+
+                                          <!-- 3b. GitHub URL -->
+                                          <div class="form-group" style="margin-bottom: 20px;">
+                                              <label>GitHub URL</label>
+                                              <input type="url" id="team-githubUrl" placeholder="e.g. https://github.com/username">
+                                          </div>
+
+                                          <!-- 3c. Website/Other URL -->
+                                          <div class="form-group" style="margin-bottom: 20px;">
+                                              <label>Website/Other URL</label>
+                                              <input type="url" id="team-otherUrl" placeholder="e.g. https://myportfolio.com">
+                                          </div>
+
+                                          <!-- 3d. Photo URL -->
+                                          <div class="form-group" style="margin-bottom: 20px;">
+                                              <label>Or Photo URL directly</label>
+                                              <input type="url" id="team-photoUrl" placeholder="e.g. https://example.com/photo.jpg">
+                                          </div>
+
+                                          <!-- 4. Order -->
+                                          <div class="form-group" style="margin-bottom: 20px;">
+                                              <label>Display Order</label>
+                                              <input type="number" id="team-order" value="0" min="0" placeholder="e.g. 1">
+                                          </div>
+
+                                          <!-- 5. Photo Upload -->
+                                          <div class="form-group" style="margin-bottom: 20px;">
+                                              <label>Photo</label>
+                                              <div style="display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
+                                                  <div style="flex: 1; min-width: 250px;">
+                                                      <div class="file-upload-area" onclick="document.getElementById('team-photo').click()">
+                                                          <i class="ph ph-upload-simple" style="font-size: 32px; color: var(--t-medium); margin-bottom: 10px; display: inline-block;"></i>
+                                                          <p style="margin: 0; font-size: 1.4rem; color: var(--t-medium);">Click to upload photo (or drag and drop)</p>
+                                                          <input type="file" id="team-photo" accept="image/*" style="display: none;">
+                                                      </div>
+                                                  </div>
+                                                  <!-- Preview -->
+                                                  <div id="team-photo-preview" style="display: none; position: relative; width: 120px; height: 120px; border-radius: var(--_radius-m); overflow: hidden; border: 1px solid var(--st-muted);">
+                                                      <img src="" style="width: 100%; height: 100%; object-fit: cover;">
+                                                      <button type="button" class="remove-img-btn" id="remove-team-photo-btn" style="position: absolute; top: 5px; right: 5px; width: 24px; height: 24px; border-radius: 50%; background: rgba(255, 0, 0, 0.8); color: white; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 14px;">&times;</button>
+                                                  </div>
+                                              </div>
+                                          </div>
+
+                                          <!-- Buttons -->
+                                          <div style="display: flex; gap: 15px; margin-top: 30px;">
+                                              <button type="submit" class="submit-btn btn-anim" style="width: auto; padding: 12px 30px;">Save Team Member</button>
+                                              <button type="button" id="cancel-team-form-btn" class="submit-btn" style="width: auto; padding: 12px 30px; background: transparent; border: 2px solid var(--st-muted); color: var(--t-medium);">Cancel</button>
+                                          </div>
+                                      </form>
+                                  </div>
+
+                                  <!-- Team Members Card List -->
+                                  <div id="team-list" class="items-list">
+                                      <!-- Dynamic list of team members -->
+                                  </div>
+                              </section>
+
+                              <!-- Services Manager Section -->
+                              <section id="services-manager" class="admin-section">
+                                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+                                      <h3 class="reveal-type" style="margin: 0;">Manage Services</h3>
+                                      <button id="add-service-btn" class="submit-btn btn-anim" style="width: auto; padding: 12px 25px;">+ Add Service</button>
+                                  </div>
+
+                                  <!-- Collapsible Add/Edit Service Form Panel -->
+                                  <div id="service-form-container" class="anim-uni-in-up" style="display: none; background: var(--base-tint); border: 2px solid var(--st-muted); border-radius: var(--_radius-m); padding: 30px; margin-bottom: 40px;">
+                                      <h4 id="service-form-action-title" style="margin-top: 0; margin-bottom: 25px; font-size: 2rem; color: var(--t-bright);">Add New Service</h4>
+                                      <form id="service-form">
+                                          <input type="hidden" id="service-id">
+                                          
+                                          <!-- 1. Title -->
+                                          <div class="form-group" style="margin-bottom: 20px;">
+                                              <label>Title *</label>
+                                              <input type="text" id="service-title" required placeholder="e.g. Design">
+                                          </div>
+
+                                          <!-- 2. Description -->
+                                          <div class="form-group" style="margin-bottom: 20px;">
+                                              <label>Description *</label>
+                                              <textarea id="service-description" required rows="4" placeholder="e.g. We create visually compelling designs that enhance user experience..."></textarea>
+                                          </div>
+
+                                          <!-- 3. Tags (Chip input) -->
+                                          <div class="form-group" style="margin-bottom: 20px;">
+                                              <label>Tags (Press Enter or comma to add)</label>
+                                              <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                                                  <input type="text" id="service-tags-input" placeholder="e.g. UI/UX">
+                                              </div>
+                                              <div id="service-tags-list" style="display: flex; flex-wrap: wrap; gap: 8px;">
+                                                  <!-- Dynamic chips -->
+                                              </div>
+                                          </div>
+
+                                          <!-- 4. Order -->
+                                          <div class="form-group" style="margin-bottom: 20px;">
+                                              <label>Display Order</label>
+                                              <input type="number" id="service-order" value="0" min="0" placeholder="e.g. 1">
+                                          </div>
+
+                                          <!-- Buttons -->
+                                          <div style="display: flex; gap: 15px; margin-top: 30px;">
+                                              <button type="submit" class="submit-btn btn-anim" style="width: auto; padding: 12px 30px;">Save Service</button>
+                                              <button type="button" id="cancel-service-form-btn" class="submit-btn" style="width: auto; padding: 12px 30px; background: transparent; border: 2px solid var(--st-muted); color: var(--t-medium);">Cancel</button>
+                                          </div>
+                                      </form>
+                                  </div>
+
+                                  <!-- Services List -->
+                                  <div id="services-list" class="items-list">
+                                      <!-- Dynamic list of services -->
+                                  </div>
+                              </section>
                         </div>
                     </div>
                 </div>
@@ -798,9 +1011,17 @@
         let activeTags = [];
         let activeServicesList = [];
         let activeGalleryImages = [];
+        let teamPhotoFile = null;
+        let removeTeamPhotoFlag = false;
+        let activeServiceTags = [];
         
         // ---------------------- Helper functions ----------------------
-        function switchSection(sectionId) {}
+        function switchSection(sectionId) {
+            document.querySelectorAll('.admin-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+        }
 
         // Show dashboard
         function showDashboard() {
@@ -889,7 +1110,7 @@
             'Graphic Designing': ['standard'],
             'E-commerce': ['ecommerce'],
             'UI/UX': ['standard'],
-            'Video Editing': ['standard']
+            'Video Editing': ['video']
         };
 
         // E-commerce mixed media local state management
@@ -899,6 +1120,8 @@
             const standardGroup = document.getElementById('standard-fields-group');
             const marketingGroup = document.getElementById('marketing-fields-group');
             const ecommerceGroup = document.getElementById('ecommerce-fields-group');
+            const videoGroup = document.getElementById('video-fields-group');
+            const servicelistGroup = document.getElementById('servicelist-group');
             const traditionalMediaGroup = document.getElementById('traditional-media-group');
             const ecommerceMediaGroup = document.getElementById('ecommerce-media-group');
             
@@ -910,13 +1133,21 @@
             standardGroup.style.display = 'none';
             marketingGroup.style.display = 'none';
             if (ecommerceGroup) ecommerceGroup.style.display = 'none';
+            if (videoGroup) videoGroup.style.display = 'none';
+            if (servicelistGroup) servicelistGroup.style.display = 'none';
             if (traditionalMediaGroup) traditionalMediaGroup.style.display = 'block';
             if (ecommerceMediaGroup) ecommerceMediaGroup.style.display = 'none';
             
             if (groups.includes('marketing')) {
                 marketingGroup.style.display = 'block';
+                if (servicelistGroup) servicelistGroup.style.display = 'block';
             } else if (groups.includes('ecommerce')) {
                 if (ecommerceGroup) ecommerceGroup.style.display = 'block';
+                if (traditionalMediaGroup) traditionalMediaGroup.style.display = 'none';
+                if (ecommerceMediaGroup) ecommerceMediaGroup.style.display = 'block';
+            } else if (groups.includes('video')) {
+                if (videoGroup) videoGroup.style.display = 'block';
+                if (servicelistGroup) servicelistGroup.style.display = 'block';
                 if (traditionalMediaGroup) traditionalMediaGroup.style.display = 'none';
                 if (ecommerceMediaGroup) ecommerceMediaGroup.style.display = 'block';
             } else {
@@ -1116,10 +1347,12 @@
                     list.innerHTML = '<p style="color: var(--t-medium); padding: 20px 0;">No work items found in this category.</p>';
                     return;
                 }
-                list.innerHTML = res.data.map((w, index) => `
+                list.innerHTML = res.data.map((w, index) => {
+                    const displayImage = w.heroImage || (w.media && w.media[0] && (w.media[0].poster || (w.media[0].type === 'image' ? w.media[0].url : '')));
+                    return `
                     <div class="item-card anim-uni-in-up" style="animation-delay: ${index * 0.1}s; display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
                         <div>
-                            ${w.heroImage ? `<img src="${w.heroImage}" style="width: 100%; height: 180px; object-fit: cover; border-radius: var(--_radius-m); border: 1px solid var(--st-muted); margin-bottom: 16px;">` : '<div style="width: 100%; height: 180px; background: var(--base); border-radius: var(--_radius-m); border: 1px solid var(--st-muted); display: flex; align-items: center; justify-content: center; color: var(--t-medium); font-size: 1.4rem; margin-bottom: 16px;">No Image</div>'}
+                            ${displayImage ? `<img src="${displayImage}" style="width: 100%; height: 180px; object-fit: cover; border-radius: var(--_radius-m); border: 1px solid var(--st-muted); margin-bottom: 16px;">` : '<div style="width: 100%; height: 180px; background: var(--base); border-radius: var(--_radius-m); border: 1px solid var(--st-muted); display: flex; align-items: center; justify-content: center; color: var(--t-medium); font-size: 1.4rem; margin-bottom: 16px;">No Image</div>'}
                             <h4 style="margin: 0 0 12px 0; font-size: 2.0rem; color: var(--t-bright); font-weight: 600; line-height: 1.3; word-break: break-word;">${w.title}</h4>
                             
                             <div style="margin-bottom: 16px; display: flex; flex-direction: column; gap: 8px;">
@@ -1142,16 +1375,22 @@
                             <button class="delete-btn" style="flex: 1; padding: 10px 16px; font-size: 1.4rem; border-radius: 8px;" onclick="deleteWork('${w._id}')">Delete</button>
                         </div>
                     </div>
-                `).join('');
+                `}).join('');
             } else {
                 list.innerHTML = `<p style="color: red; padding: 20px 0;">Failed to load items: ${res.message}</p>`;
             }
         }
         
         async function loadAllData() {
-            const activeItem = document.querySelector('.dropdown-item.active');
-            const cat = activeItem ? activeItem.getAttribute('data-category') : 'Portfolio';
-            await loadWorks(cat);
+            if (document.getElementById('team-nav-btn')?.classList.contains('active')) {
+                await loadTeamMembers();
+            } else if (document.getElementById('services-nav-btn')?.classList.contains('active')) {
+                await loadServices();
+            } else {
+                const activeItem = document.querySelector('.dropdown-item.active');
+                const cat = activeItem ? activeItem.getAttribute('data-category') : 'Portfolio';
+                await loadWorks(cat);
+            }
         }
         
         window.editWork = async function(id) {
@@ -1178,9 +1417,14 @@
                 document.getElementById('work-businessSetup').value = w.businessSetup || '';
                 document.getElementById('work-businessModels').value = w.businessModels || '';
 
-                // Load E-commerce mixed-media slots
+                // Video Editing specific inputs
+                document.getElementById('work-video-services').value = w.services || '';
+                document.getElementById('work-video-platforms').value = w.platforms || '';
+                document.getElementById('work-specialization').value = w.specialization || '';
+
+                // Load E-commerce or Video Editing mixed-media slots
                 activeEcommerceMedia = [];
-                if (w.category === 'E-commerce' && w.media && w.media.length > 0) {
+                if ((w.category === 'E-commerce' || w.category === 'Video Editing') && w.media && w.media.length > 0) {
                     w.media.forEach(m => {
                         activeEcommerceMedia.push({
                             type: m.type,
@@ -1237,6 +1481,220 @@
             }
         };
         
+        // ---------------------- Team CRUD ----------------------
+        function showTeamForm(title = "Add New Team Member") {
+            document.getElementById('team-form-action-title').textContent = title;
+            document.getElementById('team-form-container').style.display = 'block';
+        }
+
+        function hideTeamForm() {
+            document.getElementById('team-form-container').style.display = 'none';
+            document.getElementById('team-form').reset();
+            document.getElementById('team-id').value = '';
+            document.getElementById('team-photoUrl').value = '';
+            teamPhotoFile = null;
+            removeTeamPhotoFlag = false;
+            document.getElementById('team-photo-preview').style.display = 'none';
+            document.getElementById('team-photo-preview').querySelector('img').src = '';
+        }
+
+        async function loadTeamMembers() {
+            const list = document.getElementById('team-list');
+            list.innerHTML = '<p style="color: var(--t-medium); padding: 20px 0;">Loading...</p>';
+            
+            const res = await apiRequest('/team');
+            if (res.success) {
+                if (res.data.length === 0) {
+                    list.innerHTML = '<p style="color: var(--t-medium); padding: 20px 0;">No team members found.</p>';
+                    return;
+                }
+                list.innerHTML = res.data.map((m, index) => {
+                    const displayImage = m.photo || './img/default-avatar.svg';
+                    return `
+                    <div class="item-card anim-uni-in-up" style="animation-delay: ${index * 0.1}s; display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+                        <div>
+                            <img src="${displayImage}" style="width: 100%; height: 220px; object-fit: cover; border-radius: var(--_radius-m); border: 1px solid var(--st-muted); margin-bottom: 16px; background: #222;">
+                            <h4 style="margin: 0 0 12px 0; font-size: 2.0rem; color: var(--t-bright); font-weight: 600; line-height: 1.3; word-break: break-word;">${m.name}</h4>
+                            
+                            <div style="margin-bottom: 16px; display: flex; flex-direction: column; gap: 8px;">
+                                <div>
+                                    <span style="font-size: 1.1rem; color: var(--t-medium); text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 2px; font-weight: 500;">Position</span>
+                                    <span style="font-size: 1.4rem; color: var(--t-bright); font-weight: 500;">${m.position || 'N/A'}</span>
+                                </div>
+                                <div>
+                                    <span style="font-size: 1.1rem; color: var(--t-medium); text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 2px; font-weight: 500;">Order</span>
+                                    <span style="font-size: 1.4rem; color: var(--t-bright); font-weight: 500;">${m.order !== undefined ? m.order : 'N/A'}</span>
+                                </div>
+                                <div>
+                                    <span style="font-size: 1.1rem; color: var(--t-medium); text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 2px; font-weight: 500;">Social / Links</span>
+                                    <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px;">
+                                        ${m.linkedinUrl ? `<a href="${m.linkedinUrl}" target="_blank" title="LinkedIn" style="color: var(--accent); font-size: 1.6rem;"><i class="ph ph-linkedin-logo"></i></a>` : ''}
+                                        ${m.githubUrl ? `<a href="${m.githubUrl}" target="_blank" title="GitHub" style="color: var(--accent); font-size: 1.6rem;"><i class="ph ph-github-logo"></i></a>` : ''}
+                                        ${m.otherUrl ? `<a href="${m.otherUrl}" target="_blank" title="Website" style="color: var(--accent); font-size: 1.6rem;"><i class="ph ph-globe"></i></a>` : ''}
+                                        ${!m.linkedinUrl && !m.githubUrl && !m.otherUrl ? '<span style="font-size: 1.4rem; color: var(--t-bright); font-weight: 500;">N/A</span>' : ''}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item-card-actions" style="display: flex; gap: 12px; margin-top: auto; width: 100%;">
+                            <button class="submit-btn" style="flex: 1; padding: 10px 16px; font-size: 1.4rem; border-radius: 8px;" onclick="editTeamMember('${m._id}')">Edit</button>
+                            <button class="delete-btn" style="flex: 1; padding: 10px 16px; font-size: 1.4rem; border-radius: 8px;" onclick="deleteTeamMember('${m._id}')">Delete</button>
+                        </div>
+                    </div>
+                `}).join('');
+            } else {
+                list.innerHTML = `<p style="color: red; padding: 20px 0;">Failed to load team members: ${res.message}</p>`;
+            }
+        }
+
+        window.editTeamMember = async function(id) {
+            const res = await apiRequest('/team');
+            if (res.success) {
+                const member = res.data.find(m => m._id === id);
+                if (member) {
+                    document.getElementById('team-id').value = member._id;
+                    document.getElementById('team-name').value = member.name || '';
+                    document.getElementById('team-position').value = member.position || '';
+                    document.getElementById('team-linkedinUrl').value = member.linkedinUrl || '';
+                    document.getElementById('team-githubUrl').value = member.githubUrl || '';
+                    document.getElementById('team-otherUrl').value = member.otherUrl || '';
+                    document.getElementById('team-photoUrl').value = member.photo && !member.photo.includes('default-avatar') ? member.photo : '';
+                    document.getElementById('team-order').value = member.order || 0;
+                    
+                    teamPhotoFile = null;
+                    removeTeamPhotoFlag = false;
+                    
+                    const teamPhotoPreview = document.getElementById('team-photo-preview');
+                    const teamPhotoImg = teamPhotoPreview.querySelector('img');
+                    
+                    if (member.photo && !member.photo.includes('default-avatar')) {
+                        teamPhotoPreview.style.display = 'block';
+                        teamPhotoImg.src = member.photo;
+                    } else {
+                        teamPhotoPreview.style.display = 'none';
+                        teamPhotoImg.src = '';
+                    }
+                    
+                    showTeamForm("Edit Team Member");
+                    document.getElementById('team-form-container').scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        };
+
+        window.deleteTeamMember = async function(id) {
+            if (confirm('Are you sure you want to delete this team member and their photo from Cloudinary?')) {
+                const res = await apiRequest(`/team/${id}`, { method: 'DELETE' });
+                if (res.success) {
+                    loadTeamMembers();
+                } else {
+                    alert(`Error: ${res.message}`);
+                }
+            }
+        };
+        
+        // ---------------------- Services CRUD ----------------------
+        function showServiceForm(title = "Add New Service") {
+            document.getElementById('service-form-action-title').textContent = title;
+            document.getElementById('service-form-container').style.display = 'block';
+        }
+
+        function hideServiceForm() {
+            document.getElementById('service-form-container').style.display = 'none';
+            document.getElementById('service-form').reset();
+            document.getElementById('service-id').value = '';
+            activeServiceTags = [];
+            renderServiceTags();
+        }
+
+        function renderServiceTags() {
+            const list = document.getElementById('service-tags-list');
+            list.innerHTML = activeServiceTags.map(tag => `
+                <span class="tag-chip">
+                    ${tag}
+                    <span onclick="removeServiceTag('${tag}')" style="cursor: pointer; margin-left: 5px;">&times;</span>
+                </span>
+            `).join('');
+        }
+
+        window.removeServiceTag = function(tag) {
+            activeServiceTags = activeServiceTags.filter(t => t !== tag);
+            renderServiceTags();
+        };
+
+        async function loadServices() {
+            const list = document.getElementById('services-list');
+            list.innerHTML = '<p style="color: var(--t-medium); padding: 20px 0;">Loading...</p>';
+            
+            const res = await apiRequest('/services');
+            if (res.success) {
+                if (res.data.length === 0) {
+                    list.innerHTML = '<p style="color: var(--t-medium); padding: 20px 0;">No services found.</p>';
+                    return;
+                }
+                list.innerHTML = res.data.map((s, index) => {
+                    const tagsMarkup = s.tags && s.tags.length > 0
+                        ? s.tags.map(t => `<span class="tag-chip" style="margin-right: 5px; margin-bottom: 5px; display: inline-block;">${t}</span>`).join('')
+                        : 'None';
+                    return `
+                    <div class="item-card anim-uni-in-up" style="animation-delay: ${index * 0.1}s; display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+                        <div>
+                            <h4 style="margin: 0 0 12px 0; font-size: 2.0rem; color: var(--t-bright); font-weight: 600; line-height: 1.3; word-break: break-word;">${s.title}</h4>
+                            
+                            <div style="margin-bottom: 16px; display: flex; flex-direction: column; gap: 8px;">
+                                <div>
+                                    <span style="font-size: 1.1rem; color: var(--t-medium); text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 2px; font-weight: 500;">Description</span>
+                                    <span style="font-size: 1.4rem; color: var(--t-bright); font-weight: 400; line-height: 1.4; display: block;">${s.description || 'N/A'}</span>
+                                </div>
+                                <div>
+                                    <span style="font-size: 1.1rem; color: var(--t-medium); text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 2px; font-weight: 500;">Tags</span>
+                                    <div style="margin-top: 4px;">${tagsMarkup}</div>
+                                </div>
+                                <div>
+                                    <span style="font-size: 1.1rem; color: var(--t-medium); text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 2px; font-weight: 500;">Order</span>
+                                    <span style="font-size: 1.4rem; color: var(--t-bright); font-weight: 500;">${s.order !== undefined ? s.order : 'N/A'}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item-card-actions" style="display: flex; gap: 12px; margin-top: auto; width: 100%;">
+                            <button class="submit-btn" style="flex: 1; padding: 10px 16px; font-size: 1.4rem; border-radius: 8px;" onclick="editService('${s._id}')">Edit</button>
+                            <button class="delete-btn" style="flex: 1; padding: 10px 16px; font-size: 1.4rem; border-radius: 8px;" onclick="deleteService('${s._id}')">Delete</button>
+                        </div>
+                    </div>
+                `}).join('');
+            } else {
+                list.innerHTML = `<p style="color: red; padding: 20px 0;">Failed to load services: ${res.message}</p>`;
+            }
+        }
+
+        window.editService = async function(id) {
+            const res = await apiRequest('/services');
+            if (res.success) {
+                const s = res.data.find(item => item._id === id);
+                if (s) {
+                    document.getElementById('service-id').value = s._id;
+                    document.getElementById('service-title').value = s.title || '';
+                    document.getElementById('service-description').value = s.description || '';
+                    document.getElementById('service-order').value = s.order || 0;
+                    activeServiceTags = s.tags || [];
+                    renderServiceTags();
+                    
+                    showServiceForm("Edit Service");
+                    document.getElementById('service-form-container').scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        };
+
+        window.deleteService = async function(id) {
+            if (confirm('Are you sure you want to delete this service?')) {
+                const res = await apiRequest(`/services/${id}`, { method: 'DELETE' });
+                if (res.success) {
+                    loadServices();
+                } else {
+                    alert(`Error: ${res.message}`);
+                }
+            }
+        };
+
         // ---------------------- Event listeners ----------------------
         document.addEventListener('DOMContentLoaded', () => {
             if (authToken) {
@@ -1271,13 +1729,26 @@
                 worksDropdown.style.display = worksDropdown.classList.contains('open') ? 'block' : 'none';
             });
             
+            function closeWorksDropdown() {
+                worksBtn.classList.remove('open');
+                worksDropdown.classList.remove('open');
+                worksDropdown.style.display = 'none';
+            }
+            
             // Dropdown item clicks
             document.querySelectorAll('.dropdown-item').forEach(item => {
                 item.addEventListener('click', () => {
                     document.querySelectorAll('.dropdown-item').forEach(btn => btn.classList.remove('active'));
                     item.classList.add('active');
+                    
+                    // Deactivate Team nav
+                    document.getElementById('team-nav-btn')?.classList.remove('active');
+                    // Deactivate Services nav
+                    document.getElementById('services-nav-btn')?.classList.remove('active');
+                    
                     activeCategory = item.getAttribute('data-category');
                     document.getElementById('current-category-title').textContent = `Manage Work: ${activeCategory}`;
+                    switchSection('work-manager');
                     hideForm();
                     loadWorks(activeCategory);
                 });
@@ -1363,6 +1834,275 @@
                     }
                 }
             });
+            
+            // Team Nav Button click
+            const teamBtn = document.getElementById('team-nav-btn');
+            teamBtn.addEventListener('click', () => {
+                document.querySelectorAll('.dropdown-item').forEach(btn => btn.classList.remove('active'));
+                document.getElementById('works-dropdown-btn').classList.remove('active');
+                teamBtn.classList.add('active');
+                
+                closeWorksDropdown();
+                
+                switchSection('team-manager');
+                hideTeamForm();
+                loadTeamMembers();
+            });
+            
+            // Team Form Toggles
+            document.getElementById('add-team-btn').addEventListener('click', () => {
+                const container = document.getElementById('team-form-container');
+                container.style.display === 'none' ? showTeamForm() : hideTeamForm();
+            });
+            
+            document.getElementById('cancel-team-form-btn').addEventListener('click', hideTeamForm);
+            
+            // Team Photo upload preview
+            const teamPhotoInput = document.getElementById('team-photo');
+            const teamPhotoPreview = document.getElementById('team-photo-preview');
+            const teamPhotoImg = teamPhotoPreview.querySelector('img');
+            const removeTeamPhotoBtn = document.getElementById('remove-team-photo-btn');
+
+            teamPhotoInput.addEventListener('change', () => {
+                if (teamPhotoInput.files.length > 0) {
+                    teamPhotoFile = teamPhotoInput.files[0];
+                    removeTeamPhotoFlag = false;
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        teamPhotoPreview.style.display = 'block';
+                        teamPhotoImg.src = event.target.result;
+                    };
+                    reader.readAsDataURL(teamPhotoFile);
+                }
+            });
+
+            removeTeamPhotoBtn.addEventListener('click', () => {
+                teamPhotoFile = null;
+                teamPhotoInput.value = '';
+                removeTeamPhotoFlag = true;
+                document.getElementById('team-photoUrl').value = '';
+                teamPhotoPreview.style.display = 'none';
+                teamPhotoImg.src = '';
+            });
+
+            // Import photo from LinkedIn URL
+            const importLinkedinBtn = document.getElementById('import-linkedin-photo-btn');
+            importLinkedinBtn.addEventListener('click', async () => {
+                const linkedinUrl = document.getElementById('team-linkedinUrl').value.trim();
+                if (!linkedinUrl) {
+                    alert('Please enter a LinkedIn URL first.');
+                    return;
+                }
+                
+                const originalText = importLinkedinBtn.textContent;
+                importLinkedinBtn.disabled = true;
+                importLinkedinBtn.textContent = 'Importing...';
+                
+                try {
+                    const res = await apiRequest(`/team/linkedin-photo?profileUrl=${encodeURIComponent(linkedinUrl)}`);
+                    if (res.success && res.photoUrl) {
+                        document.getElementById('team-photoUrl').value = res.photoUrl;
+                        
+                        // Set preview image
+                        teamPhotoPreview.style.display = 'block';
+                        teamPhotoImg.src = res.photoUrl;
+                        teamPhotoFile = null;
+                        teamPhotoInput.value = '';
+                        removeTeamPhotoFlag = false;
+                        
+                        alert('Profile picture retrieved successfully!');
+                    } else {
+                        alert(res.message || 'Could not retrieve profile picture from LinkedIn.');
+                    }
+                } catch (err) {
+                    console.error(err);
+                    alert('Could not automatically retrieve photo. Ensure profile is public, or copy-paste photo URL directly.');
+                } finally {
+                    importLinkedinBtn.disabled = false;
+                    importLinkedinBtn.textContent = originalText;
+                }
+            });
+
+            // Manual photo URL preview
+            const teamPhotoUrlInput = document.getElementById('team-photoUrl');
+            teamPhotoUrlInput.addEventListener('input', () => {
+                const url = teamPhotoUrlInput.value.trim();
+                if (url && !teamPhotoFile) {
+                    teamPhotoPreview.style.display = 'block';
+                    teamPhotoImg.src = url;
+                } else if (!url && !teamPhotoFile) {
+                    teamPhotoPreview.style.display = 'none';
+                    teamPhotoImg.src = '';
+                }
+            });
+            
+            // Team Form Submit
+            document.getElementById('team-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const id = document.getElementById('team-id').value;
+                const isEdit = !!id;
+
+                const name = document.getElementById('team-name').value.trim();
+                const position = document.getElementById('team-position').value.trim();
+                const linkedinUrl = document.getElementById('team-linkedinUrl').value.trim();
+                const githubUrl = document.getElementById('team-githubUrl').value.trim();
+                const otherUrl = document.getElementById('team-otherUrl').value.trim();
+                const photoUrl = document.getElementById('team-photoUrl').value.trim();
+                const order = document.getElementById('team-order').value;
+
+                if (!name || !position) {
+                    alert('Name and Position are required!');
+                    return;
+                }
+
+                const formData = new FormData();
+                formData.append('name', name);
+                formData.append('position', position);
+                formData.append('linkedinUrl', linkedinUrl);
+                formData.append('githubUrl', githubUrl);
+                formData.append('otherUrl', otherUrl);
+                formData.append('photoUrl', photoUrl);
+                formData.append('order', order);
+                
+                if (teamPhotoFile) {
+                    formData.append('photo', teamPhotoFile);
+                }
+                if (removeTeamPhotoFlag) {
+                    formData.append('removePhoto', 'true');
+                }
+
+                const saveBtn = e.target.querySelector('button[type="submit"]');
+                const originalBtnText = saveBtn.textContent;
+                saveBtn.disabled = true;
+                saveBtn.textContent = 'Saving & Uploading...';
+
+                let res;
+                try {
+                    if (isEdit) {
+                        res = await apiRequest(`/team/${id}`, {
+                            method: 'PUT',
+                            body: formData
+                        });
+                    } else {
+                        res = await apiRequest('/team', {
+                            method: 'POST',
+                            body: formData
+                        });
+                    }
+
+                    if (res.success) {
+                        alert(isEdit ? 'Team member updated successfully!' : 'Team member created successfully!');
+                        hideTeamForm();
+                        loadTeamMembers();
+                    } else {
+                        alert(res.message);
+                    }
+                } catch (err) {
+                    console.error(err);
+                    alert('An error occurred while saving the team member.');
+                } finally {
+                    saveBtn.disabled = false;
+                    saveBtn.textContent = originalBtnText;
+                }
+            });
+
+            // Services Nav Button click
+            const servicesBtn = document.getElementById('services-nav-btn');
+            if (servicesBtn) {
+                servicesBtn.addEventListener('click', () => {
+                    document.querySelectorAll('.dropdown-item').forEach(btn => btn.classList.remove('active'));
+                    document.getElementById('works-dropdown-btn').classList.remove('active');
+                    document.getElementById('team-nav-btn').classList.remove('active');
+                    servicesBtn.classList.add('active');
+                    
+                    closeWorksDropdown();
+                    
+                    switchSection('services-manager');
+                    hideServiceForm();
+                    loadServices();
+                });
+            }
+            
+            // Services Form Toggles
+            document.getElementById('add-service-btn').addEventListener('click', () => {
+                const container = document.getElementById('service-form-container');
+                container.style.display === 'none' ? showServiceForm() : hideServiceForm();
+            });
+            
+            document.getElementById('cancel-service-form-btn').addEventListener('click', hideServiceForm);
+            
+            // Services Tags chip controller
+            const serviceTagsInput = document.getElementById('service-tags-input');
+            serviceTagsInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ',') {
+                    e.preventDefault();
+                    const tagVal = serviceTagsInput.value.trim().replace(/,/g, '');
+                    if (tagVal && !activeServiceTags.includes(tagVal)) {
+                        activeServiceTags.push(tagVal);
+                        renderServiceTags();
+                    }
+                    serviceTagsInput.value = '';
+                }
+            });
+            
+            // Services Form Submit
+            document.getElementById('service-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const id = document.getElementById('service-id').value;
+                const isEdit = !!id;
+
+                const title = document.getElementById('service-title').value.trim();
+                const description = document.getElementById('service-description').value.trim();
+                const order = document.getElementById('service-order').value;
+
+                if (!title || !description) {
+                    alert('Title and Description are required!');
+                    return;
+                }
+
+                const bodyData = {
+                    title,
+                    description,
+                    tags: activeServiceTags,
+                    order
+                };
+
+                const saveBtn = e.target.querySelector('button[type="submit"]');
+                const originalBtnText = saveBtn.textContent;
+                saveBtn.disabled = true;
+                saveBtn.textContent = 'Saving...';
+
+                let res;
+                try {
+                    if (isEdit) {
+                        res = await apiRequest(`/services/${id}`, {
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(bodyData)
+                        });
+                    } else {
+                        res = await apiRequest('/services', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(bodyData)
+                        });
+                    }
+
+                    if (res.success) {
+                        alert(isEdit ? 'Service updated successfully!' : 'Service created successfully!');
+                        hideServiceForm();
+                        loadServices();
+                    } else {
+                        alert(res.message);
+                    }
+                } catch (err) {
+                    console.error(err);
+                    alert('An error occurred while saving the service.');
+                } finally {
+                    saveBtn.disabled = false;
+                    saveBtn.textContent = originalBtnText;
+                }
+            });
         });
         
         // Login form
@@ -1419,6 +2159,7 @@
             const isStandard = groups.includes('standard');
             const isMarketing = groups.includes('marketing');
             const isEcommerce = groups.includes('ecommerce');
+            const isVideo = groups.includes('video');
 
             // URL format validation (only validate standard viewMoreUrl if standard group is active)
             const urlValue = document.getElementById('work-viewMoreUrl').value.trim();
@@ -1437,25 +2178,28 @@
             
             // Standard fields (clear if not active for this category)
             formData.append('client', isStandard ? document.getElementById('work-client').value : '');
-            formData.append('services', isStandard ? document.getElementById('work-services').value : (isEcommerce ? document.getElementById('work-ecommerce-services').value : ''));
+            formData.append('services', isStandard ? document.getElementById('work-services').value : (isEcommerce ? document.getElementById('work-ecommerce-services').value : (isVideo ? document.getElementById('work-video-services').value : '')));
             formData.append('industries', isStandard ? document.getElementById('work-industries').value : '');
             formData.append('viewMoreLabel', isStandard ? document.getElementById('work-viewMoreLabel').value : '');
             formData.append('viewMoreUrl', isStandard ? urlValue : '');
             
             // Marketing fields (clear if not active for this category)
-            formData.append('platforms', isMarketing ? document.getElementById('work-platforms').value : (isEcommerce ? document.getElementById('work-ecommerce-platforms').value : ''));
+            formData.append('platforms', isMarketing ? document.getElementById('work-platforms').value : (isEcommerce ? document.getElementById('work-ecommerce-platforms').value : (isVideo ? document.getElementById('work-video-platforms').value : '')));
             formData.append('contentStrategy', isMarketing ? document.getElementById('work-contentStrategy').value : '');
-            formData.append('serviceList', isMarketing ? activeServicesList.join(',') : '');
+            formData.append('serviceList', (isMarketing || isVideo) ? activeServicesList.join(',') : '');
 
             // E-commerce specific fields
             formData.append('businessSetup', isEcommerce ? document.getElementById('work-businessSetup').value : '');
             formData.append('businessModels', isEcommerce ? document.getElementById('work-businessModels').value : '');
             
+            // Video Editing specific fields
+            formData.append('specialization', isVideo ? document.getElementById('work-specialization').value : '');
+            
             formData.append('description', document.getElementById('work-description').value);
             formData.append('order', document.getElementById('work-order').value);
             formData.append('tags', activeTags.join(','));
 
-            if (isEcommerce) {
+            if (isEcommerce || isVideo) {
                 // Serialize mixed media layout structure
                 const mediaLayout = [];
                 const galleryFilesToSend = [];
