@@ -1702,7 +1702,7 @@ html.lenis body {
   background-position: center;
   -moz-background-size: cover;
   background-size: cover;
-   background-image: url(https://mixdesign.dev/themeforest/rayo/img/illustrations/400x200_hdl-03.webp);
+  background-image: url(https://mixdesign.dev/themeforest/rayo/img/illustrations/400x200_hdl-03.webp);
 }
 
 @media only screen and (min-width: 768px) {
@@ -2511,6 +2511,7 @@ p.t-semibold {
   color: var(--t-bright);
   background: none;
 }
+
 @media only screen and (max-width: 500px) {
   .mxd-point-subtitle a {
     font-size: 1.5rem;
@@ -5744,6 +5745,7 @@ form textarea:required:valid {
     height: 760px;
   }
 }
+
 @media only screen and (min-width: 1600px) {
   .mxd-project-item__media {
     height: 930px;
@@ -5794,12 +5796,14 @@ form textarea:required:valid {
     height: 930px;
   }
 }
+
 .mxd-project-item__preview img {
   width: 100%;
   height: 100%;
   -o-object-fit: cover;
   object-fit: cover;
 }
+
 .mxd-project-item__tags {
   position: absolute;
   bottom: 0;
@@ -5883,12 +5887,14 @@ form textarea:required:valid {
     font-size: 2.2rem;
   }
 }
+
 @media only screen and (min-width: 320px) {
-  .mxd-project-item__name  {
+  .mxd-project-item__name {
     margin-top: 2rem;
   }
- 
+
 }
+
 .mxd-links-lines {
   position: relative;
 }
@@ -7690,7 +7696,7 @@ form textarea:required:valid {
 }
 
 .footer-blocks__links p {
-    display: -webkit-box;
+  display: -webkit-box;
   display: -moz-box;
   display: -ms-flexbox;
   display: flex;
@@ -9787,14 +9793,15 @@ form textarea:required:valid {
   padding-top: 7rem;
 }
 
-.hero-03-headline__svg-mobile{
+.hero-03-headline__svg-mobile {
   padding: 0 !important;
 }
+
 @media only screen and (max-width: 768px) {
   .mxd-hero-03__headline {
     top: 10rem;
   }
- 
+
 }
 
 @media only screen and (min-width: 768px) {
@@ -9819,28 +9826,30 @@ form textarea:required:valid {
   font: normal var(--fw-medium) 3rem/1.2 var(--_font-accent);
   color: #ffffff;
   margin-bottom: 4.7rem;
-   font-size: 4.4rem;
+  font-size: 4.4rem;
 }
 
 @media only screen and (max-width: 768px) {
   .hero-03-headline__caption {
-   font-size: 3.2rem;
+    font-size: 3.2rem;
   }
-}
-@media only screen and (max-width: 425px) {
-  .hero-03-headline__caption {
-   font-size: 2.8rem;
-  }
-}
-@media only screen and (min-width: 992px) {
- 
-.hero-03-headline__hidden {
-  display: none;
 }
 
-.hero-03-headline__svg-mobile {
-  display: block;
+@media only screen and (max-width: 425px) {
+  .hero-03-headline__caption {
+    font-size: 2.8rem;
+  }
 }
+
+@media only screen and (min-width: 992px) {
+
+  .hero-03-headline__hidden {
+    display: none;
+  }
+
+  .hero-03-headline__svg-mobile {
+    display: block;
+  }
 }
 
 @media only screen and (min-width: 992px) {
@@ -21976,7 +21985,7 @@ form textarea:required:valid {
 }
 
 .mxd-tech-stack-cards__icon {
-    position: relative;
+  position: relative;
   height: 7rem;
 }
 
@@ -22960,7 +22969,8 @@ form textarea:required:valid {
   -moz-background-size: cover;
   background-size: cover;
 }
-.mxd-values__image img{
+
+.mxd-values__image img {
   width: 100%;
   height: 100%;
   -o-object-fit: cover;
@@ -23297,57 +23307,67 @@ form textarea:required:valid {
 /* Features - Project Details End */
 /* ------------------------------------------------*/
 #dreamers-and-doers {
- margin-top: 60rem;
+  margin-top: 60rem;
 }
+
 #career-card {
   margin-top: 0rem;
 }
+
 @media only screen and (max-width: 1199px) {
   #dreamers-and-doers {
     margin-top: 0rem;
   }
+
   #career-card {
     margin-top: 0rem;
   }
 }
+
 #collage-div {
   /* background and border handled by category specific style rules */
 }
+
 #collage-div img {
   object-fit: contain;
 }
 
 /* Shared Masonry Layout for Marketing and Graphic Designing Category Portfolios */
 .mxd-project-cards-masonry {
-    column-count: 2;
-    column-gap: 20px !important;
-    width: 100%;
+  column-count: 2;
+  column-gap: 20px !important;
+  width: 100%;
 }
+
 .mxd-project-cards-masonry .mxd-project-cards__item {
-    display: inline-block;
-    width: 100%;
-    height: auto !important;
-    margin: 0 0 20px 0 !important;
-    padding: 0 !important;
-    break-inside: avoid;
-    opacity: 0;
+  display: inline-block;
+  width: 100%;
+  height: auto !important;
+  margin: 0 0 20px 0 !important;
+  padding: 0 !important;
+  break-inside: avoid;
+  opacity: 0;
 }
+
 .mxd-project-cards-masonry .mxd-project-cards__inner {
-    height: auto !important;
-    overflow: hidden;
-    border: 1px solid #161616 !important;
+  height: auto !important;
+  overflow: hidden;
+  border: 1px solid #161616 !important;
 }
+
 html[color-scheme="dark"] .mxd-project-cards-masonry .mxd-project-cards__inner {
-    border: 1px solid #ffffff !important;
+  border: 1px solid #ffffff !important;
 }
+
 .mxd-project-cards-masonry .mxd-project-cards__inner img {
-    width: 100% !important;
-    height: auto !important;
-    object-fit: contain !important;
-    display: block;
+  width: 100% !important;
+  height: auto !important;
+  object-fit: contain !important;
+  display: block;
 }
+
 @media only screen and (max-width: 767px) {
-    .mxd-project-cards-masonry {
-        column-count: 1;
-    }
+  .mxd-project-cards-masonry {
+    column-count: 1;
+  }
 }
