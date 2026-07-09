@@ -45,14 +45,9 @@
         .admin-main {
             flex: 1;
             transition: all var(--_animspeed-medium);
-            margin-left: 300px;
-            position: relative;
-            left: -300px;
         }
         
         .admin-main.collapsed {
-            margin-left: 90px;
-            left: -90px;
         }
         
         /* Sidebar styles */
@@ -254,7 +249,7 @@
         .admin-main {
             flex: 1;
             padding: 40px 30px;
-            max-width: 1400px;
+            max-width: 100%;
         }
         
         .admin-header {
@@ -409,6 +404,61 @@
         .mxd-page-content {
             padding-top: 0;
         }
+
+        /* Tags and File upload preview styles */
+        .tag-chip {
+            display: inline-flex;
+            align-items: center;
+            background: var(--accent);
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 1.2rem;
+            gap: 8px;
+        }
+        
+        .tag-chip i {
+            cursor: pointer;
+            font-size: 1.4rem;
+            transition: color 0.2s;
+        }
+        
+        .tag-chip i:hover {
+            color: var(--additional);
+        }
+
+        .gallery-preview-item {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--st-muted);
+        }
+
+        .gallery-preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .gallery-preview-item .remove-img-btn {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: rgba(255, 0, 0, 0.8);
+            color: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 12px;
+            padding: 0;
+        }
     </style>
 </head>
 <body>
@@ -475,67 +525,46 @@
                             
                             <h3 class="sidebar-section-title" style="padding-top: 20px; margin-bottom: 20px;">Dashboard</h3>
                             
-                            <button class="admin-nav-btn active" data-section="projects">
-                                <span class="icon-wrapper"><i class="ph ph-folder"></i></span>
-                                <span>Projects</span>
-                            </button>
-                            <button class="admin-nav-btn" data-section="services">
-                                <span class="icon-wrapper"><i class="ph ph-briefcase"></i></span>
-                                <span>Services</span>
-                            </button>
-                            <button class="admin-nav-btn" data-section="faqs">
-                                <span class="icon-wrapper"><i class="ph ph-question"></i></span>
-                                <span>FAQs</span>
-                            </button>
-                            <button class="admin-nav-btn" data-section="reviews">
-                                <span class="icon-wrapper"><i class="ph ph-star"></i></span>
-                                <span>Reviews</span>
-                            </button>
-                            <button class="admin-nav-btn" data-section="careers">
-                                <span class="icon-wrapper"><i class="ph ph-users"></i></span>
-                                <span>Careers</span>
-                            </button>
-                            
-                            <h3 class="sidebar-section-title">Works</h3>
-                            <button class="admin-nav-btn" id="works-dropdown-btn">
+                            <!-- Single "Work" nav item that expands into the 8 categories -->
+                            <button class="admin-nav-btn active" id="works-dropdown-btn">
                                 <span class="icon-wrapper"><i class="ph ph-suitcase"></i></span>
-                                <span>Works</span>
+                                <span>Work</span>
                                 <span class="dropdown-icon">
                                     <i class="ph ph-caret-down"></i>
                                 </span>
                             </button>
-                            <div class="sidebar-dropdown" id="works-dropdown">
-                                <button class="dropdown-item" data-section="web-development">
+                            <div class="sidebar-dropdown open" id="works-dropdown" style="display: block;">
+                                <button class="dropdown-item active" data-category="Portfolio">
+                                    <i class="ph ph-folder"></i>
+                                    Portfolio
+                                </button>
+                                <button class="dropdown-item" data-category="Web Development">
                                     <i class="ph ph-globe"></i>
                                     Web Development
                                 </button>
-                                <button class="dropdown-item" data-section="app-development">
+                                <button class="dropdown-item" data-category="App Development">
                                     <i class="ph ph-device-mobile"></i>
                                     App Development
                                 </button>
-                                <button class="dropdown-item" data-section="graphic-designing">
-                                    <i class="ph ph-palette"></i>
-                                    Graphic Designing
-                                </button>
-                                <button class="dropdown-item" data-section="video-editing">
-                                    <i class="ph ph-video"></i>
-                                    Video Editing
-                                </button>
-                                <button class="dropdown-item" data-section="digital-marketing">
+                                <button class="dropdown-item" data-category="Digital Marketing">
                                     <i class="ph ph-chart-line-up"></i>
                                     Digital Marketing
                                 </button>
-                                <button class="dropdown-item" data-section="ecommerce">
+                                <button class="dropdown-item" data-category="Graphic Designing">
+                                    <i class="ph ph-palette"></i>
+                                    Graphic Designing
+                                </button>
+                                <button class="dropdown-item" data-category="E-commerce">
                                     <i class="ph ph-shopping-cart"></i>
                                     E-commerce
                                 </button>
-                                <button class="dropdown-item" data-section="ai-and-security">
-                                    <i class="ph ph-shield-check"></i>
-                                    AI and Security
+                                <button class="dropdown-item" data-category="UI/UX">
+                                    <i class="ph ph-layout"></i>
+                                    UI/UX
                                 </button>
-                                <button class="dropdown-item" data-section="others">
-                                    <i class="ph ph-dots-three-circle"></i>
-                                    Others
+                                <button class="dropdown-item" data-category="Video Editing">
+                                    <i class="ph ph-video"></i>
+                                    Video Editing
                                 </button>
                             </div>
                             
@@ -561,175 +590,196 @@
                                 <h2 class="reveal-type loading__item" style="font-size: 5rem; font-weight: 700; color: var(--t-bright);">Admin Dashboard</h2>
                             </div>
                             
-                            <!-- Projects Section -->
-                            <section id="projects" class="admin-section active">
-                                <h3 class="reveal-type" style="margin-bottom: 30px;">Manage Projects</h3>
-                                <form id="project-form" class="anim-uni-in-up">
-                                    <div class="form-group">
-                                        <label>Title</label>
-                                        <input type="text" id="project-title" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Slug</label>
-                                        <input type="text" id="project-slug" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Category</label>
-                                        <input type="text" id="project-category" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Image URL (or upload)</label>
-                                        <input type="text" id="project-image">
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Upload Image/Video</label>
-                                        <input type="file" id="project-image-upload" accept="image/*,video/*">
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Description</label>
-                                        <textarea id="project-description" rows="4"></textarea>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Featured?</label>
-                                        <select id="project-is-featured">
-                                            <option value="false">No</option>
-                                            <option value="true">Yes</option>
-                                        </select>
-                                    </div>
-                                    <button type="submit" class="submit-btn btn-anim">Add Project</button>
-                                </form>
-                                <div id="projects-list" class="items-list"></div>
-                            </section>
+                             <!-- Work Manager Section -->
+                             <section id="work-manager" class="admin-section active">
+                                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+                                     <h3 id="current-category-title" class="reveal-type" style="margin: 0;">Manage Work: Portfolio</h3>
+                                     <button id="add-work-btn" class="submit-btn btn-anim" style="width: auto; padding: 12px 25px;">+ Add Work Item</button>
+                                 </div>
 
-                            <!-- Services Section -->
-                            <section id="services" class="admin-section">
-                                <h3 class="reveal-type" style="margin-bottom: 30px;">Manage Services</h3>
-                                <form id="service-form" class="anim-uni-in-up">
-                                    <div class="form-group">
-                                        <label>Title</label>
-                                        <input type="text" id="service-title" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Image URL (or upload)</label>
-                                        <input type="text" id="service-image">
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Upload Image</label>
-                                        <input type="file" id="service-image-upload" accept="image/*">
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Description</label>
-                                        <textarea id="service-description" rows="4"></textarea>
-                                    </div>
-                                    <button type="submit" class="submit-btn btn-anim">Add Service</button>
-                                </form>
-                                <div id="services-list" class="items-list"></div>
-                            </section>
+                                 <!-- Collapsible Add/Edit Work Form Panel -->
+                                 <!-- Collapsible Add/Edit Work Form Panel -->
+                                 <div id="work-form-container" class="anim-uni-in-up" style="display: none; background: var(--base-tint); border: 2px solid var(--st-muted); border-radius: var(--_radius-m); padding: 30px; margin-bottom: 40px;">
+                                     <h4 id="form-action-title" style="margin-top: 0; margin-bottom: 25px; font-size: 2rem; color: var(--t-bright);">Add New Work Item</h4>
+                                     <form id="work-form" enctype="multipart/form-data">
+                                         <input type="hidden" id="work-id">
+                                         
+                                         <!-- 1. Title -->
+                                         <div class="form-group" style="margin-bottom: 20px;">
+                                             <label>Title *</label>
+                                             <input type="text" id="work-title" required placeholder="e.g. A saga of valour and unveiling truth">
+                                         </div>
 
-                            <!-- FAQs Section -->
-                            <section id="faqs" class="admin-section">
-                                <h3 class="reveal-type" style="margin-bottom: 30px;">Manage FAQs</h3>
-                                <form id="faq-form" class="anim-uni-in-up">
-                                    <div class="form-group">
-                                        <label>Question</label>
-                                        <input type="text" id="faq-question" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Answer</label>
-                                        <textarea id="faq-answer" rows="4" required></textarea>
-                                    </div>
-                                    <button type="submit" class="submit-btn btn-anim">Add FAQ</button>
-                                </form>
-                                <div id="faqs-list" class="items-list"></div>
-                            </section>
+                                         <!-- 2. Category -->
+                                         <div class="form-group" style="margin-bottom: 20px;">
+                                             <label>Category *</label>
+                                             <select id="work-category" required>
+                                                 <option value="Portfolio">Portfolio</option>
+                                                 <option value="Web Development">Web Development</option>
+                                                 <option value="App Development">App Development</option>
+                                                 <option value="Digital Marketing">Digital Marketing</option>
+                                                 <option value="Graphic Designing">Graphic Designing</option>
+                                                 <option value="E-commerce">E-commerce</option>
+                                                 <option value="UI/UX">UI/UX</option>
+                                                 <option value="Video Editing">Video Editing</option>
+                                             </select>
+                                         </div>
 
-                            <!-- Reviews Section -->
-                            <section id="reviews" class="admin-section">
-                                <h3 class="reveal-type" style="margin-bottom: 30px;">Manage Reviews</h3>
-                                <form id="review-form" class="anim-uni-in-up">
-                                    <div class="form-group">
-                                        <label>Name</label>
-                                        <input type="text" id="review-name" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Company</label>
-                                        <input type="text" id="review-company">
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Rating (1-5)</label>
-                                        <input type="number" id="review-rating" min="1" max="5" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Review Text</label>
-                                        <textarea id="review-text" rows="4" required></textarea>
-                                    </div>
-                                    <button type="submit" class="submit-btn btn-anim">Add Review</button>
-                                </form>
-                                <div id="reviews-list" class="items-list"></div>
-                            </section>
+                                         <div id="standard-fields-group">
+                                             <!-- 3. Client -->
+                                             <div class="form-group" style="margin-bottom: 20px;">
+                                                 <label>Client</label>
+                                                 <input type="text" id="work-client" placeholder="e.g. Umair Bangash">
+                                             </div>
 
-                            <!-- Careers Section -->
-                            <section id="careers" class="admin-section">
-                                <h3 class="reveal-type" style="margin-bottom: 30px;">Manage Careers</h3>
-                                <form id="career-form" class="anim-uni-in-up">
-                                    <div class="form-group">
-                                        <label>Title</label>
-                                        <input type="text" id="career-title" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Department</label>
-                                        <input type="text" id="career-department" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Type (Full-time, etc.)</label>
-                                        <input type="text" id="career-type" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Location</label>
-                                        <input type="text" id="career-location" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Description</label>
-                                        <textarea id="career-description" rows="4" required></textarea>
-                                    </div>
-                                    <button type="submit" class="submit-btn btn-anim">Add Career Opening</button>
-                                </form>
-                                <div id="careers-list" class="items-list"></div>
-                            </section>
-                            
-                            <!-- Works Sections -->
-                            <section id="web-development" class="admin-section">
-                                <h3 class="reveal-type" style="margin-bottom: 30px;">Web Development Works</h3>
-                                <p class="anim-uni-in-up" style="color: var(--t-medium); font-size: 1.7rem;">Manage web development projects here</p>
-                            </section>
-                            <section id="app-development" class="admin-section">
-                                <h3 class="reveal-type" style="margin-bottom: 30px;">App Development Works</h3>
-                                <p class="anim-uni-in-up" style="color: var(--t-medium); font-size: 1.7rem;">Manage app development projects here</p>
-                            </section>
-                            <section id="graphic-designing" class="admin-section">
-                                <h3 class="reveal-type" style="margin-bottom: 30px;">Graphic Designing Works</h3>
-                                <p class="anim-uni-in-up" style="color: var(--t-medium); font-size: 1.7rem;">Manage graphic design projects here</p>
-                            </section>
-                            <section id="video-editing" class="admin-section">
-                                <h3 class="reveal-type" style="margin-bottom: 30px;">Video Editing Works</h3>
-                                <p class="anim-uni-in-up" style="color: var(--t-medium); font-size: 1.7rem;">Manage video editing projects here</p>
-                            </section>
-                            <section id="digital-marketing" class="admin-section">
-                                <h3 class="reveal-type" style="margin-bottom: 30px;">Digital Marketing Works</h3>
-                                <p class="anim-uni-in-up" style="color: var(--t-medium); font-size: 1.7rem;">Manage digital marketing projects here</p>
-                            </section>
-                            <section id="ecommerce" class="admin-section">
-                                <h3 class="reveal-type" style="margin-bottom: 30px;">E-commerce Works</h3>
-                                <p class="anim-uni-in-up" style="color: var(--t-medium); font-size: 1.7rem;">Manage e-commerce projects here</p>
-                            </section>
-                            <section id="ai-and-security" class="admin-section">
-                                <h3 class="reveal-type" style="margin-bottom: 30px;">AI and Security Works</h3>
-                                <p class="anim-uni-in-up" style="color: var(--t-medium); font-size: 1.7rem;">Manage AI and security projects here</p>
-                            </section>
-                            <section id="others" class="admin-section">
-                                <h3 class="reveal-type" style="margin-bottom: 30px;">Other Works</h3>
-                                <p class="anim-uni-in-up" style="color: var(--t-medium); font-size: 1.7rem;">Manage other projects here</p>
-                            </section>
+                                             <!-- 4. Services -->
+                                             <div class="form-group" style="margin-bottom: 20px;">
+                                                 <label>Services</label>
+                                                 <input type="text" id="work-services" placeholder="e.g. Web development">
+                                             </div>
+
+                                             <!-- 5. Industries -->
+                                             <div class="form-group" style="margin-bottom: 20px;">
+                                                 <label>Industries</label>
+                                                 <input type="text" id="work-industries" placeholder="e.g. Pak. Army">
+                                             </div>
+
+                                             <!-- 7. View More Label -->
+                                             <div class="form-group" style="margin-bottom: 20px;">
+                                                 <label>View More Label</label>
+                                                 <input type="text" id="work-viewMoreLabel" placeholder="e.g. Umair Bangash">
+                                             </div>
+
+                                             <!-- 8. View More URL -->
+                                             <div class="form-group" style="margin-bottom: 20px;">
+                                                 <label>View More URL</label>
+                                                 <input type="url" id="work-viewMoreUrl" placeholder="e.g. https://umairbangash.com">
+                                             </div>
+                                         </div>
+
+                                         <div id="marketing-fields-group" style="display: none;">
+                                             <!-- platforms -->
+                                             <div class="form-group" style="margin-bottom: 20px;">
+                                                 <label>Platforms</label>
+                                                 <input type="text" id="work-platforms" placeholder="e.g. Facebook, Instagram, TikTok, Google, YouTube">
+                                             </div>
+
+                                             <!-- contentStrategy -->
+                                             <div class="form-group" style="margin-bottom: 20px;">
+                                                 <label>Content & Strategy</label>
+                                                 <input type="text" id="work-contentStrategy" placeholder="e.g. Brand Growth & Online Presence">
+                                             </div>
+
+                                             <!-- serviceList -->
+                                             <div class="form-group" style="margin-bottom: 20px;">
+                                                 <label>Service List (Offerings)</label>
+                                                 <div class="tags-input-container" id="servicelist-input-container" style="display: flex; flex-wrap: wrap; gap: 8px; padding: 8px; border: 2px solid var(--st-muted); border-radius: var(--_radius-s); background: var(--base); min-height: 48px; align-items: center;">
+                                                     <!-- Chips will be rendered here -->
+                                                     <input type="text" id="servicelist-input" placeholder="Type service and press Enter" style="border: none; outline: none; background: transparent; flex: 1; min-width: 150px; font-size: 1.4rem; color: var(--t-bright); padding: 4px;">
+                                                 </div>
+                                                 <small style="color: var(--t-medium); margin-top: 5px; display: block;">Press Enter or type a comma to add a service offering. Click a service offering to remove it.</small>
+                                             </div>
+                                          </div>
+
+                                          <div id="ecommerce-fields-group" style="display: none;">
+                                              <!-- E-commerce Services -->
+                                              <div class="form-group" style="margin-bottom: 20px;">
+                                                  <label>Service</label>
+                                                  <input type="text" id="work-ecommerce-services" placeholder="e.g. E-commerce Solutions">
+                                              </div>
+
+                                              <!-- E-commerce Platforms -->
+                                              <div class="form-group" style="margin-bottom: 20px;">
+                                                  <label>Platforms</label>
+                                                  <input type="text" id="work-ecommerce-platforms" placeholder="e.g. Shopify, Amazon, eBay, Walmart">
+                                              </div>
+
+                                              <!-- E-commerce Business Setup -->
+                                              <div class="form-group" style="margin-bottom: 20px;">
+                                                  <label>Business Setup</label>
+                                                  <input type="text" id="work-businessSetup" placeholder="e.g. LLC / LTD Registration">
+                                              </div>
+
+                                              <!-- E-commerce Business Models -->
+                                              <div class="form-group" style="margin-bottom: 20px;">
+                                                  <label>Business Models</label>
+                                                  <input type="text" id="work-businessModels" placeholder="e.g. FBA • FBM • Dropshipping">
+                                              </div>
+                                          </div>
+
+                                          <!-- 6. Tags -->
+                                         <div class="form-group" style="margin-bottom: 20px;">
+                                             <label>Tags</label>
+                                             <div class="tags-input-container" id="tags-input-container" style="display: flex; flex-wrap: wrap; gap: 8px; padding: 8px; border: 2px solid var(--st-muted); border-radius: var(--_radius-s); background: var(--base); min-height: 48px; align-items: center;">
+                                                 <!-- Chips will be rendered here -->
+                                                 <input type="text" id="tag-input" placeholder="Type tag and press Enter" style="border: none; outline: none; background: transparent; flex: 1; min-width: 150px; font-size: 1.4rem; color: var(--t-bright); padding: 4px;">
+                                             </div>
+                                             <small style="color: var(--t-medium); margin-top: 5px; display: block;">Press Enter or type a comma to add a tag. Click a tag to remove it.</small>
+                                         </div>
+
+                                         <!-- 9. Display Order -->
+                                         <div class="form-group" style="margin-bottom: 20px;">
+                                             <label>Display Order</label>
+                                             <input type="number" id="work-order" value="0">
+                                         </div>
+
+                                         <!-- 10. Description -->
+                                         <div class="form-group" style="margin-bottom: 20px;">
+                                             <label>Description</label>
+                                             <textarea id="work-description" rows="4" placeholder="Detailed description of the project..."></textarea>
+                                         </div>
+
+                                         <div id="traditional-media-group">
+                                             <!-- 11. Hero Image -->
+                                             <div class="form-group" style="margin-bottom: 20px;">
+                                                 <label>Hero Image</label>
+                                                 <div style="display: flex; flex-direction: column; gap: 10px;">
+                                                     <div>
+                                                         <span style="font-size: 1.3rem; color: var(--t-medium); display: block; margin-bottom: 5px;">Choose Image File:</span>
+                                                         <input type="file" id="work-heroImage" accept="image/*">
+                                                     </div>
+                                                     <div>
+                                                         <span style="font-size: 1.3rem; color: var(--t-medium); display: block; margin-bottom: 5px;">Or provide a secure image URL directly:</span>
+                                                         <input type="text" id="work-heroImageUrl" placeholder="e.g. https://res.cloudinary.com/...">
+                                                     </div>
+                                                     <div id="hero-image-preview" style="margin-top: 10px; display: none;">
+                                                         <p class="t-small" style="margin-bottom: 5px;">Preview:</p>
+                                                         <img src="" style="max-height: 150px; border-radius: 8px; border: 1px solid var(--st-muted);">
+                                                     </div>
+                                                 </div>
+                                             </div>
+
+                                             <!-- 12. Gallery Images -->
+                                             <div class="form-group" style="margin-bottom: 20px;">
+                                                 <label>Gallery Images (Multiple)</label>
+                                                 <input type="file" id="work-galleryImages" accept="image/*" multiple>
+                                                 <div id="gallery-images-preview" style="margin-top: 15px; display: flex; flex-wrap: wrap; gap: 10px;">
+                                                     <!-- Gallery thumbnails -->
+                                                 </div>
+                                             </div>
+                                         </div>
+
+                                         <!-- E-commerce Mixed-Media Uploads -->
+                                         <div id="ecommerce-media-group" style="display: none; margin-bottom: 20px;">
+                                             <label style="font-weight: bold; font-size: 1.6rem; display: block; margin-bottom: 10px;">E-commerce Mixed-Media Grid</label>
+                                             <div id="ecommerce-media-list" style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 15px;">
+                                                 <!-- Dynamic media items will render here -->
+                                             </div>
+                                             <button type="button" id="add-ecommerce-media-btn" class="submit-btn" style="width: auto; padding: 8px 15px; font-size: 1.3rem; background: var(--accent); color: var(--base); border: none; border-radius: 4px; cursor: pointer;">+ Add Media Item</button>
+                                         </div>
+
+                                         <div style="display: flex; gap: 15px; margin-top: 30px;">
+                                             <button type="submit" class="submit-btn btn-anim" style="width: auto; padding: 12px 30px;">Save Work Item</button>
+                                             <button type="button" id="cancel-form-btn" class="submit-btn" style="width: auto; padding: 12px 30px; background: transparent; border: 2px solid var(--st-muted); color: var(--t-medium);">Cancel</button>
+                                         </div>
+                                     </form>
+                                 </div>
+
+                                 <!-- Works Card List -->
+                                 <div id="works-list" class="items-list">
+                                     <!-- Dynamic list of work items -->
+                                 </div>
+                             </section>
                         </div>
                     </div>
                 </div>
@@ -742,7 +792,452 @@
     <script>
         const API_BASE = 'http://localhost:9000/api';
         let authToken = localStorage.getItem('token');
+        
+        // ---------------------- Global state variables ----------------------
+        let activeCategory = 'Portfolio';
+        let activeTags = [];
+        let activeServicesList = [];
+        let activeGalleryImages = [];
+        
+        // ---------------------- Helper functions ----------------------
+        function switchSection(sectionId) {}
 
+        // Show dashboard
+        function showDashboard() {
+            document.getElementById('login-page').classList.add('hidden');
+            document.getElementById('dashboard').classList.remove('hidden');
+        }
+
+        // Helper to make authenticated requests
+        async function apiRequest(endpoint, options = {}) {
+            const headers = {
+                'Authorization': `Bearer ${authToken}`,
+                ...options.headers
+            };
+            
+            if (!(options.body instanceof FormData)) {
+                headers['Content-Type'] = 'application/json';
+            }
+            
+            const res = await fetch(`${API_BASE}${endpoint}`, {
+                ...options,
+                headers
+            });
+            return res.json();
+        }
+        
+        // ---------------------- Tags functions ----------------------
+        function renderTags() {
+            const tagInput = document.getElementById('tag-input');
+            const tagsContainer = document.getElementById('tags-input-container');
+            const chips = tagsContainer.querySelectorAll('.tag-chip');
+            chips.forEach(c => c.remove());
+            activeTags.forEach(tag => {
+                const span = document.createElement('span');
+                span.className = 'tag-chip';
+                span.innerHTML = `${tag} <i class="ph ph-x" onclick="removeTag('${tag}')"></i>`;
+                tagsContainer.insertBefore(span, tagInput);
+            });
+        }
+        
+        window.removeTag = function(tag) {
+            activeTags = activeTags.filter(t => t !== tag);
+            renderTags();
+        };
+
+        // ---------------------- Service List functions ----------------------
+        function renderServiceList() {
+            const serviceListInput = document.getElementById('servicelist-input');
+            const serviceListContainer = document.getElementById('servicelist-input-container');
+            const chips = serviceListContainer.querySelectorAll('.service-chip');
+            chips.forEach(c => c.remove());
+            activeServicesList.forEach(srv => {
+                const span = document.createElement('span');
+                span.className = 'tag-chip service-chip';
+                span.innerHTML = `${srv} <i class="ph ph-x" onclick="removeServiceListItem('${srv}')"></i>`;
+                serviceListContainer.insertBefore(span, serviceListInput);
+            });
+        }
+
+        window.removeServiceListItem = function(srv) {
+            activeServicesList = activeServicesList.filter(s => s !== srv);
+            renderServiceList();
+        };
+        
+        // ---------------------- Gallery functions ----------------------
+        function renderGalleryPreview() {
+            const container = document.getElementById('gallery-images-preview');
+            container.innerHTML = activeGalleryImages.map((url, i) => `
+                <div class="gallery-preview-item" data-url="${url}">
+                    <img src="${url}">
+                    <button type="button" class="remove-img-btn" onclick="removeGalleryImage(${i})">&times;</button>
+                </div>
+            `).join('');
+        }
+        
+        window.removeGalleryImage = function(index) {
+            activeGalleryImages.splice(index, 1);
+            renderGalleryPreview();
+        };
+        
+        // Category field mapping configuration to support dynamic form rendering
+        const categoryFieldGroups = {
+            'Portfolio': ['standard'],
+            'Web Development': ['standard'],
+            'App Development': ['standard'],
+            'Digital Marketing': ['marketing'],
+            'Graphic Designing': ['standard'],
+            'E-commerce': ['ecommerce'],
+            'UI/UX': ['standard'],
+            'Video Editing': ['standard']
+        };
+
+        // E-commerce mixed media local state management
+        let activeEcommerceMedia = [];
+
+        window.toggleCategoryFields = function(cat) {
+            const standardGroup = document.getElementById('standard-fields-group');
+            const marketingGroup = document.getElementById('marketing-fields-group');
+            const ecommerceGroup = document.getElementById('ecommerce-fields-group');
+            const traditionalMediaGroup = document.getElementById('traditional-media-group');
+            const ecommerceMediaGroup = document.getElementById('ecommerce-media-group');
+            
+            if (!standardGroup || !marketingGroup) return;
+            
+            const groups = categoryFieldGroups[cat] || ['standard'];
+            
+            // Hide all by default
+            standardGroup.style.display = 'none';
+            marketingGroup.style.display = 'none';
+            if (ecommerceGroup) ecommerceGroup.style.display = 'none';
+            if (traditionalMediaGroup) traditionalMediaGroup.style.display = 'block';
+            if (ecommerceMediaGroup) ecommerceMediaGroup.style.display = 'none';
+            
+            if (groups.includes('marketing')) {
+                marketingGroup.style.display = 'block';
+            } else if (groups.includes('ecommerce')) {
+                if (ecommerceGroup) ecommerceGroup.style.display = 'block';
+                if (traditionalMediaGroup) traditionalMediaGroup.style.display = 'none';
+                if (ecommerceMediaGroup) ecommerceMediaGroup.style.display = 'block';
+            } else {
+                standardGroup.style.display = 'block';
+            }
+        };
+
+        window.renderEcommerceMedia = function() {
+            const listContainer = document.getElementById('ecommerce-media-list');
+            if (!listContainer) return;
+            
+            listContainer.innerHTML = activeEcommerceMedia.map((m, index) => {
+                const isVideo = m.type === 'video';
+                
+                // Construct preview HTML
+                let previewHTML = '';
+                if (m.file) {
+                    const localUrl = URL.createObjectURL(m.file);
+                    if (isVideo) {
+                        previewHTML = `<video src="${localUrl}" style="max-height: 80px; max-width: 120px; border-radius: 4px;" controls></video>`;
+                    } else {
+                        previewHTML = `<img src="${localUrl}" style="max-height: 80px; max-width: 120px; border-radius: 4px;">`;
+                    }
+                } else if (m.url) {
+                    if (isVideo) {
+                        previewHTML = `<video src="${m.url}" style="max-height: 80px; max-width: 120px; border-radius: 4px;" controls></video>`;
+                    } else {
+                        previewHTML = `<img src="${m.url}" style="max-height: 80px; max-width: 120px; border-radius: 4px;">`;
+                    }
+                } else {
+                    previewHTML = `<div style="font-size: 1.2rem; color: var(--t-medium);">No preview</div>`;
+                }
+
+                let posterPreviewHTML = '';
+                if (isVideo) {
+                    if (m.posterFile) {
+                        const localUrl = URL.createObjectURL(m.posterFile);
+                        posterPreviewHTML = `<img src="${localUrl}" style="max-height: 80px; max-width: 120px; border-radius: 4px; border: 1px solid var(--st-muted);">`;
+                    } else if (m.poster) {
+                        posterPreviewHTML = `<img src="${m.poster}" style="max-height: 80px; max-width: 120px; border-radius: 4px; border: 1px solid var(--st-muted);">`;
+                    }
+                }
+
+                return `
+                    <div class="ecommerce-media-item" style="display: flex; flex-direction: column; gap: 10px; padding: 15px; border: 1px solid var(--st-muted); border-radius: 8px; background: var(--base-tint); position: relative;">
+                        <!-- controls header -->
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-weight: bold; font-size: 1.4rem;">Media Slot #${index + 1}</span>
+                            <div style="display: flex; gap: 5px; align-items: center;">
+                                <button type="button" class="remove-img-btn" onclick="moveEcommerceMedia(${index}, -1)" style="position: static; font-size: 1.4rem; padding: 2px 6px;" ${index === 0 ? 'disabled style="opacity: 0.5; cursor: default;"' : ''}>▲</button>
+                                <button type="button" class="remove-img-btn" onclick="moveEcommerceMedia(${index}, 1)" style="position: static; font-size: 1.4rem; padding: 2px 6px;" ${index === activeEcommerceMedia.length - 1 ? 'disabled style="opacity: 0.5; cursor: default;"' : ''}>▼</button>
+                                <button type="button" class="remove-img-btn" onclick="removeEcommerceMedia(${index})" style="position: static; font-size: 1.6rem; padding: 2px 6px; background: red; color: white;">&times;</button>
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; align-items: flex-start;">
+                            <!-- Column 1: Type & File input -->
+                            <div style="display: flex; flex-direction: column; gap: 10px;">
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label style="font-size: 1.3rem;">Type</label>
+                                    <select onchange="updateEcommerceMediaType(${index}, this.value)" style="padding: 6px; font-size: 1.3rem;">
+                                        <option value="image" ${m.type === 'image' ? 'selected' : ''}>Image</option>
+                                        <option value="video" ${m.type === 'video' ? 'selected' : ''}>Video</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label style="font-size: 1.3rem;">Upload File</label>
+                                    <input type="file" onchange="updateEcommerceMediaFile(${index}, this.files[0])" accept="${isVideo ? 'video/*' : 'image/*'}" style="font-size: 1.2rem; padding: 4px;">
+                                </div>
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label style="font-size: 1.3rem;">Or secure URL directly</label>
+                                    <input type="text" value="${m.url || ''}" onchange="updateEcommerceMediaUrl(${index}, this.value)" placeholder="e.g. https://res.cloudinary.com/..." style="font-size: 1.2rem; padding: 4px;">
+                                </div>
+                            </div>
+
+                            <!-- Column 2: Poster input for videos or preview -->
+                            <div style="display: flex; flex-direction: column; gap: 10px;">
+                                ${isVideo ? `
+                                    <div class="form-group" style="margin-bottom: 0;">
+                                        <label style="font-size: 1.3rem;">Poster (Thumbnail) File</label>
+                                        <input type="file" onchange="updateEcommerceMediaPosterFile(${index}, this.files[0])" accept="image/*" style="font-size: 1.2rem; padding: 4px;">
+                                    </div>
+                                    <div class="form-group" style="margin-bottom: 0;">
+                                        <label style="font-size: 1.3rem;">Or Poster URL directly</label>
+                                        <input type="text" value="${m.poster || ''}" onchange="updateEcommerceMediaPosterUrl(${index}, this.value)" placeholder="e.g. https://res.cloudinary.com/..." style="font-size: 1.2rem; padding: 4px;">
+                                    </div>
+                                ` : ''}
+                                
+                                <div style="display: flex; gap: 10px; margin-top: 5px;">
+                                    <div>
+                                        <div style="font-size: 1.1rem; color: var(--t-medium); margin-bottom: 2px;">Preview:</div>
+                                        ${previewHTML}
+                                    </div>
+                                    ${isVideo && (m.posterFile || m.poster) ? `
+                                        <div>
+                                            <div style="font-size: 1.1rem; color: var(--t-medium); margin-bottom: 2px;">Poster Preview:</div>
+                                            ${posterPreviewHTML}
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        };
+
+        window.addEcommerceMediaItem = function(type = 'image', url = '', poster = '') {
+            activeEcommerceMedia.push({
+                type,
+                url,
+                poster,
+                file: null,
+                posterFile: null
+            });
+            window.renderEcommerceMedia();
+        };
+
+        window.removeEcommerceMedia = function(index) {
+            activeEcommerceMedia.splice(index, 1);
+            window.renderEcommerceMedia();
+        };
+
+        window.moveEcommerceMedia = function(index, direction) {
+            const targetIndex = index + direction;
+            if (targetIndex < 0 || targetIndex >= activeEcommerceMedia.length) return;
+            
+            // Swap
+            const temp = activeEcommerceMedia[index];
+            activeEcommerceMedia[index] = activeEcommerceMedia[targetIndex];
+            activeEcommerceMedia[targetIndex] = temp;
+            
+            window.renderEcommerceMedia();
+        };
+
+        window.updateEcommerceMediaType = function(index, val) {
+            activeEcommerceMedia[index].type = val;
+            activeEcommerceMedia[index].file = null;
+            activeEcommerceMedia[index].posterFile = null;
+            window.renderEcommerceMedia();
+        };
+
+        window.updateEcommerceMediaFile = function(index, file) {
+            activeEcommerceMedia[index].file = file;
+            window.renderEcommerceMedia();
+        };
+
+        window.updateEcommerceMediaUrl = function(index, val) {
+            activeEcommerceMedia[index].url = val;
+            window.renderEcommerceMedia();
+        };
+
+        window.updateEcommerceMediaPosterFile = function(index, file) {
+            activeEcommerceMedia[index].posterFile = file;
+            window.renderEcommerceMedia();
+        };
+
+        window.updateEcommerceMediaPosterUrl = function(index, val) {
+            activeEcommerceMedia[index].poster = val;
+            window.renderEcommerceMedia();
+        };
+
+        function showForm(title = "Add New Work Item") {
+            document.getElementById('form-action-title').textContent = title;
+            document.getElementById('work-form-container').style.display = 'block';
+            document.getElementById('work-category').value = activeCategory;
+            window.toggleCategoryFields(activeCategory);
+        }
+        
+        function hideForm() {
+            document.getElementById('work-form-container').style.display = 'none';
+            document.getElementById('work-form').reset();
+            document.getElementById('work-id').value = '';
+            activeTags = [];
+            activeServicesList = [];
+            activeGalleryImages = [];
+            activeEcommerceMedia = [];
+            const mediaList = document.getElementById('ecommerce-media-list');
+            if (mediaList) mediaList.innerHTML = '';
+            renderTags();
+            renderServiceList();
+            document.getElementById('work-heroImageUrl').value = '';
+            document.getElementById('hero-image-preview').style.display = 'none';
+            const heroImg = document.getElementById('hero-image-preview').querySelector('img');
+            if (heroImg) heroImg.src = '';
+            document.getElementById('gallery-images-preview').innerHTML = '';
+        }
+        
+        // ---------------------- Works CRUD ----------------------
+        async function loadWorks(category) {
+            const list = document.getElementById('works-list');
+            list.innerHTML = '<p style="color: var(--t-medium); padding: 20px 0;">Loading...</p>';
+            
+            const res = await apiRequest(`/work?category=${encodeURIComponent(category)}`);
+            if (res.success) {
+                if (res.data.length === 0) {
+                    list.innerHTML = '<p style="color: var(--t-medium); padding: 20px 0;">No work items found in this category.</p>';
+                    return;
+                }
+                list.innerHTML = res.data.map((w, index) => `
+                    <div class="item-card anim-uni-in-up" style="animation-delay: ${index * 0.1}s; display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+                        <div>
+                            ${w.heroImage ? `<img src="${w.heroImage}" style="width: 100%; height: 180px; object-fit: cover; border-radius: var(--_radius-m); border: 1px solid var(--st-muted); margin-bottom: 16px;">` : '<div style="width: 100%; height: 180px; background: var(--base); border-radius: var(--_radius-m); border: 1px solid var(--st-muted); display: flex; align-items: center; justify-content: center; color: var(--t-medium); font-size: 1.4rem; margin-bottom: 16px;">No Image</div>'}
+                            <h4 style="margin: 0 0 12px 0; font-size: 2.0rem; color: var(--t-bright); font-weight: 600; line-height: 1.3; word-break: break-word;">${w.title}</h4>
+                            
+                            <div style="margin-bottom: 16px; display: flex; flex-direction: column; gap: 8px;">
+                                <div>
+                                    <span style="font-size: 1.1rem; color: var(--t-medium); text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 2px; font-weight: 500;">Client</span>
+                                    <span style="font-size: 1.4rem; color: var(--t-bright); font-weight: 500;">${w.client || 'N/A'}</span>
+                                </div>
+                                <div>
+                                    <span style="font-size: 1.1rem; color: var(--t-medium); text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 2px; font-weight: 500;">Services</span>
+                                    <span style="font-size: 1.4rem; color: var(--t-bright); font-weight: 500;">${w.services || 'N/A'}</span>
+                                </div>
+                            </div>
+                            
+                            <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px;">
+                                ${(w.tags || []).map(t => `<span style="background: var(--base); color: var(--t-medium); padding: 4px 10px; border-radius: 12px; font-size: 1.1rem; border: 1px solid var(--st-muted);">${t}</span>`).join('')}
+                            </div>
+                        </div>
+                        <div class="item-card-actions" style="display: flex; gap: 12px; margin-top: auto; width: 100%;">
+                            <button class="submit-btn" style="flex: 1; padding: 10px 16px; font-size: 1.4rem; border-radius: 8px;" onclick="editWork('${w._id}')">Edit</button>
+                            <button class="delete-btn" style="flex: 1; padding: 10px 16px; font-size: 1.4rem; border-radius: 8px;" onclick="deleteWork('${w._id}')">Delete</button>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                list.innerHTML = `<p style="color: red; padding: 20px 0;">Failed to load items: ${res.message}</p>`;
+            }
+        }
+        
+        async function loadAllData() {
+            const activeItem = document.querySelector('.dropdown-item.active');
+            const cat = activeItem ? activeItem.getAttribute('data-category') : 'Portfolio';
+            await loadWorks(cat);
+        }
+        
+        window.editWork = async function(id) {
+            const res = await apiRequest(`/work/${id}`);
+            if (res.success) {
+                const w = res.data;
+                document.getElementById('work-id').value = w._id;
+                document.getElementById('work-title').value = w.title || '';
+                document.getElementById('work-category').value = w.category || '';
+                document.getElementById('work-client').value = w.client || '';
+                document.getElementById('work-services').value = w.services || '';
+                document.getElementById('work-industries').value = w.industries || '';
+                document.getElementById('work-viewMoreLabel').value = w.viewMoreLabel || '';
+                document.getElementById('work-viewMoreUrl').value = w.viewMoreUrl || '';
+                document.getElementById('work-platforms').value = w.platforms || '';
+                document.getElementById('work-contentStrategy').value = w.contentStrategy || '';
+                document.getElementById('work-description').value = w.description || '';
+                document.getElementById('work-order').value = w.order || 0;
+                document.getElementById('work-heroImageUrl').value = w.heroImage || '';
+                
+                // E-commerce specific inputs
+                document.getElementById('work-ecommerce-services').value = w.services || '';
+                document.getElementById('work-ecommerce-platforms').value = w.platforms || '';
+                document.getElementById('work-businessSetup').value = w.businessSetup || '';
+                document.getElementById('work-businessModels').value = w.businessModels || '';
+
+                // Load E-commerce mixed-media slots
+                activeEcommerceMedia = [];
+                if (w.category === 'E-commerce' && w.media && w.media.length > 0) {
+                    w.media.forEach(m => {
+                        activeEcommerceMedia.push({
+                            type: m.type,
+                            url: m.url || '',
+                            poster: m.poster || '',
+                            file: null,
+                            posterFile: null
+                        });
+                    });
+                }
+                window.renderEcommerceMedia();
+
+                // Toggle fields depending on loaded category
+                window.toggleCategoryFields(w.category || '');
+
+                // Load tags
+                activeTags = w.tags || [];
+                renderTags();
+
+                // Load serviceList
+                activeServicesList = w.serviceList || [];
+                renderServiceList();
+                
+                // Hero preview
+                const heroPreview = document.getElementById('hero-image-preview');
+                if (w.heroImage) {
+                    heroPreview.style.display = 'block';
+                    heroPreview.querySelector('img').src = w.heroImage;
+                } else {
+                    heroPreview.style.display = 'none';
+                }
+                
+                // Gallery preview & state
+                activeGalleryImages = w.galleryImages || [];
+                renderGalleryPreview();
+                
+                // Show form
+                document.getElementById('form-action-title').textContent = "Edit Work Item";
+                document.getElementById('work-form-container').style.display = 'block';
+                document.getElementById('work-form-container').scrollIntoView({ behavior: 'smooth' });
+            } else {
+                alert(`Error: ${res.message}`);
+            }
+        };
+        
+        window.deleteWork = async function(id) {
+            if (confirm('Are you sure you want to delete this work item and all its media from Cloudinary?')) {
+                const res = await apiRequest(`/work/${id}`, { method: 'DELETE' });
+                if (res.success) {
+                    loadWorks(activeCategory);
+                } else {
+                    alert(`Error: ${res.message}`);
+                }
+            }
+        };
+        
+        // ---------------------- Event listeners ----------------------
         document.addEventListener('DOMContentLoaded', () => {
             if (authToken) {
                 showDashboard();
@@ -757,58 +1252,125 @@
             sidebarToggle.addEventListener('click', () => {
                 sidebar.classList.toggle('collapsed');
                 mainContent.classList.toggle('collapsed');
-                
-                // Save state to localStorage
                 localStorage.setItem('sidebar-collapsed', sidebar.classList.contains('collapsed'));
             });
             
-            // Load sidebar state from localStorage
             const isSidebarCollapsed = localStorage.getItem('sidebar-collapsed') === 'true';
             if (isSidebarCollapsed) {
                 sidebar.classList.add('collapsed');
                 mainContent.classList.add('collapsed');
             }
             
-            // Works dropdown
+            // Works dropdown toggle
             const worksBtn = document.getElementById('works-dropdown-btn');
             const worksDropdown = document.getElementById('works-dropdown');
             
             worksBtn.addEventListener('click', () => {
                 worksBtn.classList.toggle('open');
                 worksDropdown.classList.toggle('open');
+                worksDropdown.style.display = worksDropdown.classList.contains('open') ? 'block' : 'none';
             });
             
             // Dropdown item clicks
             document.querySelectorAll('.dropdown-item').forEach(item => {
                 item.addEventListener('click', () => {
-                    const section = item.getAttribute('data-section');
-                    switchSection(section);
+                    document.querySelectorAll('.dropdown-item').forEach(btn => btn.classList.remove('active'));
+                    item.classList.add('active');
+                    activeCategory = item.getAttribute('data-category');
+                    document.getElementById('current-category-title').textContent = `Manage Work: ${activeCategory}`;
+                    hideForm();
+                    loadWorks(activeCategory);
                 });
+            });
+            
+            // Form toggle buttons
+            document.getElementById('add-work-btn').addEventListener('click', () => {
+                const container = document.getElementById('work-form-container');
+                container.style.display === 'none' ? showForm() : hideForm();
+            });
+            
+            document.getElementById('cancel-form-btn').addEventListener('click', hideForm);
+            
+            // Tags chip controller
+            const tagInput = document.getElementById('tag-input');
+            tagInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ',') {
+                    e.preventDefault();
+                    const tagVal = tagInput.value.trim().replace(/,/g, '');
+                    if (tagVal && !activeTags.includes(tagVal)) {
+                        activeTags.push(tagVal);
+                        renderTags();
+                    }
+                    tagInput.value = '';
+                }
+            });
+
+            // Service List chip controller
+            const serviceListInput = document.getElementById('servicelist-input');
+            serviceListInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ',') {
+                    e.preventDefault();
+                    const val = serviceListInput.value.trim().replace(/,/g, '');
+                    if (val && !activeServicesList.includes(val)) {
+                        activeServicesList.push(val);
+                        renderServiceList();
+                    }
+                    serviceListInput.value = '';
+                }
+            });
+
+            // Category change field toggle listener
+            const workCategorySelect = document.getElementById('work-category');
+            workCategorySelect.addEventListener('change', () => {
+                window.toggleCategoryFields(workCategorySelect.value);
+            });
+            
+            // E-commerce Add Media Item button listener
+            document.getElementById('add-ecommerce-media-btn').addEventListener('click', () => {
+                window.addEcommerceMediaItem('image');
+            });
+            
+            // Hero dual-input preview logic
+            const heroFileInput = document.getElementById('work-heroImage');
+            const heroUrlInput = document.getElementById('work-heroImageUrl');
+            const heroPreview = document.getElementById('hero-image-preview');
+            const heroImgElement = heroPreview.querySelector('img');
+            
+            heroFileInput.addEventListener('change', () => {
+                if (heroFileInput.files.length > 0) {
+                    const file = heroFileInput.files[0];
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        heroPreview.style.display = 'block';
+                        heroImgElement.src = event.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                } else if (heroUrlInput.value.trim()) {
+                    heroPreview.style.display = 'block';
+                    heroImgElement.src = heroUrlInput.value.trim();
+                } else {
+                    heroPreview.style.display = 'none';
+                }
+            });
+            
+            heroUrlInput.addEventListener('input', () => {
+                if (heroFileInput.files.length === 0) {
+                    if (heroUrlInput.value.trim()) {
+                        heroPreview.style.display = 'block';
+                        heroImgElement.src = heroUrlInput.value.trim();
+                    } else {
+                        heroPreview.style.display = 'none';
+                    }
+                }
             });
         });
         
-        // Function to switch sections
-        function switchSection(sectionId) {
-            // Remove active from all nav buttons
-            document.querySelectorAll('.admin-nav-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            // Remove active from all sections
-            document.querySelectorAll('.admin-section').forEach(sec => {
-                sec.classList.remove('active');
-            });
-            
-            // Show selected section
-            document.getElementById(sectionId).classList.add('active');
-        }
-
         // Login form
         document.getElementById('login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('login-email').value;
             const password = document.getElementById('login-password').value;
-
+            
             try {
                 const res = await fetch(`${API_BASE}/auth/login`, {
                     method: 'POST',
@@ -829,7 +1391,7 @@
                 alert('Login failed');
             }
         });
-
+        
         // Logout
         document.getElementById('logout-btn').addEventListener('click', () => {
             authToken = null;
@@ -837,312 +1399,164 @@
             document.getElementById('login-page').classList.remove('hidden');
             document.getElementById('dashboard').classList.add('hidden');
         });
+        
+        // Work form submission
+        document.getElementById('work-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('work-id').value;
+            const isEdit = !!id;
 
-        // Nav button handlers
-        document.querySelectorAll('.admin-nav-btn').forEach(btn => {
-            if (btn.getAttribute('data-section')) {
-                btn.addEventListener('click', () => {
-                    const section = btn.getAttribute('data-section');
-                    switchSection(section);
-                    btn.classList.add('active');
-                });
+            // Basic validation
+            const title = document.getElementById('work-title').value.trim();
+            const category = document.getElementById('work-category').value;
+            if (!title || !category) {
+                alert('Title and Category are required!');
+                return;
             }
-        });
 
-        // File upload helper
-        async function uploadFile(fileInputId) {
-            const fileInput = document.getElementById(fileInputId);
-            if (fileInput.files.length > 0) {
-                const formData = new FormData();
-                formData.append('file', fileInput.files[0]);
-                
+            // Determine active field groups
+            const groups = categoryFieldGroups[category] || ['standard'];
+            const isStandard = groups.includes('standard');
+            const isMarketing = groups.includes('marketing');
+            const isEcommerce = groups.includes('ecommerce');
+
+            // URL format validation (only validate standard viewMoreUrl if standard group is active)
+            const urlValue = document.getElementById('work-viewMoreUrl').value.trim();
+            if (isStandard && urlValue) {
                 try {
-                    const res = await fetch(`${API_BASE}/upload`, {
-                        method: 'POST',
-                        headers: { 'Authorization': `Bearer ${authToken}` },
-                        body: formData
-                    });
-                    const data = await res.json();
-                    return data.success ? data.data.url : null;
-                } catch (err) {
-                    console.error('File upload failed');
-                    return null;
+                    new URL(urlValue);
+                } catch (e) {
+                    alert('Please enter a valid View More URL (including http:// or https://)');
+                    return;
                 }
             }
-            return null;
-        }
 
-        // Helper to make authenticated requests
-        async function apiRequest(endpoint, options = {}) {
-            const headers = {
-                'Authorization': `Bearer ${authToken}`,
-                ...options.headers
-            };
+            const formData = new FormData();
+            formData.append('title', title);
+            formData.append('category', category);
             
-            if (!(options.body instanceof FormData)) {
-                headers['Content-Type'] = 'application/json';
-            }
+            // Standard fields (clear if not active for this category)
+            formData.append('client', isStandard ? document.getElementById('work-client').value : '');
+            formData.append('services', isStandard ? document.getElementById('work-services').value : (isEcommerce ? document.getElementById('work-ecommerce-services').value : ''));
+            formData.append('industries', isStandard ? document.getElementById('work-industries').value : '');
+            formData.append('viewMoreLabel', isStandard ? document.getElementById('work-viewMoreLabel').value : '');
+            formData.append('viewMoreUrl', isStandard ? urlValue : '');
             
-            const res = await fetch(`${API_BASE}${endpoint}`, {
-                ...options,
-                headers
-            });
-            return res.json();
-        }
+            // Marketing fields (clear if not active for this category)
+            formData.append('platforms', isMarketing ? document.getElementById('work-platforms').value : (isEcommerce ? document.getElementById('work-ecommerce-platforms').value : ''));
+            formData.append('contentStrategy', isMarketing ? document.getElementById('work-contentStrategy').value : '');
+            formData.append('serviceList', isMarketing ? activeServicesList.join(',') : '');
 
-        // Show dashboard
-        function showDashboard() {
-            document.getElementById('login-page').classList.add('hidden');
-            document.getElementById('dashboard').classList.remove('hidden');
-        }
-
-        // Load all data
-        async function loadAllData() {
-            await Promise.all([
-                loadProjects(),
-                loadServices(),
-                loadFAQs(),
-                loadReviews(),
-                loadCareers()
-            ]);
-        }
-
-        // ---------------------- Projects ----------------------
-        async function loadProjects() {
-            const data = await apiRequest('/projects');
-            if (data.success) {
-                const list = document.getElementById('projects-list');
-                list.innerHTML = data.data.map((p, index) => `
-                    <div class="item-card anim-uni-in-up" style="animation-delay: ${index * 0.1}s;">
-                        <h4>${p.title}</h4>
-                        <p style="color: var(--t-medium);">${p.category || ''}</p>
-                        ${p.isFeatured ? '<span style="color: var(--accent);">⭐ Featured</span>' : ''}
-                        <div class="item-card-actions">
-                            <button class="delete-btn" onclick="deleteProject('${p._id}')">Delete</button>
-                        </div>
-                    </div>
-                `).join('');
-            }
-        }
-
-        document.getElementById('project-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            let imageUrl = document.getElementById('project-image').value;
+            // E-commerce specific fields
+            formData.append('businessSetup', isEcommerce ? document.getElementById('work-businessSetup').value : '');
+            formData.append('businessModels', isEcommerce ? document.getElementById('work-businessModels').value : '');
             
-            if (!imageUrl) {
-                imageUrl = await uploadFile('project-image-upload');
+            formData.append('description', document.getElementById('work-description').value);
+            formData.append('order', document.getElementById('work-order').value);
+            formData.append('tags', activeTags.join(','));
+
+            if (isEcommerce) {
+                // Serialize mixed media layout structure
+                const mediaLayout = [];
+                const galleryFilesToSend = [];
+                
+                activeEcommerceMedia.forEach(m => {
+                    const item = { type: m.type };
+                    
+                    if (m.file) {
+                        item.fileIndex = galleryFilesToSend.length;
+                        galleryFilesToSend.push(m.file);
+                    } else {
+                        item.url = m.url || '';
+                    }
+                    
+                    if (m.type === 'video') {
+                        if (m.posterFile) {
+                            item.posterFileIndex = galleryFilesToSend.length;
+                            galleryFilesToSend.push(m.posterFile);
+                        } else {
+                            item.poster = m.poster || '';
+                        }
+                    }
+                    
+                    mediaLayout.push(item);
+                });
+                
+                formData.append('mediaJSON', JSON.stringify(mediaLayout));
+                
+                // Upload files in the mapped indices inside 'galleryImages'
+                galleryFilesToSend.forEach(file => {
+                    formData.append('galleryImages', file);
+                });
+            } else {
+                // Hero image direct URL
+                const heroUrl = document.getElementById('work-heroImageUrl').value.trim();
+                formData.append('heroImageUrl', heroUrl);
+
+                // Hero image file
+                const heroInput = document.getElementById('work-heroImage');
+                if (heroInput.files.length > 0) {
+                    formData.append('heroImage', heroInput.files[0]);
+                }
+
+                // New gallery files
+                const galleryInput = document.getElementById('work-galleryImages');
+                for (let i = 0; i < galleryInput.files.length; i++) {
+                    formData.append('galleryImages', galleryInput.files[i]);
+                }
+
+                // Kept gallery image URLs
+                activeGalleryImages.forEach(url => {
+                    formData.append('galleryImages', url);
+                });
             }
 
-            const data = await apiRequest('/projects', {
-                method: 'POST',
-                body: JSON.stringify({
-                    title: document.getElementById('project-title').value,
-                    slug: document.getElementById('project-slug').value,
-                    category: document.getElementById('project-category').value,
-                    image: imageUrl,
-                    description: document.getElementById('project-description').value,
-                    isFeatured: document.getElementById('project-is-featured').value === 'true',
-                    isActive: true
-                })
-            });
+            // Show a loading/disabled state
+            const saveBtn = e.target.querySelector('button[type="submit"]');
+            const originalBtnText = saveBtn.textContent;
+            saveBtn.disabled = true;
+            saveBtn.textContent = 'Saving & Uploading...';
 
-            if (data.success) {
-                loadProjects();
-                e.target.reset();
-            } else {
-                alert(data.message);
+            let res;
+            try {
+                if (isEdit) {
+                    res = await apiRequest(`/work/${id}`, {
+                        method: 'PUT',
+                        body: formData
+                    });
+                } else {
+                    res = await apiRequest('/work', {
+                        method: 'POST',
+                        body: formData
+                    });
+                }
+
+                if (res.success) {
+                    alert(isEdit ? 'Work item updated successfully!' : 'Work item created successfully!');
+                    
+                    // Reset form fields
+                    hideForm();
+                    loadWorks(activeCategory);
+                } else {
+                    alert(res.message);
+                }
+            } catch (err) {
+                console.error(err);
+                alert('An error occurred while saving the work item.');
+            } finally {
+                saveBtn.disabled = false;
+                saveBtn.textContent = originalBtnText;
             }
         });
 
-        window.deleteProject = async function(id) {
-            if (confirm('Are you sure you want to delete this project?')) {
-                await apiRequest(`/projects/${id}`, { method: 'DELETE' });
-                loadProjects();
-            }
-        };
-
-        // ---------------------- Services ----------------------
-        async function loadServices() {
-            const data = await apiRequest('/services');
-            if (data.success) {
-                const list = document.getElementById('services-list');
-                list.innerHTML = data.data.map((s, index) => `
-                    <div class="item-card anim-uni-in-up" style="animation-delay: ${index * 0.1}s;">
-                        <h4>${s.title}</h4>
-                        <div class="item-card-actions">
-                            <button class="delete-btn" onclick="deleteService('${s._id}')">Delete</button>
-                        </div>
-                    </div>
-                `).join('');
-            }
-        }
-
-        document.getElementById('service-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            let imageUrl = document.getElementById('service-image').value;
-            
-            if (!imageUrl) {
-                imageUrl = await uploadFile('service-image-upload');
-            }
-
-            const data = await apiRequest('/services', {
-                method: 'POST',
-                body: JSON.stringify({
-                    title: document.getElementById('service-title').value,
-                    image: imageUrl,
-                    description: document.getElementById('service-description').value,
-                    isActive: true
-                })
-            });
-
-            if (data.success) {
-                loadServices();
-                e.target.reset();
-            } else {
-                alert(data.message);
-            }
-        });
-
-        window.deleteService = async function(id) {
-            if (confirm('Are you sure you want to delete this service?')) {
-                await apiRequest(`/services/${id}`, { method: 'DELETE' });
-                loadServices();
-            }
-        };
-
-        // ---------------------- FAQs ----------------------
-        async function loadFAQs() {
-            const data = await apiRequest('/faqs');
-            if (data.success) {
-                const list = document.getElementById('faqs-list');
-                list.innerHTML = data.data.map((f, index) => `
-                    <div class="item-card anim-uni-in-up" style="animation-delay: ${index * 0.1}s;">
-                        <h4>${f.question}</h4>
-                        <p style="color: var(--t-medium);">${f.answer}</p>
-                        <div class="item-card-actions">
-                            <button class="delete-btn" onclick="deleteFAQ('${f._id}')">Delete</button>
-                        </div>
-                    </div>
-                `).join('');
-            }
-        }
-
-        document.getElementById('faq-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const data = await apiRequest('/faqs', {
-                method: 'POST',
-                body: JSON.stringify({
-                    question: document.getElementById('faq-question').value,
-                    answer: document.getElementById('faq-answer').value,
-                    isActive: true
-                })
-            });
-
-            if (data.success) {
-                loadFAQs();
-                e.target.reset();
-            } else {
-                alert(data.message);
-            }
-        });
-
-        window.deleteFAQ = async function(id) {
-            if (confirm('Are you sure you want to delete this FAQ?')) {
-                await apiRequest(`/faqs/${id}`, { method: 'DELETE' });
-                loadFAQs();
-            }
-        };
-
-        // ---------------------- Reviews ----------------------
-        async function loadReviews() {
-            const data = await apiRequest('/reviews');
-            if (data.success) {
-                const list = document.getElementById('reviews-list');
-                list.innerHTML = data.data.map((r, index) => `
-                    <div class="item-card anim-uni-in-up" style="animation-delay: ${index * 0.1}s;">
-                        <h4>${r.name}${r.company ? ' - ' + r.company : ''}</h4>
-                        <p style="color: var(--accent);">${'⭐'.repeat(r.rating)}</p>
-                        <p style="color: var(--t-medium);">${r.text}</p>
-                        <div class="item-card-actions">
-                            <button class="delete-btn" onclick="deleteReview('${r._id}')">Delete</button>
-                        </div>
-                    </div>
-                `).join('');
-            }
-        }
-
-        document.getElementById('review-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const data = await apiRequest('/reviews', {
-                method: 'POST',
-                body: JSON.stringify({
-                    name: document.getElementById('review-name').value,
-                    company: document.getElementById('review-company').value,
-                    rating: parseInt(document.getElementById('review-rating').value),
-                    text: document.getElementById('review-text').value,
-                    isActive: true
-                })
-            });
-
-            if (data.success) {
-                loadReviews();
-                e.target.reset();
-            } else {
-                alert(data.message);
-            }
-        });
-
-        window.deleteReview = async function(id) {
-            if (confirm('Are you sure you want to delete this review?')) {
-                await apiRequest(`/reviews/${id}`, { method: 'DELETE' });
-                loadReviews();
-            }
-        };
-
-        // ---------------------- Careers ----------------------
-        async function loadCareers() {
-            const data = await apiRequest('/careers');
-            if (data.success) {
-                const list = document.getElementById('careers-list');
-                list.innerHTML = data.data.map((c, index) => `
-                    <div class="item-card anim-uni-in-up" style="animation-delay: ${index * 0.1}s;">
-                        <h4>${c.title}</h4>
-                        <p style="color: var(--t-medium);">${c.department} - ${c.type}</p>
-                        <p style="color: var(--t-medium);">${c.location}</p>
-                        <div class="item-card-actions">
-                            <button class="delete-btn" onclick="deleteCareer('${c._id}')">Delete</button>
-                        </div>
-                    </div>
-                `).join('');
-            }
-        }
-
-        document.getElementById('career-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const data = await apiRequest('/careers', {
-                method: 'POST',
-                body: JSON.stringify({
-                    title: document.getElementById('career-title').value,
-                    department: document.getElementById('career-department').value,
-                    type: document.getElementById('career-type').value,
-                    location: document.getElementById('career-location').value,
-                    description: document.getElementById('career-description').value,
-                    isActive: true
-                })
-            });
-
-            if (data.success) {
-                loadCareers();
-                e.target.reset();
-            } else {
-                alert(data.message);
-            }
-        });
-
-        window.deleteCareer = async function(id) {
-            if (confirm('Are you sure you want to delete this career opening?')) {
-                await apiRequest(`/careers/${id}`, { method: 'DELETE' });
-                loadCareers();
+        window.deleteWork = async function(id) {
+            if (confirm('Are you sure you want to delete this work item and all its media from Cloudinary?')) {
+                const res = await apiRequest(`/work/${id}`, { method: 'DELETE' });
+                if (res.success) {
+                    loadWorks(activeCategory);
+                } else {
+                    alert(`Error: ${res.message}`);
+                }
             }
         };
     </script>

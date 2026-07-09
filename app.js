@@ -66,11 +66,12 @@ gsap.registerPlugin(Flip);
 const content = document.querySelector('body');
 const imgLoad = imagesLoaded(content);
 const loadingWrap = document.querySelector('.loading-wrap');
-const loadingItems = loadingWrap.querySelectorAll('.loading__item');
+const loadingItems = loadingWrap ? loadingWrap.querySelectorAll('.loading__item') : [];
 const fadeInItems = document.querySelectorAll('.loading__fade');
 
 function startLoader() {
   let counterElement = document.querySelector(".loader__count .count__text");
+  if (!counterElement) return; // Guard clause for pages without preloader counter
   let currentValue = 0;
   function updateCounter() {
     if (currentValue < 100) {
@@ -85,20 +86,24 @@ function startLoader() {
 }
 startLoader();
 
-imgLoad.on('done', instance => {
+imgLoad.on('always', instance => {
   hideLoader();
   pageAppearance();
 });
 
 function hideLoader() {
-  gsap.to(".loader__count", { duration: 0.8, ease: 'power2.in', y: "100%", delay: 1.8 });
-  gsap.to(".loader__wrapper", { duration: 0.8, ease: 'power4.in', y: "-100%", delay: 2.2 });
+  const loaderCount = document.querySelector(".loader__count");
+  const loaderWrapper = document.querySelector(".loader__wrapper");
+  if (loaderCount) gsap.to(loaderCount, { duration: 0.8, ease: 'power2.in', y: "100%", delay: 1.8 });
+  if (loaderWrapper) gsap.to(loaderWrapper, { duration: 0.8, ease: 'power4.in', y: "-100%", delay: 2.2 });
   setTimeout(() => {
-    document.getElementById("loader").classList.add("loaded");
+    const loader = document.getElementById("loader");
+    if (loader) loader.classList.add("loaded");
   }, 3200);
 }
 
 function pageAppearance() {
+  if (loadingItems.length === 0) return;
   gsap.set(loadingItems, { opacity: 0 })
   gsap.to(loadingItems, { 
     duration: 1.1,

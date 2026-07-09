@@ -23310,10 +23310,44 @@ form textarea:required:valid {
     margin-top: 0rem;
   }
 }
-#collage-div{
-  border: 1px solid black; 
-  background-color: white;
+#collage-div {
+  /* background and border handled by category specific style rules */
 }
-#collage-div img{
+#collage-div img {
   object-fit: contain;
+}
+
+/* Shared Masonry Layout for Marketing and Graphic Designing Category Portfolios */
+.mxd-project-cards-masonry {
+    column-count: 2;
+    column-gap: 20px !important;
+    width: 100%;
+}
+.mxd-project-cards-masonry .mxd-project-cards__item {
+    display: inline-block;
+    width: 100%;
+    height: auto !important;
+    margin: 0 0 20px 0 !important;
+    padding: 0 !important;
+    break-inside: avoid;
+    opacity: 0;
+}
+.mxd-project-cards-masonry .mxd-project-cards__inner {
+    height: auto !important;
+    overflow: hidden;
+    border: 1px solid #161616 !important;
+}
+html[color-scheme="dark"] .mxd-project-cards-masonry .mxd-project-cards__inner {
+    border: 1px solid #ffffff !important;
+}
+.mxd-project-cards-masonry .mxd-project-cards__inner img {
+    width: 100% !important;
+    height: auto !important;
+    object-fit: contain !important;
+    display: block;
+}
+@media only screen and (max-width: 767px) {
+    .mxd-project-cards-masonry {
+        column-count: 1;
+    }
 }

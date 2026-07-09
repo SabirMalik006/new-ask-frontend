@@ -52,6 +52,53 @@
     <!-- Custom Browser Color End -->
     
 
+
+    <!-- Custom Sticky Scroll Style -->
+    <style>
+        .work-item {
+            position: relative;
+        }
+        .work-image-stack {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .work-image-panel {
+            position: sticky;
+            top: 20px;
+            height: calc(100vh - 40px);
+            overflow: hidden;
+            width: 100%;
+            border-radius: 32px;
+            background: var(--base);
+            border: 1px solid var(--st-muted);
+        }
+        .work-image-panel img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: center;
+            display: block;
+        }
+        .work-image-tags {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            z-index: 10;
+        }
+        .work-image-tag {
+            padding: 8px 16px;
+            border: 1px solid var(--t-muted);
+            border-radius: 20px;
+            font-size: 1.3rem;
+            color: var(--t-bright);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+    </style>
 </head>
 
 <body>
@@ -251,24 +298,22 @@
     <main id="mxd-page-content" class="mxd-page-content inner-page-content">
 
         <!-- Section - Inner Page Headline Start -->
-        <div class="mxd-section mxd-section-inner-headline padding-default">
+        <div class="mxd-section mxd-section-inner-headline padding-default" style="padding-bottom: 0;">
             <div class="mxd-container grid-container">
-
                 <!-- Block - Inner Page Headline Start -->
                 <div class="mxd-block loading-wrap">
                     <div class="container-fluid px-0">
                         <div class="row gx-0">
-
                             <!-- Inner Headline Name Start -->
                             <div class="col-12 col-xl-2 mxd-grid-item no-margin">
                                 <div class="mxd-block__name name-project-link loading__fade">
-                                    <a class="btn btn-anim btn-line-small btn-muted slide-right-up" href="#0">
-                                        <span class="btn-caption" id="ecommerce-projects">Projects</span>
+                                    <a class="btn btn-anim btn-line-small btn-muted slide-right-up" href="work.html">
+                                        <span class="btn-caption">Projects</span>
                                         <i class="ph ph-arrow-up-right"></i>
                                     </a>
                                 </div>
                             </div>
-                            <!-- Inner Headline Name Start -->
+                            <!-- Inner Headline Name End -->
 
                             <!-- Inner Headline Content Start -->
                             <div class="col-12 col-xl-10 mxd-grid-item no-margin">
@@ -279,864 +324,25 @@
                                 </div>
                             </div>
                             <!-- Inner Headline Content End -->
-
-                            <!-- Inner Headline Aside Start -->
-                            <div class="col-12"></div>
-                            <!-- Inner Headline Aside End -->
-
                         </div>
-                        <div class="row g-0">
-                            <div class="col-12 col-xl-2"></div>
-
-                            <!-- Inner Headline Paragraph & Data Start -->
-                            <div class="col-12 col-xl-6 mxd-grid-item no-margin">
-
-                                <div class="inner-headline__paragraph loading__item">
-                                    <p>Creative graphic design solutions to help brands visually communicate their
-                                        message, build recognition, and stand out across digital and print platforms.
-                                    </p>
-                                </div>
-
-                                <div class="inner-headline__data">
-                                    <div class="mxd-data-list">
-                                        <div class="container-fluid p-0">
-                                            <div class="row g-0">
-                                                        <div
-                                                            class="col-12 col-md-6 col-xl-5 mxd-data-list__column loading__item">
-                                                            <div class="mxd-data-list__item">
-                                                                <p class="mxd-data-list__name">Client</p>
-                                                                <p class="mxd-data-list__content">USD Mining</p>
-                                                            </div>
-                                                            <div class="mxd-data-list__item">
-                                                                <p class="mxd-data-list__name">Services</p>
-                                                                <p class="mxd-data-list__content">App development</p>
-                                                            </div>
-                                                        </div>
-                                                        <div
-                                                            class="col-12 col-md-6 col-xl-5 mxd-data-list__column loading__item">
-                                                            <div class="mxd-data-list__item">
-                                                                <p class="mxd-data-list__name">Industries</p>
-                                                                <p class="mxd-data-list__content">Cryptocurrency</p>
-                                                            </div>
-                                                           
-                                                        </div>
-                                                    </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <!-- Inner Headline Paragraph & Data End -->
-
-                            <!-- Inner Headline Tags Start -->
-                            <div class="col-12 col-xl-4 mxd-grid-item no-margin">
-                                <div class="inner-headline__tags loading__fade">
-                                    <span class="tag tag-default tag-outline-medium">Hybrid </span>
-                                    <span class="tag tag-default tag-outline-medium">Native</span>
-                                    <span class="tag tag-default tag-outline-medium">Cross Plateform</span>
-                                    <span class="tag tag-default tag-outline-medium">Gaming</span>
-
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Inner Headline Tags End -->
-
                     </div>
                 </div>
                 <!-- Block - Inner Page Headline End -->
-
             </div>
         </div>
         <!-- Section - Inner Page Headline End -->
 
+        <!-- Dynamic Projects Container -->
+        <div id="dynamic-projects-container">
+            <div style="text-align: center; padding: 100px 20px; color: var(--t-medium);">
+                <i class="ph ph-circle-notch anim-spin" style="font-size: 3rem; margin-bottom: 15px; display: inline-block;"></i>
+                <p style="font-size: 1.6rem;">Loading dynamic case studies...</p>
+            </div>
+        </div>
 
-
-        <!-- Section - Project Details Start -->
-        <div class="mxd-section mxd-project overflow-hidden">
+        <!-- Section - Project Navigation Start -->
+        <div class="mxd-section mxd-project overflow-hidden" style="padding-top: 0; padding-bottom: 50px;">
             <div class="mxd-container grid-container">
-
-
-                <!-- Project Block - Images Cards Start -->
-                <div class="mxd-project__block no-margin">
-                    <div class="mxd-project-cards">
-                        <div class="container-fluid px-0">
-                            <div class="row gx-0">
-                                <!-- item -->
-                                <div
-                                    class="col-12 col-xl-5 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-right">
-                                    <div class="mxd-project-cards__inner align-end bg-accent radius-m"  id="collage-div">
-                                        <img src="./img/mining-collage 1.png" alt="Project Preview">
-                                    </div>
-                                </div>
-                                <!-- item -->
-                                <div
-                                    class="col-12 col-xl-7 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-left">
-                                    <div class="mxd-project-cards__inner align-end bg-base-tint radius-m"
-                                        id="collage-div">
-                                        <img src="./img/mining-collage 2.png" alt="Project Preview"
-                                           >
-
-                                    </div>
-                                </div>
-                            
-
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Project Block - Images Cards End -->
-                <!-- Section - Inner Page Headline Start -->
-                <div class="mxd-section mxd-section-inner-headline padding-default">
-                    <div class="mxd-container grid-container">
-
-                        <!-- Block - Inner Page Headline Start -->
-                        <div class="mxd-block loading-wrap">
-                            <div class="container-fluid px-0">
-                                <div class="row gx-0">
-
-                                    
-
-                                    <!-- Inner Headline Aside Start -->
-                                    <div class="col-12"></div>
-                                    <!-- Inner Headline Aside End -->
-
-                                </div>
-                                <div class="row g-0">
-                                    <div class="col-12 col-xl-2"></div>
-
-                                    <!-- Inner Headline Paragraph & Data Start -->
-                                    <div class="col-12 col-xl-6 mxd-grid-item no-margin">
-
-                                       
-
-                                        <div class="inner-headline__data">
-                                            <div class="mxd-data-list">
-                                                <div class="container-fluid p-0">
-                                                    <div class="row g-0">
-                                                        <div
-                                                            class="col-12 col-md-6 col-xl-5 mxd-data-list__column loading__item">
-                                                            <div class="mxd-data-list__item">
-                                                                <p class="mxd-data-list__name">Client</p>
-                                                                <p class="mxd-data-list__content">Topone</p>
-                                                            </div>
-                                                            <div class="mxd-data-list__item">
-                                                                <p class="mxd-data-list__name">Services</p>
-                                                                <p class="mxd-data-list__content">App development</p>
-                                                            </div>
-                                                        </div>
-                                                        <div
-                                                            class="col-12 col-md-6 col-xl-5 mxd-data-list__column loading__item">
-                                                            <div class="mxd-data-list__item">
-                                                                <p class="mxd-data-list__name">Industries</p>
-                                                                <p class="mxd-data-list__content">Affiliate Marketing</p>
-                                                            </div>
-                                                            
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <!-- Inner Headline Paragraph & Data End -->
-
-                                    <!-- Inner Headline Tags Start -->
-                                    <div class="col-12 col-xl-4 mxd-grid-item no-margin">
-                                        <div class="inner-headline__tags loading__fade">
-                                            <span class="tag tag-default tag-outline-medium">Hybrid </span>
-                                            <span class="tag tag-default tag-outline-medium">Native</span>
-                                            <span class="tag tag-default tag-outline-medium">Cross Plateform</span>
-                                            <span class="tag tag-default tag-outline-medium">Gaming</span>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Inner Headline Tags End -->
-
-                            </div>
-                        </div>
-                        <!-- Block - Inner Page Headline End -->
-
-                    </div>
-                </div>
-                <!-- Section - Inner Page Headline End -->
-
-                <!-- Project Block - Images Cards Start -->
-                <div class="mxd-project__block no-margin">
-                    <div class="mxd-project-cards">
-                        <div class="container-fluid px-0">
-                           <div class="row gx-0">
-                                <!-- item -->
-                                <div
-                                    class="col-12 col-xl-5 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-right">
-                                    <div class="mxd-project-cards__inner align-end bg-accent radius-m"  id="collage-div">
-                                        <img src="./img/topone-collage 1 (2).png" alt="Project Preview">
-                                    </div>
-                                </div>
-                                <!-- item -->
-                               <div
-                                    class="col-12 col-xl-7 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-left">
-                                    <div class="mxd-project-cards__inner align-end bg-base-tint radius-m"
-                                         id="collage-div">
-                                        <img src="./img/topone-collage 1 (1).png" alt="Project Preview"
-                                           >
-
-                                    </div>
-                                </div>
-                              
-
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Project Block - Images Cards End -->
-                <!-- Section - Inner Page Headline Start -->
-                <div class="mxd-section mxd-section-inner-headline padding-default">
-                    <div class="mxd-container grid-container">
-
-                        <!-- Block - Inner Page Headline Start -->
-                        <div class="mxd-block loading-wrap">
-                            <div class="container-fluid px-0">
-                                <div class="row gx-0">
-
-                                    
-
-                                    <!-- Inner Headline Aside Start -->
-                                    <div class="col-12"></div>
-                                    <!-- Inner Headline Aside End -->
-
-                                </div>
-                                <div class="row g-0">
-                                    <div class="col-12 col-xl-2"></div>
-
-                                    <!-- Inner Headline Paragraph & Data Start -->
-                                    <div class="col-12 col-xl-6 mxd-grid-item no-margin">
-
-                                        
-                                        <div class="inner-headline__data">
-                                            <div class="mxd-data-list">
-                                                <div class="container-fluid p-0">
-                                                    <div class="row g-0">
-                                                        <div
-                                                            class="col-12 col-md-6 col-xl-5 mxd-data-list__column loading__item">
-                                                            <div class="mxd-data-list__item">
-                                                                <p class="mxd-data-list__name">Client</p>
-                                                                <p class="mxd-data-list__content">OMV Dashboard</p>
-                                                            </div>
-                                                            <div class="mxd-data-list__item">
-                                                                <p class="mxd-data-list__name">Services</p>
-                                                                <p class="mxd-data-list__content">App development</p>
-                                                            </div>
-                                                        </div>
-                                                        <div
-                                                            class="col-12 col-md-6 col-xl-5 mxd-data-list__column loading__item">
-                                                            <div class="mxd-data-list__item">
-                                                                <p class="mxd-data-list__name">Industries</p>
-                                                                <p class="mxd-data-list__content">cloud-based software  </p>
-                                                            </div>
-                                                            
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <!-- Inner Headline Paragraph & Data End -->
-
-                                    <!-- Inner Headline Tags Start -->
-                                    <div class="col-12 col-xl-4 mxd-grid-item no-margin">
-                                        <div class="inner-headline__tags loading__fade">
-                                            <span class="tag tag-default tag-outline-medium">Hybrid </span>
-                                            <span class="tag tag-default tag-outline-medium">Native</span>
-                                            <span class="tag tag-default tag-outline-medium">Cross Plateform</span>
-                                            <span class="tag tag-default tag-outline-medium">Gaming</span>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Inner Headline Tags End -->
-
-                            </div>
-                        </div>
-                        <!-- Block - Inner Page Headline End -->
-
-                    </div>
-                </div>
-                <!-- Section - Inner Page Headline End -->
-
-                <!-- Project Block - Images Cards Start -->
-                <div class="mxd-project__block no-margin">
-                    <div class="mxd-project-cards">
-                        <div class="container-fluid px-0">
-                             <div class="row gx-0">
-                                <!-- item -->
-                                <div
-                                    class="col-12 col-xl-5 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-right">
-                                    <div class="mxd-project-cards__inner align-end bg-accent radius-m" id="collage-div">
-                                        <img src="./img/OMV-collage 1 (1).png" alt="Project Preview">
-                                    </div>
-                                </div>
-                                <!-- item -->
-                                <div
-                                    class="col-12 col-xl-7 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-left">
-                                    <div class="mxd-project-cards__inner align-end bg-base-tint radius-m"
-                                       id="collage-div">
-                                        <img src="./img/OMV-collage 1 (2).png" alt="Project Preview"
-                                           >
-
-                                    </div>
-                                </div>
-                               
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Project Block - Images Cards End -->
-
-                <!-- Section - Inner Page Headline Start -->
-                <div class="mxd-section mxd-section-inner-headline padding-default">
-                    <div class="mxd-container grid-container">
-
-                        <!-- Block - Inner Page Headline Start -->
-                        <div class="mxd-block loading-wrap">
-                            <div class="container-fluid px-0">
-                                <div class="row gx-0">
-
-                                    
-
-                                    <!-- Inner Headline Aside Start -->
-                                    <div class="col-12"></div>
-                                    <!-- Inner Headline Aside End -->
-
-                                </div>
-                                <div class="row g-0">
-                                    <div class="col-12 col-xl-2"></div>
-
-                                    <!-- Inner Headline Paragraph & Data Start -->
-                                    <div class="col-12 col-xl-6 mxd-grid-item no-margin">
-
-                                       
-
-                                        <div class="inner-headline__data">
-                                            <div class="mxd-data-list">
-                                                <div class="container-fluid p-0">
-                                                    <div class="row g-0">
-                                                        <div
-                                                            class="col-12 col-md-6 col-xl-5 mxd-data-list__column loading__item">
-                                                            <div class="mxd-data-list__item">
-                                                                <p class="mxd-data-list__name">Client</p>
-                                                                <p class="mxd-data-list__content">EasyMining</p>
-                                                            </div>
-                                                            <div class="mxd-data-list__item">
-                                                                <p class="mxd-data-list__name">Services</p>
-                                                                <p class="mxd-data-list__content">App development</p>
-                                                            </div>
-                                                        </div>
-                                                        <div
-                                                            class="col-12 col-md-6 col-xl-5 mxd-data-list__column loading__item">
-                                                            <div class="mxd-data-list__item">
-                                                                <p class="mxd-data-list__name">Industries</p>
-                                                                <p class="mxd-data-list__content">Cryptocurrency  </p>
-                                                            </div>
-                                                            
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <!-- Inner Headline Paragraph & Data End -->
-
-                                    <!-- Inner Headline Tags Start -->
-                                    <div class="col-12 col-xl-4 mxd-grid-item no-margin">
-                                        <div class="inner-headline__tags loading__fade">
-                                            <span class="tag tag-default tag-outline-medium">Hybrid </span>
-                                            <span class="tag tag-default tag-outline-medium">Native</span>
-                                            <span class="tag tag-default tag-outline-medium">Cross Plateform</span>
-                                            <span class="tag tag-default tag-outline-medium">Gaming</span>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Inner Headline Tags End -->
-
-                            </div>
-                        </div>
-                        <!-- Block - Inner Page Headline End -->
-
-                    </div>
-                </div>
-                <!-- Section - Inner Page Headline End -->
-
-                <!-- Project Block - Images Cards Start -->
-                <div class="mxd-project__block no-margin">
-                    <div class="mxd-project-cards">
-                        <div class="container-fluid px-0">
-                            <div class="row gx-0">
-                                <!-- item -->
-                                <div
-                                    class="col-12 col-xl-5 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-right">
-                                    <div class="mxd-project-cards__inner align-end bg-accent radius-m" id="collage-div">
-                                        <img src="./img/EasyMining-collage 1 (1).png" alt="Project Preview">
-                                    </div>
-                                </div>
-                                <!-- item -->
-                                <div
-                                    class="col-12 col-xl-7 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-left">
-                                    <div class="mxd-project-cards__inner align-end bg-base-tint radius-m"
-                                       id="collage-div">
-                                        <img src="./img/EasyMining-collage 1 (2).png" alt="Project Preview"
-                                           >
-
-                                    </div>
-                                </div>
-                               
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Project Block - Images Cards End -->
-
-                <!-- Section - Inner Page Headline Start -->
-                <div class="mxd-section mxd-section-inner-headline padding-default">
-                    <div class="mxd-container grid-container">
-
-                        <!-- Block - Inner Page Headline Start -->
-                        <div class="mxd-block loading-wrap">
-                            <div class="container-fluid px-0">
-                                <div class="row gx-0">
-
-                                    
-
-                                    <!-- Inner Headline Aside Start -->
-                                    <div class="col-12"></div>
-                                    <!-- Inner Headline Aside End -->
-
-                                </div>
-                                <div class="row g-0">
-                                    <div class="col-12 col-xl-2"></div>
-
-                                    <!-- Inner Headline Paragraph & Data Start -->
-                                    <div class="col-12 col-xl-6 mxd-grid-item no-margin">
-
-                                       
-                                        <div class="inner-headline__data">
-                                            <div class="mxd-data-list">
-                                                <div class="container-fluid p-0">
-                                                    <div class="row g-0">
-                                                        <div
-                                                            class="col-12 col-md-6 col-xl-5 mxd-data-list__column loading__item">
-                                                            <div class="mxd-data-list__item">
-                                                                <p class="mxd-data-list__name">Client</p>
-                                                                <p class="mxd-data-list__content">CASHBOOK BY OBOPAY</p>
-                                                            </div>
-                                                            <div class="mxd-data-list__item">
-                                                                <p class="mxd-data-list__name">Services</p>
-                                                                <p class="mxd-data-list__content">App development</p>
-                                                            </div>
-                                                        </div>
-                                                        <div
-                                                            class="col-12 col-md-6 col-xl-5 mxd-data-list__column loading__item">
-                                                            <div class="mxd-data-list__item">
-                                                                <p class="mxd-data-list__name">Industries</p>
-                                                                <p class="mxd-data-list__content">cloud-based software  </p>
-                                                            </div>
-                                                             
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <!-- Inner Headline Paragraph & Data End -->
-
-                                    <!-- Inner Headline Tags Start -->
-                                    <div class="col-12 col-xl-4 mxd-grid-item no-margin">
-                                        <div class="inner-headline__tags loading__fade">
-                                            <span class="tag tag-default tag-outline-medium">Hybrid </span>
-                                            <span class="tag tag-default tag-outline-medium">Native</span>
-                                            <span class="tag tag-default tag-outline-medium">Cross Plateform</span>
-                                            <span class="tag tag-default tag-outline-medium">Gaming</span>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Inner Headline Tags End -->
-
-                            </div>
-                        </div>
-                        <!-- Block - Inner Page Headline End -->
-
-                    </div>
-                </div>
-                <!-- Section - Inner Page Headline End -->
-
-                <!-- Project Block - Images Cards Start -->
-                <div class="mxd-project__block no-margin">
-                    <div class="mxd-project-cards">
-                        <div class="container-fluid px-0">
-                            <div class="row gx-0">
-                                <!-- item -->
-                                <div
-                                    class="col-12 col-xl-5 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-right">
-                                    <div class="mxd-project-cards__inner align-end bg-accent radius-m" id="collage-div">
-                                        <img src="./img/CASHBOOK-collage 1 (1).png" alt="Project Preview">
-                                    </div>
-                                </div>
-                                <!-- item -->
-                                <div
-                                    class="col-12 col-xl-7 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-left">
-                                    <div class="mxd-project-cards__inner align-end bg-base-tint radius-m"
-                                       id="collage-div">
-                                        <img src="./img/CASHBOOK-collage 1 (2).png" alt="Project Preview"
-                                           >
-
-                                    </div>
-                                </div>
-                               
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Project Block - Images Cards End -->
-
-                <!-- Section - Inner Page Headline Start -->
-                <div class="mxd-section mxd-section-inner-headline padding-default">
-                    <div class="mxd-container grid-container">
-
-                        <!-- Block - Inner Page Headline Start -->
-                        <div class="mxd-block loading-wrap">
-                            <div class="container-fluid px-0">
-                                <div class="row gx-0">
-
-                                    
-
-                                    <!-- Inner Headline Aside Start -->
-                                    <div class="col-12"></div>
-                                    <!-- Inner Headline Aside End -->
-
-                                </div>
-                                <div class="row g-0">
-                                    <div class="col-12 col-xl-2"></div>
-
-                                    <!-- Inner Headline Paragraph & Data Start -->
-                                    <div class="col-12 col-xl-6 mxd-grid-item no-margin">
-
-                                        
-
-                                        <div class="inner-headline__data">
-                                            <div class="mxd-data-list">
-                                                <div class="container-fluid p-0">
-                                                    <div class="row g-0">
-                                                        <div
-                                                            class="col-12 col-md-6 col-xl-5 mxd-data-list__column loading__item">
-                                                            <div class="mxd-data-list__item">
-                                                                <p class="mxd-data-list__name">Client</p>
-                                                                <p class="mxd-data-list__content">Ask Islam</p>
-                                                            </div>
-                                                            <div class="mxd-data-list__item">
-                                                                <p class="mxd-data-list__name">Services</p>
-                                                                <p class="mxd-data-list__content">App development</p>
-                                                            </div>
-                                                        </div>
-                                                        <div
-                                                            class="col-12 col-md-6 col-xl-5 mxd-data-list__column loading__item">
-                                                            <div class="mxd-data-list__item">
-                                                                <p class="mxd-data-list__name">Industries</p>
-                                                                <p class="mxd-data-list__content">Relegious</p>
-                                                            </div>
-                                                           
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <!-- Inner Headline Paragraph & Data End -->
-
-                                    <!-- Inner Headline Tags Start -->
-                                    <div class="col-12 col-xl-4 mxd-grid-item no-margin">
-                                        <div class="inner-headline__tags loading__fade">
-                                            <span class="tag tag-default tag-outline-medium">Hybrid </span>
-                                            <span class="tag tag-default tag-outline-medium">Native</span>
-                                            <span class="tag tag-default tag-outline-medium">Cross Plateform</span>
-                                            <span class="tag tag-default tag-outline-medium">Gaming</span>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Inner Headline Tags End -->
-
-                            </div>
-                        </div>
-                        <!-- Block - Inner Page Headline End -->
-
-                    </div>
-                </div>
-                <!-- Section - Inner Page Headline End -->
-
-                <!-- Project Block - Images Cards Start -->
-                <div class="mxd-project__block no-margin">
-                    <div class="mxd-project-cards">
-                        <div class="container-fluid px-0">
-                            <div class="row gx-0">
-                                <!-- item -->
-                                <div
-                                    class="col-12 col-xl-5 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-right">
-                                    <div class="mxd-project-cards__inner align-end bg-accent radius-m" id="collage-div">
-                                        <img src="./img/Ask islam-collage 1 (1).png" alt="Project Preview" >
-                                    </div>
-                                </div>
-                                <!-- item -->
-                                <div
-                                    class="col-12 col-xl-7 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-left">
-                                    <div class="mxd-project-cards__inner align-end bg-base-tint radius-m" id="collage-div"
-                                       >
-                                        <img src="./img/Ask islam-collage 1 (2).png" alt="Project Preview"
-                                           >
-
-                                    </div>
-                                </div>
-                                
-
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Project Block - Images Cards End -->
-
-                <!-- Section - Inner Page Headline Start -->
-                <div class="mxd-section mxd-section-inner-headline padding-default">
-                    <div class="mxd-container grid-container">
-
-                        <!-- Block - Inner Page Headline Start -->
-                        <div class="mxd-block loading-wrap">
-                            <div class="container-fluid px-0">
-                                <div class="row gx-0">
-
-                                    
-
-                                    <!-- Inner Headline Aside Start -->
-                                    <div class="col-12"></div>
-                                    <!-- Inner Headline Aside End -->
-
-                                </div>
-                                <div class="row g-0">
-                                    <div class="col-12 col-xl-2"></div>
-
-                                    <!-- Inner Headline Paragraph & Data Start -->
-                                    <div class="col-12 col-xl-6 mxd-grid-item no-margin">
-
-                                        
-
-                                        <div class="inner-headline__data">
-                                            <div class="mxd-data-list">
-                                                <div class="container-fluid p-0">
-                                                    <div class="row g-0">
-                                                        <div
-                                                            class="col-12 col-md-6 col-xl-5 mxd-data-list__column loading__item">
-                                                            <div class="mxd-data-list__item">
-                                                                <p class="mxd-data-list__name">Client</p>
-                                                                <p class="mxd-data-list__content">Meet9ja</p>
-                                                            </div>
-                                                            <div class="mxd-data-list__item">
-                                                                <p class="mxd-data-list__name">Services</p>
-                                                                <p class="mxd-data-list__content">App development</p>
-                                                            </div>
-                                                        </div>
-                                                        <div
-                                                            class="col-12 col-md-6 col-xl-5 mxd-data-list__column loading__item">
-                                                            <div class="mxd-data-list__item">
-                                                                <p class="mxd-data-list__name">Industries</p>
-                                                                <p class="mxd-data-list__content">Dating App</p>
-                                                            </div>
-                                                             
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <!-- Inner Headline Paragraph & Data End -->
-
-                                    <!-- Inner Headline Tags Start -->
-                                    <div class="col-12 col-xl-4 mxd-grid-item no-margin">
-                                        <div class="inner-headline__tags loading__fade">
-                                            <span class="tag tag-default tag-outline-medium">Hybrid </span>
-                                            <span class="tag tag-default tag-outline-medium">Native</span>
-                                            <span class="tag tag-default tag-outline-medium">Cross Platform</span>
-                                            <span class="tag tag-default tag-outline-medium">Gaming</span>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Inner Headline Tags End -->
-
-                            </div>
-                        </div>
-                        <!-- Block - Inner Page Headline End -->
-
-                    </div>
-                </div>
-                <!-- Section - Inner Page Headline End -->
-
-                <!-- Project Block - Images Cards Start -->
-                <div class="mxd-project__block no-margin">
-                    <div class="mxd-project-cards">
-                        <div class="container-fluid px-0">
-                            <div class="row gx-0">
-                                <!-- item -->
-                                <div
-                                    class="col-12 col-xl-5 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-right">
-                                    <div class="mxd-project-cards__inner align-end bg-accent radius-m" id="collage-div">
-                                        <img src="./img/meet-collage 1 (1).png" alt="Project Preview" >
-                                    </div>
-                                </div>
-                                <!-- item -->
-                                <div
-                                    class="col-12 col-xl-7 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-left">
-                                    <div class="mxd-project-cards__inner align-end bg-base-tint radius-m" id="collage-div"
-                                       >
-                                        <img src="./img/meet-collage 1 (2).png" alt="Project Preview"
-                                           >
-
-                                    </div>
-                                </div>
-                                
-
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Project Block - Images Cards End -->
-
-                <!-- Section - Inner Page Headline Start -->
-                <div class="mxd-section mxd-section-inner-headline padding-default">
-                    <div class="mxd-container grid-container">
-
-                        <!-- Block - Inner Page Headline Start -->
-                        <div class="mxd-block loading-wrap">
-                            <div class="container-fluid px-0">
-                                <div class="row gx-0">
-
-                                    
-
-                                    <!-- Inner Headline Aside Start -->
-                                    <div class="col-12"></div>
-                                    <!-- Inner Headline Aside End -->
-
-                                </div>
-                                <div class="row g-0">
-                                    <div class="col-12 col-xl-2"></div>
-
-                                    <!-- Inner Headline Paragraph & Data Start -->
-                                    <div class="col-12 col-xl-6 mxd-grid-item no-margin">
-
-                                       
-
-                                        <div class="inner-headline__data">
-                                            <div class="mxd-data-list">
-                                                <div class="container-fluid p-0">
-                                                    <div class="row g-0">
-                                                        <div
-                                                            class="col-12 col-md-6 col-xl-5 mxd-data-list__column loading__item">
-                                                            <div class="mxd-data-list__item">
-                                                                <p class="mxd-data-list__name">Client</p>
-                                                                <p class="mxd-data-list__content">BeeCamper2Go</p>
-                                                            </div>
-                                                            <div class="mxd-data-list__item">
-                                                                <p class="mxd-data-list__name">Services</p>
-                                                                <p class="mxd-data-list__content">App development</p>
-                                                            </div>
-                                                        </div>
-                                                        <div
-                                                            class="col-12 col-md-6 col-xl-5 mxd-data-list__column loading__item">
-                                                            <div class="mxd-data-list__item">
-                                                                <p class="mxd-data-list__name">Industries</p>
-                                                                <p class="mxd-data-list__content">Booking App</p>
-                                                            </div>
-                                                             
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <!-- Inner Headline Paragraph & Data End -->
-
-                                    <!-- Inner Headline Tags Start -->
-                                    <div class="col-12 col-xl-4 mxd-grid-item no-margin">
-                                        <div class="inner-headline__tags loading__fade">
-                                            <span class="tag tag-default tag-outline-medium">Hybrid </span>
-                                            <span class="tag tag-default tag-outline-medium">Native</span>
-                                            <span class="tag tag-default tag-outline-medium">Cross Platform</span>
-                                            <span class="tag tag-default tag-outline-medium">Gaming</span>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Inner Headline Tags End -->
-
-                            </div>
-                        </div>
-                        <!-- Block - Inner Page Headline End -->
-
-                    </div>
-                </div>
-                <!-- Section - Inner Page Headline End -->
-
-                <!-- Project Block - Images Cards Start -->
-                <div class="mxd-project__block no-margin">
-                    <div class="mxd-project-cards">
-                        <div class="container-fluid px-0">
-                            <div class="row gx-0">
-                                <!-- item -->
-                                <div
-                                    class="col-12 col-xl-5 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-right">
-                                    <div class="mxd-project-cards__inner align-end bg-accent radius-m" id="collage-div">
-                                        <img src="./img/bee-collage 1 (1).png" alt="Project Preview" >
-                                    </div>
-                                </div>
-                                <!-- item -->
-                                <div
-                                    class="col-12 col-xl-7 mxd-project-cards__item mxd-grid-item anim-uni-scale-in-left">
-                                    <div class="mxd-project-cards__inner align-end bg-base-tint radius-m" id="collage-div"
-                                       >
-                                        <img src="./img/bee-collage 1 (2).png" alt="Project Preview"
-                                           >
-
-                                    </div>
-                                </div>
-                               
-
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Project Block - Images Cards End -->
-
-               
-
-               
-
-              
-
-               
-
                 <!-- Project Block - Project Link Start -->
                 <div class="mxd-project__block no-margin" style="top: 3rem;">
                     <div class="mxd-project__nav">
@@ -1168,15 +374,12 @@
                     </div>
                 </div>
                 <!-- Project Block - Project Link End -->
-
             </div>
         </div>
-        <!-- Section - Project Details End -->
 
         <!-- Section - CTA Start -->
         <div class="mxd-section overflow-hidden">
             <div class="mxd-container">
-
                 <!-- Block - CTA Start -->
                 <div class="mxd-block">
                     <div class="mxd-promo">
@@ -1217,15 +420,14 @@
                     </div>
                 </div>
                 <!-- Block - CTA End -->
-
             </div>
         </div>
-        <!-- Section - CTA End -->
+
 
     </main>
     <!-- Page Content End -->
 
-    <!-- Footer Start -->
+<!-- Footer Start -->
     <footer id="mxd-footer" class="mxd-footer">
 
         <!-- Footer Block - Fullwidth Text Start -->
@@ -1424,10 +626,226 @@
     <script src="libs.min.js"></script>
     <script src="app.js"></script>
     <!-- Load Scripts End -->
+
     <script>
+        const API_ROOT = 'http://localhost:9000/api';
+        
+        // Map filenames to categories for database query
+        const pageCategoryMap = {
+            'web-project-details.html': 'Web Development',
+            'App-project-details.html': 'App Development',
+            'Marketing-project-details.html': 'Digital Marketing',
+            'graphic-project-details.html': 'Graphic Designing',
+            'E-commerce-project-details.html': 'E-commerce',
+            'uiux-project-detail.html': 'UI/UX',
+            'video-project-details.html': 'Video Editing'
+        };
+
+        // Map filenames to user-facing page titles
+        const pageTitleMap = {
+            'web-project-details.html': 'Web Application Development',
+            'App-project-details.html': 'App Development',
+            'Marketing-project-details.html': 'Digital Marketing',
+            'graphic-project-details.html': 'Graphic Designing',
+            'E-commerce-project-details.html': 'E-commerce',
+            'uiux-project-detail.html': 'UI/UX',
+            'video-project-details.html': 'Video Editing'
+        };
+
+        const currentFile = window.location.pathname.split('/').pop() || 'App-project-details.html';
+        const category = pageCategoryMap[currentFile] || 'App Development';
+
+        // Set page category heading dynamically if exists
+        const headingElement = document.querySelector('.inner-headline__title');
+        if (headingElement) {
+            headingElement.textContent = pageTitleMap[currentFile] || category;
+        }
+
+        function getOptimizedCloudinaryUrl(url, transformations) {
+            if (!url) return '';
+            if (url.includes('res.cloudinary.com')) {
+                const parts = url.split('/upload/');
+                if (parts.length === 2) {
+                    return `${parts[0]}/upload/${transformations}/${parts[1]}`;
+                }
+            }
+            return url;
+        }
+
+        async function fetchAndRenderProjects() {
+            const container = document.getElementById('dynamic-projects-container');
+            try {
+                const res = await fetch(`${API_ROOT}/work?category=${encodeURIComponent(category)}`);
+                const result = await res.json();
+                
+                if (result.success && result.data && result.data.length > 0) {
+                    // Sort items by order
+                    const sortedWorks = result.data.sort((a, b) => (a.order || 0) - (b.order || 0));
+                    container.innerHTML = sortedWorks.map((w, index) => {
+                        const tagsHTML = (w.tags || []).map(tag => `
+                            <span class="tag tag-default tag-outline-medium">${tag}</span>
+                        `).join('');
+
+                        const viewMoreHTML = w.viewMoreUrl ? `
+                            <div class="mxd-data-list__item">
+                                <p class="mxd-data-list__name">View More</p>
+                                <p class="mxd-data-list__content">
+                                    <a href="${w.viewMoreUrl}" target="_blank" style="text-decoration: none; color: var(--accent);">
+                                        ${w.viewMoreLabel || 'Visit Site'} <i class="ph-bold ph-arrow-up-right"></i>
+                                    </a>
+                                </p>
+                            </div>
+                        ` : '';
+
+                        // Compile project images in order (heroImage first, then galleryImages)
+                        const imagesList = [];
+                        if (w.heroImage) {
+                            imagesList.push(w.heroImage);
+                        }
+                        if (w.galleryImages && w.galleryImages.length > 0) {
+                            imagesList.push(...w.galleryImages);
+                        }
+
+                        const imagePanelsHTML = imagesList.map((imgUrl, imgIndex) => {
+                            const optimizedUrl = getOptimizedCloudinaryUrl(imgUrl, 'w_1920,h_1080,c_pad,b_auto,q_auto,f_auto');
+                            const tagsToShow = imgIndex === 0 ? w.tags || [] : (w.tags || []).slice(0, 3); // Show all tags on first image, 3 on others
+                            const tagsHTML = tagsToShow.map(tag => `
+                                <span class="work-image-tag">${tag}</span>
+                            `).join('');
+                            return `
+                                <div class="work-image-panel">
+                                    <div class="work-image-tags">
+                                        ${tagsHTML}
+                                    </div>
+                                    <img src="${optimizedUrl}" alt="Case Study Image">
+                                </div>
+                            `;
+                        }).join('');
+
+                        const dividerHTML = index > 0 ? `
+                            <div style="position: relative; height: 0.2rem; margin: 80px 0; width: 100%;">
+                                <div class="mxd-project__divider anim-uni-in-up"></div>
+                            </div>
+                        ` : '';
+
+                        return `
+                            <div class="work-item" data-work-id="${w._id}">
+                                ${dividerHTML}
+                                <!-- Section - Inner Page Headline Start -->
+                                <div class="mxd-section mxd-section-inner-headline padding-default">
+                                    <div class="mxd-container grid-container">
+                                        <div class="mxd-block loading-wrap">
+                                            <div class="container-fluid px-0">
+                                                <div class="row g-0">
+                                                    <!-- Project Link on the Left -->
+                                                    <div class="col-12 col-xl-2 mxd-grid-item no-margin">
+                                                        <div class="mxd-block__name name-project-link loading__fade">
+                                                            <a class="btn btn-anim btn-line-small btn-muted slide-right-up" href="#0">
+                                                                <span class="btn-caption">Project ${index + 1}</span>
+                                                                <i class="ph ph-arrow-up-right"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <!-- Project Content in the Middle -->
+                                                    <div class="col-12 col-xl-6 mxd-grid-item no-margin">
+                                                        <!-- Clean Subtitle for Project Title -->
+                                                        <div class="loading__item" style="margin-bottom: 20px;">
+                                                            <h2 style="font-size: 2.8rem; font-weight: 700; color: var(--t-bright); margin: 0; line-height: 1.3;">${w.title}</h2>
+                                                        </div>
+                                                        
+                                                        <div class="inner-headline__paragraph loading__item">
+                                                            <p>${w.description || ''}</p>
+                                                        </div>
+                                                        
+                                                        <div class="inner-headline__data">
+                                                            <div class="mxd-data-list">
+                                                                <div class="container-fluid p-0">
+                                                                    <div class="row g-0">
+                                                                        <div class="col-12 col-md-6 col-xl-5 mxd-data-list__column loading__item">
+                                                                            <div class="mxd-data-list__item">
+                                                                                <p class="mxd-data-list__name">Client</p>
+                                                                                <p class="mxd-data-list__content">${w.client || 'N/A'}</p>
+                                                                            </div>
+                                                                            <div class="mxd-data-list__item">
+                                                                                <p class="mxd-data-list__name">Services</p>
+                                                                                <p class="mxd-data-list__content">${w.services || 'N/A'}</p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-12 col-md-6 col-xl-5 mxd-data-list__column loading__item">
+                                                                            <div class="mxd-data-list__item">
+                                                                                <p class="mxd-data-list__name">Industries</p>
+                                                                                <p class="mxd-data-list__content">${w.industries || 'N/A'}</p>
+                                                                            </div>
+                                                                            ${viewMoreHTML}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <!-- Tags on the Right -->
+                                                    <div class="col-12 col-xl-4 mxd-grid-item no-margin">
+                                                        <div class="inner-headline__tags loading__fade">
+                                                            ${tagsHTML}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Section - Project Details Start (Sticky Stacked Images) -->
+                                <div class="work-image-stack" style="position: relative; width: 100%;">
+                                    ${imagePanelsHTML}
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+
+                    // Trigger GSAP reveal animations manually for our dynamic elements
+                    setTimeout(() => {
+                        const dynamicItems = container.querySelectorAll('.loading__item');
+                        const dynamicFade = container.querySelectorAll('.loading__fade');
+                        
+                        if (window.gsap) {
+                            gsap.fromTo(dynamicItems, 
+                                { y: 120, opacity: 0 }, 
+                                { y: 0, opacity: 1, duration: 1.1, ease: 'power4', delay: 0.2, stagger: 0.08 }
+                            );
+                            gsap.fromTo(dynamicFade, 
+                                { opacity: 0 }, 
+                                { opacity: 1, duration: 0.8, ease: 'none', delay: 0.5, stagger: 0.08 }
+                            );
+                        }
+                    }, 100);
+
+                } else {
+                    container.innerHTML = `
+                        <div style="text-align: center; padding: 100px 20px; color: var(--t-medium);">
+                            <p style="font-size: 1.6rem;">No dynamic case studies found for ${category}.</p>
+                        </div>
+                    `;
+                }
+            } catch (err) {
+                console.error('Error fetching dynamic projects:', err);
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 100px 20px; color: var(--t-medium);">
+                        <p style="font-size: 1.6rem; color: red;">Failed to load dynamic case studies.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Initialize fetch when DOM content is loaded
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', fetchAndRenderProjects);
+        } else {
+            fetchAndRenderProjects();
+        }
 
         document.querySelectorAll(".video-container").forEach(container => {
-
             const video = container.querySelector(".menu-video");
             const btn = container.querySelector(".play-button");
 
@@ -1448,10 +866,9 @@
                     btn.style.display = "flex";
                 }
             });
-
         });
-
     </script>
+
 
 </body>
 
