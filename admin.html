@@ -30,6 +30,228 @@
             padding-top: 0 !important;
             margin-top: 0 !important;
         }
+
+        /* ==================== LOGIN PAGE STYLES ==================== */
+        .login-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 40px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-bg-glow {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            filter: blur(150px);
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .login-bg-glow.glow-1 {
+            background: var(--accent);
+            top: -150px;
+            right: -100px;
+        }
+
+        .login-bg-glow.glow-2 {
+            background: var(--additional);
+            bottom: -150px;
+            left: -100px;
+        }
+
+        .login-card {
+            background: var(--base-tint);
+            border: 2px solid var(--st-muted);
+            border-radius: var(--_radius-xl);
+            padding: 60px 50px;
+            max-width: 460px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.08);
+            animation: loginFadeIn 0.8s cubic-bezier(0.23, 0.65, 0.74, 1.09) both;
+        }
+
+        @keyframes loginFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(40px) scale(0.97);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .login-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            margin-bottom: 12px;
+        }
+
+        .login-logo img {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--accent);
+        }
+
+        .login-logo-text {
+            font: var(--fw-bold) 2.4rem var(--_font-accent);
+            color: var(--t-bright);
+            line-height: 1.15;
+        }
+
+        .login-subtitle {
+            text-align: center;
+            font: var(--fw-regular) 1.5rem var(--_font-body);
+            color: var(--t-muted);
+            margin-bottom: 40px;
+        }
+
+        .login-divider {
+            height: 2px;
+            background: var(--st-muted);
+            border-radius: 2px;
+            margin-bottom: 36px;
+        }
+
+        .login-form .form-group {
+            margin-bottom: 22px;
+        }
+
+        .login-form .form-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+            font: var(--fw-medium) 1.4rem var(--_font-accent);
+            color: var(--t-medium);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .login-form .form-group label i {
+            font-size: 16px;
+            color: var(--accent);
+        }
+
+        .login-form .form-group input {
+            width: 100%;
+            padding: 18px 22px;
+            background: var(--base);
+            border: 2px solid var(--st-muted);
+            border-radius: var(--_radius-m);
+            font: var(--fw-regular) 1.7rem var(--_font-accent);
+            color: var(--t-bright);
+            outline: none;
+            transition: all var(--_animspeed-medium);
+        }
+
+        .login-form .form-group input::placeholder {
+            color: var(--t-muted);
+            opacity: 0.6;
+        }
+
+        .login-form .form-group input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(159, 139, 231, 0.12);
+        }
+
+        .login-submit-btn {
+            width: 100%;
+            background: var(--accent);
+            border: none;
+            border-radius: var(--_radius-m);
+            padding: 20px;
+            font: var(--fw-semibold) 1.7rem var(--_font-accent);
+            color: var(--t-opp-bright);
+            cursor: pointer;
+            transition: all var(--_animspeed-medium) var(--_animbezier);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .login-submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(159, 139, 231, 0.4);
+        }
+
+        .login-submit-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .login-submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .login-submit-btn i {
+            font-size: 20px;
+        }
+
+        .login-error {
+            display: none;
+            background: rgba(255, 68, 68, 0.08);
+            border: 1px solid rgba(255, 68, 68, 0.25);
+            border-radius: var(--_radius-s);
+            padding: 14px 18px;
+            margin-bottom: 20px;
+            font: var(--fw-medium) 1.4rem var(--_font-accent);
+            color: #ff4444;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .login-error.show {
+            display: flex;
+        }
+
+        .login-error i {
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 30px;
+            font: var(--fw-regular) 1.3rem var(--_font-body);
+            color: var(--t-muted);
+        }
+
+        .login-footer a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: color var(--_animspeed-medium);
+        }
+
+        .login-footer a:hover {
+            color: var(--t-bright);
+        }
+
+        @media (max-width: 560px) {
+            .login-card {
+                padding: 40px 28px;
+                border-radius: var(--_radius-l);
+            }
+            .login-logo-text {
+                font-size: 2rem;
+            }
+        }
         
         /* Main layout with sidebar */
         .admin-layout {
@@ -519,20 +741,43 @@
         <div class="mxd-section padding-grid">
             <div class="mxd-container" style="max-width: 100%; padding: 0;">
                 <!-- Login Page -->
-                <div id="login-page" class="loading-wrap">
-                    <div style="max-width: 500px; margin: 0 auto; padding: 80px 0;">
-                        <h2 class="reveal-type loading__item" style="text-align: center; margin-bottom: 40px;">Admin Login</h2>
-                        <form id="login-form" class="anim-uni-in-up">
-                            <div class="form-group">
-                                <label>Email</label>
-                                <input type="email" id="login-email" required placeholder="admin@askwebsolutions.com">
+                <div id="login-page">
+                    <div class="login-wrapper">
+                        <div class="login-bg-glow glow-1"></div>
+                        <div class="login-bg-glow glow-2"></div>
+                        
+                        <div class="login-card">
+                            <div class="login-logo">
+                                <img src="./img/logo pic.jpeg" alt="ASK Websolutions">
+                                <div class="login-logo-text">ASK<br>Websolutions</div>
                             </div>
-                            <div class="form-group">
-                                <label>Password</label>
-                                <input type="password" id="login-password" required placeholder="password123">
+                            <p class="login-subtitle">Admin Dashboard Access</p>
+                            <div class="login-divider"></div>
+                            
+                            <div id="login-error" class="login-error">
+                                <i class="ph ph-warning-circle"></i>
+                                <span id="login-error-text">Invalid email or password</span>
                             </div>
-                            <button type="submit" class="submit-btn btn-anim">Login</button>
-                        </form>
+                            
+                            <form id="login-form" class="login-form">
+                                <div class="form-group">
+                                    <label><i class="ph ph-envelope-simple"></i> Email</label>
+                                    <input type="email" id="login-email" required placeholder="admin@askwebsolutions.com" autocomplete="email">
+                                </div>
+                                <div class="form-group">
+                                    <label><i class="ph ph-lock-key"></i> Password</label>
+                                    <input type="password" id="login-password" required placeholder="Enter your password" autocomplete="current-password">
+                                </div>
+                                <button type="submit" class="login-submit-btn" id="login-btn">
+                                    <i class="ph ph-arrow-right"></i>
+                                    <span>Sign In</span>
+                                </button>
+                            </form>
+                            
+                            <div class="login-footer">
+                                &copy; 2025 ASK Websolutions
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -1044,7 +1289,32 @@
                 ...options,
                 headers
             });
+            
+            if (res.status === 401) {
+                authToken = null;
+                localStorage.removeItem('token');
+                document.getElementById('login-page').classList.remove('hidden');
+                document.getElementById('dashboard').classList.add('hidden');
+                return { success: false, message: 'Session expired. Please login again.' };
+            }
+            
             return res.json();
+        }
+
+        // Validate token on page load
+        async function validateToken() {
+            if (!authToken) return false;
+            try {
+                const res = await fetch(`${API_BASE}/auth/profile`, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                if (res.ok) return true;
+                authToken = null;
+                localStorage.removeItem('token');
+                return false;
+            } catch {
+                return false;
+            }
         }
         
         // ---------------------- Tags functions ----------------------
@@ -1696,10 +1966,13 @@
         };
 
         // ---------------------- Event listeners ----------------------
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
             if (authToken) {
-                showDashboard();
-                loadAllData();
+                const valid = await validateToken();
+                if (valid) {
+                    showDashboard();
+                    loadAllData();
+                }
             }
             
             // Sidebar toggle
@@ -2110,6 +2383,13 @@
             e.preventDefault();
             const email = document.getElementById('login-email').value;
             const password = document.getElementById('login-password').value;
+            const loginBtn = document.getElementById('login-btn');
+            const errorDiv = document.getElementById('login-error');
+            const errorText = document.getElementById('login-error-text');
+            
+            loginBtn.disabled = true;
+            loginBtn.innerHTML = '<i class="ph ph-spinner"></i><span>Signing In...</span>';
+            errorDiv.classList.remove('show');
             
             try {
                 const res = await fetch(`${API_BASE}/auth/login`, {
@@ -2125,10 +2405,15 @@
                     showDashboard();
                     loadAllData();
                 } else {
-                    alert(data.message);
+                    errorText.textContent = data.message || 'Invalid email or password';
+                    errorDiv.classList.add('show');
                 }
             } catch (err) {
-                alert('Login failed');
+                errorText.textContent = 'Connection failed. Please try again.';
+                errorDiv.classList.add('show');
+            } finally {
+                loginBtn.disabled = false;
+                loginBtn.innerHTML = '<i class="ph ph-arrow-right"></i><span>Sign In</span>';
             }
         });
         
@@ -2138,6 +2423,9 @@
             localStorage.removeItem('token');
             document.getElementById('login-page').classList.remove('hidden');
             document.getElementById('dashboard').classList.add('hidden');
+            document.getElementById('login-error').classList.remove('show');
+            document.getElementById('login-email').value = '';
+            document.getElementById('login-password').value = '';
         });
         
         // Work form submission
