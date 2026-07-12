@@ -1460,9 +1460,9 @@ function getCurrentTheme(){
 function loadTheme(theme){
   const root = document.querySelector(':root');
   if(theme === "light"){
-    themeBtn.innerHTML = `<i class="ph-bold ph-moon-stars"></i>`;
+    themeBtn.innerHTML = `<span class="icon-wrapper"><i class="ph ph-moon"></i></span><span>Theme</span>`;
   } else {
-    themeBtn.innerHTML = `<i class="ph-bold ph-sun-horizon"></i>`;
+    themeBtn.innerHTML = `<span class="icon-wrapper"><i class="ph ph-sun"></i></span><span>Theme</span>`;
   }
   root.setAttribute('color-scheme', `${theme}`);
 };
