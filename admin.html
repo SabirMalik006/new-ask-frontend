@@ -301,6 +301,36 @@
             box-shadow: 0 0 0 4px rgba(159, 139, 231, 0.12);
         }
 
+        .password-field {
+            position: relative;
+        }
+
+        .password-field input {
+            padding-right: 52px;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 6px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+            color: var(--t-muted);
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--_radius-s);
+            transition: color var(--_animspeed-medium);
+        }
+
+        .password-toggle:hover {
+            color: var(--accent);
+        }
+
         .login-submit-btn {
             width: 100%;
             background: var(--accent);
@@ -364,15 +394,14 @@
         .admin-sidebar {
             width: 300px;
             background: var(--base-tint);
-            padding: 40px 20px 30px;
+            padding: 0;
             border-right: 2px solid var(--st-muted);
             display: flex;
             flex-direction: column;
-            gap: 12px;
             position: sticky;
             top: 0;
             height: 100vh;
-            overflow: visible;
+            overflow: hidden;
             transition: width var(--_animspeed-medium), padding var(--_animspeed-medium);
             flex-shrink: 0;
             z-index: 100;
@@ -381,10 +410,17 @@
         .admin-sidebar.collapsed .admin-sidebar-logo .mxd-logo__text {
             opacity: 0; visibility: hidden; pointer-events: none; position: absolute;
         }
-        .admin-sidebar.collapsed .admin-sidebar-logo { justify-content: center; }
+        .admin-sidebar.collapsed .admin-sidebar-logo { justify-content: center; padding-left: 0; padding-right: 0; }
         .admin-sidebar.collapsed .admin-sidebar-logo .mxd-logo { justify-content: center; gap: 0; }
         .admin-sidebar.collapsed .sidebar-logo-wrap { width: 40px; height: 40px; }
-        .admin-sidebar.collapsed { width: 100px; padding: 40px 15px 30px; }
+        .admin-sidebar.collapsed .sidebar-scroll-container { padding: 20px 8px; }
+        .admin-sidebar.collapsed { width: 100px; }
+        .admin-sidebar.collapsed .sidebar-section-title,
+        .admin-sidebar.collapsed .admin-nav-btn > span:not(.icon-wrapper),
+        .admin-sidebar.collapsed .dropdown-item > span,
+        .admin-sidebar.collapsed .logout-btn > span:not(.icon-wrapper) {
+            opacity: 0; visibility: hidden; pointer-events: none; position: absolute;
+        }
 
         /* Sidebar logo - always perfect circle */
         .sidebar-logo-wrap {
@@ -484,7 +520,22 @@
         .admin-nav-btn.open .dropdown-icon { transform: rotate(180deg); }
 
         .sidebar-dropdown { max-height: 0; overflow: hidden; transition: max-height var(--_animspeed-medium); padding-left: 20px; }
-        .sidebar-dropdown.open { max-height: 500px; }
+        .sidebar-dropdown.open { max-height: none; }
+
+        .sidebar-scroll-container {
+            scrollbar-width: thin;
+            scrollbar-color: var(--st-muted) transparent;
+        }
+        .sidebar-scroll-container::-webkit-scrollbar {
+            width: 4px;
+        }
+        .sidebar-scroll-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .sidebar-scroll-container::-webkit-scrollbar-thumb {
+            background: var(--st-muted);
+            border-radius: 4px;
+        }
 
         .dropdown-item:hover { border-color: var(--accent); color: var(--accent); transform: translateX(5px); }
 
@@ -598,6 +649,76 @@
         }
         .delete-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(255, 68, 68, 0.3); }
 
+        /* ==================== TOAST NOTIFICATIONS ==================== */
+        .toast-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            pointer-events: none;
+        }
+        .toast {
+            background: var(--base-tint);
+            border: 2px solid var(--st-muted);
+            border-radius: var(--_radius-m);
+            padding: 16px 24px;
+            min-width: 300px;
+            max-width: 420px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font: var(--fw-medium) 1.5rem var(--_font-accent);
+            color: var(--t-bright);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            pointer-events: auto;
+            animation: toastIn 0.4s cubic-bezier(0.23, 0.65, 0.74, 1.09) both;
+            transition: all 0.3s ease;
+        }
+        .toast.removing {
+            animation: toastOut 0.3s ease forwards;
+        }
+        .toast-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        .toast-message { flex: 1; line-height: 1.4; }
+        .toast-close {
+            background: none;
+            border: none;
+            color: var(--t-muted);
+            cursor: pointer;
+            font-size: 18px;
+            padding: 4px;
+            flex-shrink: 0;
+            transition: color 0.2s;
+        }
+        .toast-close:hover { color: var(--t-bright); }
+        .toast.success { border-color: #4caf50; }
+        .toast.success .toast-icon { color: #4caf50; }
+        .toast.error { border-color: #ff4444; }
+        .toast.error .toast-icon { color: #ff4444; }
+        .toast.warning { border-color: #ff9800; }
+        .toast.warning .toast-icon { color: #ff9800; }
+        .toast.info { border-color: var(--accent); }
+        .toast.info .toast-icon { color: var(--accent); }
+
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateX(60px) scale(0.95); }
+            to   { opacity: 1; transform: translateX(0) scale(1); }
+        }
+        @keyframes toastOut {
+            from { opacity: 1; transform: translateX(0) scale(1); }
+            to   { opacity: 0; transform: translateX(60px) scale(0.9); }
+        }
+
+        @media (max-width: 768px) {
+            .toast-container { right: 16px; bottom: 16px; left: 16px; }
+            .toast { min-width: unset; max-width: 100%; }
+        }
+
         .hidden { display: none !important; }
 
         .tag-chip {
@@ -642,7 +763,7 @@
                 width: 300px; box-shadow: none;
             }
             .admin-sidebar.mobile-open { left: 0; box-shadow: 20px 0 60px rgba(0,0,0,0.15); }
-            .admin-sidebar.collapsed { width: 300px; left: -300px; padding: 40px 20px 30px; }
+            .admin-sidebar.collapsed { width: 300px; left: -300px; }
             .sidebar-toggle { display: none; }
             .mobile-menu-btn { display: flex; }
             .admin-main { padding: 80px 20px 30px; }
@@ -672,8 +793,12 @@
     </style>
 </head>
 <body>
+    <!-- Toast Container -->
+    <div class="toast-container" id="toast-container"></div>
+
     <!-- Animated Background -->
     <div class="admin-animated-bg">
+
         <div class="orb orb-1"></div>
         <div class="orb orb-2"></div>
         <div class="orb orb-3"></div>
@@ -738,7 +863,12 @@
                                 </div>
                                 <div class="form-group">
                                     <label><i class="ph ph-lock-key"></i> Password</label>
-                                    <input type="password" id="login-password" required placeholder="Enter your password" autocomplete="current-password">
+                                    <div class="password-field">
+                                        <input type="password" id="login-password" required placeholder="Enter your password" autocomplete="current-password">
+                                        <button type="button" class="password-toggle" id="password-toggle">
+                                            <i class="ph ph-eye"></i>
+                                        </button>
+                                    </div>
                                 </div>
                                 <button type="submit" class="login-submit-btn" id="login-btn">
                                     <i class="ph ph-arrow-right"></i>
@@ -763,14 +893,14 @@
                             </button>
                             
                             <!-- Logo Section -->
-                            <div class="admin-sidebar-logo" style="margin-bottom: 20px; display: flex; align-items: center; gap: 10px; transition: all var(--_animspeed-medium);">
+                            <div class="admin-sidebar-logo" style="margin: 0; padding: 30px 20px 20px; display: flex; align-items: center; gap: 10px; transition: all var(--_animspeed-medium); border-bottom: 2px solid var(--st-muted);">
                                 <a href="index.html" class="mxd-logo" style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
                                     <span class="sidebar-logo-wrap"><img class="mxd-logo__image" src="./img/logo pic.jpeg" alt="ASK Websolutions"></span>
                                     <span class="mxd-logo__text" style="font: var(--fw-semibold) 1.8rem var(--_font-accent); color: var(--t-bright); line-height: 1.2; transition: opacity var(--_animspeed-medium);">ASK<br>Websolutions</span>
                                 </a>
                             </div>
 
-                            <div class="sidebar-scroll-container" style="display: flex; flex-direction: column; gap: 12px; height: calc(100vh - 120px); overflow-y: auto; overflow-x: hidden; width: 100%; padding-right: 4px;">
+                            <div class="sidebar-scroll-container" style="display: flex; flex-direction: column; gap: 12px; flex: 1; overflow-y: auto; overflow-x: hidden; width: 100%; padding: 20px 16px;">
                                 <h3 class="sidebar-section-title" style="padding-top: 10px; margin-bottom: 10px;">Dashboard</h3>
                             
                             <!-- Single "Work" nav item that expands into the 8 categories -->
@@ -827,9 +957,11 @@
                                 <span class="icon-wrapper"><i class="ph ph-wrench"></i></span>
                                 <span>Services</span>
                             </button>
-                            
-                            <!-- Light/Dark Mode Toggle Button -->
-                            <button id="color-switcher" class="admin-nav-btn" style="margin-top: auto;" title="Theme">
+                            </div> <!-- End sidebar-scroll-container -->
+
+                            <!-- Fixed bottom buttons -->
+                            <div style="padding: 12px 16px 20px; display: flex; flex-direction: column; gap: 10px; border-top: 2px solid var(--st-muted);">
+                            <button id="color-switcher" class="admin-nav-btn" title="Theme">
                                 <span class="icon-wrapper">
                                     <i class="ph ph-sun icon-light" style="display: block;"></i>
                                     <i class="ph ph-moon icon-dark" style="display: none;"></i>
@@ -837,12 +969,11 @@
                                 <span>Theme</span>
                             </button>
                             
-                            <!-- Logout Button at Bottom -->
-                            <button id="logout-btn" class="logout-btn btn-anim" style="margin-bottom: 20px;" title="Logout">
+                            <button id="logout-btn" class="logout-btn btn-anim" title="Logout">
                                 <span class="icon-wrapper"><i class="ph ph-sign-out"></i></span>
                                 <span>Logout</span>
                             </button>
-                            </div> <!-- End sidebar-scroll-container -->
+                            </div> <!-- End fixed bottom -->
                         </aside>
                         
                         <!-- Main Content Area -->
@@ -1233,6 +1364,29 @@
         let activeServiceTags = [];
         
         // ---------------------- Helper functions ----------------------
+
+        // Toast notification system
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const icons = {
+                success: '<i class="ph ph-check-circle"></i>',
+                error: '<i class="ph ph-x-circle"></i>',
+                warning: '<i class="ph ph-warning"></i>',
+                info: '<i class="ph ph-info"></i>'
+            };
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <span class="toast-icon">${icons[type] || icons.info}</span>
+                <span class="toast-message">${message}</span>
+                <button class="toast-close" onclick="this.parentElement.remove()">&times;</button>
+            `;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.classList.add('removing');
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
         function switchSection(sectionId) {
             document.querySelectorAll('.admin-section').forEach(section => {
                 section.classList.remove('active');
@@ -1708,7 +1862,7 @@
                 document.getElementById('work-form-container').style.display = 'block';
                 document.getElementById('work-form-container').scrollIntoView({ behavior: 'smooth' });
             } else {
-                alert(`Error: ${res.message}`);
+                showToast(res.message, 'error');
             }
         };
         
@@ -1718,7 +1872,7 @@
                 if (res.success) {
                     loadWorks(activeCategory);
                 } else {
-                    alert(`Error: ${res.message}`);
+                    showToast(res.message, 'error');
                 }
             }
         };
@@ -1829,7 +1983,7 @@
                 if (res.success) {
                     loadTeamMembers();
                 } else {
-                    alert(`Error: ${res.message}`);
+                    showToast(res.message, 'error');
                 }
             }
         };
@@ -1932,7 +2086,7 @@
                 if (res.success) {
                     loadServices();
                 } else {
-                    alert(`Error: ${res.message}`);
+                    showToast(res.message, 'error');
                 }
             }
         };
@@ -2168,7 +2322,7 @@
             importLinkedinBtn.addEventListener('click', async () => {
                 const linkedinUrl = document.getElementById('team-linkedinUrl').value.trim();
                 if (!linkedinUrl) {
-                    alert('Please enter a LinkedIn URL first.');
+                    showToast('Please enter a LinkedIn URL first.', 'warning');
                     return;
                 }
                 
@@ -2188,13 +2342,13 @@
                         teamPhotoInput.value = '';
                         removeTeamPhotoFlag = false;
                         
-                        alert('Profile picture retrieved successfully!');
+                        showToast('Profile picture retrieved successfully!', 'success');
                     } else {
-                        alert(res.message || 'Could not retrieve profile picture from LinkedIn.');
+                        showToast(res.message || 'Could not retrieve profile picture from LinkedIn.', 'error');
                     }
                 } catch (err) {
                     console.error(err);
-                    alert('Could not automatically retrieve photo. Ensure profile is public, or copy-paste photo URL directly.');
+                    showToast('Could not automatically retrieve photo. Ensure profile is public, or copy-paste photo URL directly.', 'error');
                 } finally {
                     importLinkedinBtn.disabled = false;
                     importLinkedinBtn.textContent = originalText;
@@ -2229,7 +2383,7 @@
                 const order = document.getElementById('team-order').value;
 
                 if (!name || !position) {
-                    alert('Name and Position are required!');
+                    showToast('Name and Position are required!', 'warning');
                     return;
                 }
 
@@ -2269,15 +2423,15 @@
                     }
 
                     if (res.success) {
-                        alert(isEdit ? 'Team member updated successfully!' : 'Team member created successfully!');
+                        showToast(isEdit ? 'Team member updated successfully!' : 'Team member created successfully!', 'success');
                         hideTeamForm();
                         loadTeamMembers();
                     } else {
-                        alert(res.message);
+                        showToast(res.message, 'error');
                     }
                 } catch (err) {
                     console.error(err);
-                    alert('An error occurred while saving the team member.');
+                    showToast('An error occurred while saving the team member.', 'error');
                 } finally {
                     saveBtn.disabled = false;
                     saveBtn.textContent = originalBtnText;
@@ -2334,7 +2488,7 @@
                 const order = document.getElementById('service-order').value;
 
                 if (!title || !description) {
-                    alert('Title and Description are required!');
+                    showToast('Title and Description are required!', 'warning');
                     return;
                 }
 
@@ -2367,15 +2521,15 @@
                     }
 
                     if (res.success) {
-                        alert(isEdit ? 'Service updated successfully!' : 'Service created successfully!');
+                        showToast(isEdit ? 'Service updated successfully!' : 'Service created successfully!', 'success');
                         hideServiceForm();
                         loadServices();
                     } else {
-                        alert(res.message);
+                        showToast(res.message, 'error');
                     }
                 } catch (err) {
                     console.error(err);
-                    alert('An error occurred while saving the service.');
+                    showToast('An error occurred while saving the service.', 'error');
                 } finally {
                     saveBtn.disabled = false;
                     saveBtn.textContent = originalBtnText;
@@ -2383,6 +2537,19 @@
             });
         });
         
+        // Password visibility toggle
+        document.getElementById('password-toggle').addEventListener('click', () => {
+            const input = document.getElementById('login-password');
+            const icon = document.querySelector('#password-toggle i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.replace('ph-eye', 'ph-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.replace('ph-eye-slash', 'ph-eye');
+            }
+        });
+
         // Login form
         document.getElementById('login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -2443,7 +2610,7 @@
             const title = document.getElementById('work-title').value.trim();
             const category = document.getElementById('work-category').value;
             if (!title || !category) {
-                alert('Title and Category are required!');
+                showToast('Title and Category are required!', 'warning');
                 return;
             }
 
@@ -2460,7 +2627,7 @@
                 try {
                     new URL(urlValue);
                 } catch (e) {
-                    alert('Please enter a valid View More URL (including http:// or https://)');
+                    showToast('Please enter a valid View More URL (including http:// or https://)', 'warning');
                     return;
                 }
             }
@@ -2569,17 +2736,17 @@
                 }
 
                 if (res.success) {
-                    alert(isEdit ? 'Work item updated successfully!' : 'Work item created successfully!');
+                    showToast(isEdit ? 'Work item updated successfully!' : 'Work item created successfully!', 'success');
                     
                     // Reset form fields
                     hideForm();
                     loadWorks(activeCategory);
                 } else {
-                    alert(res.message);
+                    showToast(res.message, 'error');
                 }
             } catch (err) {
                 console.error(err);
-                alert('An error occurred while saving the work item.');
+                showToast('An error occurred while saving the work item.', 'error');
             } finally {
                 saveBtn.disabled = false;
                 saveBtn.textContent = originalBtnText;
@@ -2592,7 +2759,7 @@
                 if (res.success) {
                     loadWorks(activeCategory);
                 } else {
-                    alert(`Error: ${res.message}`);
+                    showToast(res.message, 'error');
                 }
             }
         };
