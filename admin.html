@@ -957,6 +957,49 @@
                                 <span class="icon-wrapper"><i class="ph ph-wrench"></i></span>
                                 <span>Services</span>
                             </button>
+
+                            <!-- Careers Dropdown Nav Button -->
+                            <button class="admin-nav-btn" id="careers-dropdown-btn" style="margin-top: 6px;" title="Careers">
+                                <span class="icon-wrapper"><i class="ph ph-briefcase"></i></span>
+                                <span>Careers</span>
+                                <span class="dropdown-icon">
+                                    <i class="ph ph-caret-down"></i>
+                                </span>
+                            </button>
+                            <div class="sidebar-dropdown" id="careers-dropdown" style="display: none;">
+                                <button class="dropdown-item" id="jobs-nav-btn" title="Job Postings">
+                                    <i class="ph ph-list-bullets"></i>
+                                    <span>Job Postings</span>
+                                </button>
+                                <button class="dropdown-item" id="applications-nav-btn" title="Applications">
+                                    <i class="ph ph-user-list"></i>
+                                    <span>Applications</span>
+                                </button>
+                            </div>
+
+                            <!-- Reviews Dropdown Nav Button -->
+                            <button class="admin-nav-btn" id="reviews-dropdown-btn" style="margin-top: 6px;" title="Reviews">
+                                <span class="icon-wrapper"><i class="ph ph-chat-teardrop-text"></i></span>
+                                <span>Reviews</span>
+                                <span id="pending-reviews-count" style="display: none; background: #f44336; color: white; border-radius: 12px; padding: 2px 8px; font-size: 1.1rem; font-weight: 600; margin-left: 6px; vertical-align: middle;">0</span>
+                                <span class="dropdown-icon" style="margin-left: auto;">
+                                    <i class="ph ph-caret-down"></i>
+                                </span>
+                            </button>
+                            <div class="sidebar-dropdown" id="reviews-dropdown" style="display: none;">
+                                <button class="dropdown-item" id="pending-reviews-nav-btn" title="Pending Queue">
+                                    <i class="ph ph-shield-warning"></i>
+                                    <span>Pending Queue</span>
+                                </button>
+                                <button class="dropdown-item" id="all-reviews-nav-btn" title="All Reviews">
+                                    <i class="ph ph-chat-double"></i>
+                                    <span>All Reviews</span>
+                                </button>
+                                <button class="dropdown-item" id="google-reviews-nav-btn" title="Google Reviews">
+                                    <i class="ph ph-google-logo"></i>
+                                    <span>Google Reviews</span>
+                                </button>
+                            </div>
                             </div> <!-- End sidebar-scroll-container -->
 
                             <!-- Fixed bottom buttons -->
@@ -1286,6 +1329,210 @@
                                   </div>
                               </section>
 
+                              <!-- Jobs Manager Section -->
+                              <section id="jobs-manager" class="admin-section">
+                                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+                                      <h3 class="reveal-type" style="margin: 0;">Manage Job Postings</h3>
+                                       <button id="add-job-btn" class="submit-btn btn-anim" style="width: auto; padding: 10px 20px;">+ Add Job Posting</button>
+                                  </div>
+
+                                  <!-- Collapsible Add/Edit Job Form Panel -->
+                                  <div id="job-form-container" class="anim-uni-in-up" style="display: none; background: var(--base-tint); border: 2px solid var(--st-muted); border-radius: var(--_radius-m); padding: 20px; margin-bottom: 24px;">
+                                      <h4 id="job-form-action-title" style="margin-top: 0; margin-bottom: 25px; font-size: 2rem; color: var(--t-bright);">Add New Job Posting</h4>
+                                      <form id="job-form">
+                                          <input type="hidden" id="job-id">
+                                          
+                                          <!-- 1. Title -->
+                                          <div class="form-group" style="margin-bottom: 14px;">
+                                              <label>Job Title *</label>
+                                              <input type="text" id="job-title" required placeholder="e.g. Senior Frontend Developer">
+                                          </div>
+
+                                          <!-- 2. Department -->
+                                          <div class="form-group" style="margin-bottom: 14px;">
+                                              <label>Department *</label>
+                                              <select id="job-department" required>
+                                                  <option value="">Select Department</option>
+                                                  <option value="Development">Development</option>
+                                                  <option value="Design">Design</option>
+                                                  <option value="Marketing">Marketing</option>
+                                                  <option value="Customer Service">Customer Service</option>
+                                                  <option value="Operations">Operations</option>
+                                                  <option value="Finance">Finance</option>
+                                                  <option value="Management">Management</option>
+                                              </select>
+                                          </div>
+
+                                          <!-- 3. Description -->
+                                          <div class="form-group" style="margin-bottom: 14px;">
+                                              <label>Description * (Short text shown in listing)</label>
+                                              <textarea id="job-description" required rows="3" placeholder="Describe the role..."></textarea>
+                                          </div>
+
+                                          <!-- 4. Location -->
+                                          <div class="form-group" style="margin-bottom: 14px;">
+                                              <label>Location *</label>
+                                              <input type="text" id="job-location" required placeholder="e.g. 100% remote or Islamabad, Pakistan">
+                                          </div>
+
+                                          <!-- 5. Type -->
+                                          <div class="form-group" style="margin-bottom: 14px;">
+                                              <label>Type *</label>
+                                              <input type="text" id="job-type" required placeholder="e.g. Full-time, Part-time, Contract">
+                                          </div>
+
+                                          <!-- 6. Display Order -->
+                                          <div class="form-group" style="margin-bottom: 14px;">
+                                              <label>Display Order</label>
+                                              <input type="number" id="job-order" value="0" min="0">
+                                          </div>
+                                          
+                                          <!-- 7. Active Toggle -->
+                                          <div class="form-group" style="margin-bottom: 14px; display: flex; align-items: center; gap: 10px;">
+                                              <input type="checkbox" id="job-isActive" checked style="width: auto; margin: 0; cursor: pointer;">
+                                              <label for="job-isActive" style="margin: 0; cursor: pointer;">Active (Visible on public Careers page)</label>
+                                          </div>
+
+                                          <!-- EXPERIENCE SECTION -->
+                                          <div style="border-top: 1px dashed var(--st-muted); margin: 20px 0; padding-top: 15px;">
+                                              <h5 style="margin-top: 0; margin-bottom: 15px; font-size: 1.5rem; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">1. Experience Details</h5>
+                                              <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                                                  <div class="form-group" style="flex: 1; min-width: 200px; margin-bottom: 14px;">
+                                                      <label>Experience Level</label>
+                                                      <select id="job-experienceLevel">
+                                                          <option value="">Select Experience Level</option>
+                                                          <option value="Entry Level">Entry Level</option>
+                                                          <option value="Mid Level">Mid Level</option>
+                                                          <option value="Senior Level">Senior Level</option>
+                                                          <option value="Lead / Manager">Lead / Manager</option>
+                                                      </select>
+                                                  </div>
+                                                  <div class="form-group" style="flex: 1; min-width: 200px; margin-bottom: 14px;">
+                                                      <label>Experience Range (Years)</label>
+                                                      <div style="display: flex; align-items: center; gap: 8px;">
+                                                          <input type="number" id="job-minExperienceYears" placeholder="Min" min="0" style="flex: 1;">
+                                                          <span style="color: var(--t-medium); font-size: 1.4rem;">to</span>
+                                                          <input type="number" id="job-maxExperienceYears" placeholder="Max" min="0" style="flex: 1;">
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                          </div>
+
+                                          <!-- WORK MODE SECTION -->
+                                          <div style="border-top: 1px dashed var(--st-muted); margin: 20px 0; padding-top: 15px;">
+                                              <h5 style="margin-top: 0; margin-bottom: 15px; font-size: 1.5rem; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">2. Work Mode & Location</h5>
+                                              <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                                                  <div class="form-group" style="flex: 1; min-width: 200px; margin-bottom: 14px;">
+                                                      <label>Work Mode</label>
+                                                      <select id="job-workMode">
+                                                          <option value="">Select Work Mode</option>
+                                                          <option value="On-site">On-site</option>
+                                                          <option value="Remote">Remote</option>
+                                                          <option value="Hybrid">Hybrid</option>
+                                                      </select>
+                                                  </div>
+                                                  <div class="form-group" style="flex: 1; min-width: 200px; margin-bottom: 14px;">
+                                                      <label>City</label>
+                                                      <input type="text" id="job-city" placeholder="e.g. Islamabad or Lahore">
+                                                  </div>
+                                              </div>
+                                          </div>
+
+                                          <!-- COMPENSATION SECTION -->
+                                          <div style="border-top: 1px dashed var(--st-muted); margin: 20px 0; padding-top: 15px;">
+                                              <h5 style="margin-top: 0; margin-bottom: 15px; font-size: 1.5rem; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">3. Compensation Details</h5>
+                                              <div class="form-group" style="margin-bottom: 14px; display: flex; align-items: center; gap: 10px;">
+                                                  <input type="checkbox" id="job-salaryDisclosed" style="width: auto; margin: 0; cursor: pointer;">
+                                                  <label for="job-salaryDisclosed" style="margin: 0; cursor: pointer;">Disclose salary range (PKR)</label>
+                                              </div>
+                                              
+                                              <div id="salary-range-wrapper" style="display: none; gap: 15px; flex-wrap: wrap; margin-bottom: 14px;">
+                                                  <div class="form-group" style="flex: 1; min-width: 200px; margin-bottom: 0;">
+                                                      <label>Minimum Salary (PKR)</label>
+                                                      <input type="number" id="job-salaryMin" placeholder="e.g. 150000" min="0">
+                                                  </div>
+                                                  <div class="form-group" style="flex: 1; min-width: 200px; margin-bottom: 0;">
+                                                      <label>Maximum Salary (PKR)</label>
+                                                      <input type="number" id="job-salaryMax" placeholder="e.g. 250000" min="0">
+                                                  </div>
+                                              </div>
+                                          </div>
+
+                                          <!-- REQUIREMENTS SECTION -->
+                                          <div style="border-top: 1px dashed var(--st-muted); margin: 20px 0; padding-top: 15px;">
+                                              <h5 style="margin-top: 0; margin-bottom: 15px; font-size: 1.5rem; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">4. Requirements & Skills</h5>
+                                              <div class="form-group" style="margin-bottom: 14px;">
+                                                  <label>Education Requirement</label>
+                                                  <input type="text" id="job-educationRequirement" placeholder="e.g. Bachelor's in Computer Science">
+                                              </div>
+                                              <div class="form-group" style="margin-bottom: 14px;">
+                                                  <label>Required Skills (Comma or Enter to add)</label>
+                                                  <div id="job-skills-container" class="chips-container" style="display: flex; flex-wrap: wrap; gap: 6px; padding: 6px; background: var(--base); border: 2px solid var(--st-muted); border-radius: var(--_radius-m); margin-bottom: 8px; min-height: 42px;"></div>
+                                                  <input type="text" id="job-skills-input" placeholder="Type a skill and press Enter/comma">
+                                              </div>
+                                          </div>
+
+                                          <!-- POSTING DETAILS SECTION -->
+                                          <div style="border-top: 1px dashed var(--st-muted); margin: 20px 0; padding-top: 15px;">
+                                              <h5 style="margin-top: 0; margin-bottom: 15px; font-size: 1.5rem; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">5. Posting Details</h5>
+                                              <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                                                  <div class="form-group" style="flex: 1; min-width: 200px; margin-bottom: 14px;">
+                                                      <label>Number of Openings</label>
+                                                      <input type="number" id="job-numberOfOpenings" value="1" min="1">
+                                                  </div>
+                                                  <div class="form-group" style="flex: 1; min-width: 200px; margin-bottom: 14px;">
+                                                      <label>Application Deadline</label>
+                                                      <input type="date" id="job-applicationDeadline" style="color: var(--t-bright);">
+                                                  </div>
+                                              </div>
+                                              <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                                                  <div class="form-group" style="flex: 1; min-width: 200px; margin-bottom: 14px;">
+                                                      <label>Status</label>
+                                                      <select id="job-status">
+                                                          <option value="Open">Open</option>
+                                                          <option value="Closed">Closed</option>
+                                                          <option value="On Hold">On Hold</option>
+                                                      </select>
+                                                  </div>
+                                                  <div class="form-group" style="flex: 1; min-width: 200px; margin-bottom: 14px;">
+                                                      <label>Application Email Fallback (Optional)</label>
+                                                      <input type="email" id="job-applicationEmail" placeholder="e.g. careers-ops@askwebsolutions.com">
+                                                  </div>
+                                              </div>
+                                          </div>
+
+                                          <!-- Buttons -->
+                                          <div style="display: flex; gap: 15px; margin-top: 30px;">
+                                              <button type="submit" class="submit-btn btn-anim" style="width: auto; padding: 10px 24px;">Save Job Posting</button>
+                                              <button type="button" id="cancel-job-form-btn" class="submit-btn" style="width: auto; padding: 10px 24px; background: transparent; border: 2px solid var(--st-muted); color: var(--t-medium);">Cancel</button>
+                                          </div>
+                                      </form>
+                                  </div>
+
+                                  <!-- Job Postings Table/Card List -->
+                                  <div id="jobs-list" class="items-list">
+                                      <!-- Dynamic list of jobs -->
+                                  </div>
+                              </section>
+
+                              <!-- Applications Manager Section -->
+                              <section id="applications-manager" class="admin-section">
+                                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-wrap: wrap; gap: 14px;">
+                                      <h3 class="reveal-type" style="margin: 0;">Job Applications</h3>
+                                      <div style="display: flex; align-items: center; gap: 10px;">
+                                          <label style="margin: 0; font-size: 1.3rem; color: var(--t-medium); white-space: nowrap;">Filter Job:</label>
+                                          <select id="application-job-filter" style="width: auto; padding: 8px 12px; background: var(--base-tint); border: 2px solid var(--st-muted); border-radius: var(--_radius-m); font-size: 1.3rem; color: var(--t-bright);">
+                                              <option value="all">Show All</option>
+                                          </select>
+                                      </div>
+                                  </div>
+
+                                  <!-- Applications List -->
+                                  <div id="applications-list" class="items-list">
+                                      <!-- Dynamic list of applications -->
+                                  </div>
+                              </section>
+
                               <!-- Services Manager Section -->
                               <section id="services-manager" class="admin-section">
                                   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
@@ -1341,6 +1588,105 @@
                                       <!-- Dynamic list of services -->
                                   </div>
                               </section>
+
+                              <!-- Reviews Moderation Section -->
+                              <section id="reviews-moderation-manager" class="admin-section">
+                                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+                                      <h3 class="reveal-type" style="margin: 0;">Pending Testimonials</h3>
+                                  </div>
+                                  <div id="reviews-moderation-list" class="items-list">
+                                      <!-- Dynamic list of pending reviews -->
+                                  </div>
+                              </section>
+
+                              <!-- All Reviews Section -->
+                              <section id="reviews-all-manager" class="admin-section">
+                                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+                                      <h3 class="reveal-type" style="margin: 0;">All Client Reviews</h3>
+                                      <button id="add-review-btn" class="submit-btn btn-anim" style="width: auto; padding: 10px 20px;">+ Add Review</button>
+                                  </div>
+
+                                  <!-- Collapsible Add/Edit Review Form Panel -->
+                                  <div id="review-form-container" class="anim-uni-in-up" style="display: none; background: var(--base-tint); border: 2px solid var(--st-muted); border-radius: var(--_radius-m); padding: 20px; margin-bottom: 24px;">
+                                      <h4 id="review-form-action-title" style="margin-top: 0; margin-bottom: 25px; font-size: 2rem; color: var(--t-bright);">Add New Review</h4>
+                                      <form id="review-form">
+                                          <input type="hidden" id="review-id">
+                                          
+                                          <!-- 1. Client Name -->
+                                          <div class="form-group" style="margin-bottom: 14px;">
+                                              <label>Client Name *</label>
+                                              <input type="text" id="review-clientName" required placeholder="e.g. Ali Khan">
+                                          </div>
+
+                                          <!-- 2. Company / Title -->
+                                          <div class="form-group" style="margin-bottom: 14px;">
+                                              <label>Company / Designation (Optional)</label>
+                                              <input type="text" id="review-company" placeholder="e.g. CEO at ABC Corp">
+                                          </div>
+
+                                          <!-- 3. Rating -->
+                                          <div class="form-group" style="margin-bottom: 14px;">
+                                              <label>Rating * (1-5 Stars)</label>
+                                              <div id="review-rating-stars" style="display: flex; gap: 8px; font-size: 2.4rem; color: var(--t-medium); cursor: pointer; margin-top: 5px;">
+                                                  <i class="ph ph-star star-btn" data-value="1"></i>
+                                                  <i class="ph ph-star star-btn" data-value="2"></i>
+                                                  <i class="ph ph-star star-btn" data-value="3"></i>
+                                                  <i class="ph ph-star star-btn" data-value="4"></i>
+                                                  <i class="ph ph-star star-btn" data-value="5"></i>
+                                              </div>
+                                              <input type="hidden" id="review-rating" required value="5">
+                                          </div>
+
+                                          <!-- 4. Review Text -->
+                                          <div class="form-group" style="margin-bottom: 14px;">
+                                              <label>Review Text *</label>
+                                              <textarea id="review-reviewText" required rows="4" placeholder="Write the testimonial..."></textarea>
+                                          </div>
+
+                                          <!-- 5. Client Photo -->
+                                          <div class="form-group" style="margin-bottom: 14px;">
+                                              <label>Client Photo (Optional)</label>
+                                              <input type="file" id="review-photo" accept="image/*">
+                                              <div id="review-photo-preview" style="display: none; margin-top: 10px;">
+                                                  <img src="" alt="Client Preview" style="width: 80px; height: 80px; object-fit: cover; border-radius: 50%; border: 2px solid var(--st-muted);">
+                                                  <button type="button" id="remove-review-photo-btn" class="delete-btn" style="width: auto; padding: 4px 10px; font-size: 1.1rem; margin-top: 5px; display: block;">Remove Photo</button>
+                                              </div>
+                                          </div>
+
+                                          <!-- 6. Featured Toggle -->
+                                          <div class="form-group" style="margin-bottom: 14px; display: flex; align-items: center; gap: 10px;">
+                                              <input type="checkbox" id="review-isFeatured" style="width: auto; margin: 0; cursor: pointer;">
+                                              <label for="review-isFeatured" style="margin: 0; cursor: pointer;">Featured (Highlight on site)</label>
+                                          </div>
+
+                                          <!-- Buttons -->
+                                          <div style="display: flex; gap: 15px; margin-top: 30px;">
+                                              <button type="submit" class="submit-btn btn-anim" style="width: auto; padding: 10px 24px;">Save Testimonial</button>
+                                              <button type="button" id="cancel-review-form-btn" class="submit-btn" style="width: auto; padding: 10px 24px; background: transparent; border: 2px solid var(--st-muted); color: var(--t-medium);">Cancel</button>
+                                          </div>
+                                      </form>
+                                  </div>
+
+                                  <div id="reviews-all-list" class="items-list">
+                                      <!-- Dynamic list of all reviews -->
+                                  </div>
+                              </section>
+
+                              <!-- Google Reviews Cached Section -->
+                              <section id="google-reviews-manager" class="admin-section">
+                                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-wrap: wrap; gap: 14px;">
+                                      <div>
+                                          <h3 class="reveal-type" style="margin: 0;">Cached Google Reviews</h3>
+                                          <p id="google-reviews-timestamp" style="margin: 4px 0 0 0; font-size: 1.2rem; color: var(--t-medium); font-weight: 500;">Last fetched: Not available</p>
+                                      </div>
+                                      <button id="refresh-google-reviews-btn" class="submit-btn btn-anim" style="width: auto; padding: 10px 20px;">
+                                          <i class="ph ph-arrows-clockwise" style="vertical-align: middle; margin-right: 4px;"></i> Refresh from Google
+                                      </button>
+                                  </div>
+                                  <div id="google-reviews-list" class="items-list">
+                                      <!-- Dynamic list of Google reviews -->
+                                  </div>
+                              </section>
                         </div>
                     </div>
                 </div>
@@ -1362,6 +1708,7 @@
         let teamPhotoFile = null;
         let removeTeamPhotoFlag = false;
         let activeServiceTags = [];
+        let activeJobSkills = [];
         
         // ---------------------- Helper functions ----------------------
 
@@ -1778,10 +2125,21 @@
         }
         
         async function loadAllData() {
+            updatePendingReviewsCount();
             if (document.getElementById('team-nav-btn')?.classList.contains('active')) {
                 await loadTeamMembers();
             } else if (document.getElementById('services-nav-btn')?.classList.contains('active')) {
                 await loadServices();
+            } else if (document.getElementById('jobs-nav-btn')?.classList.contains('active')) {
+                await loadJobs();
+            } else if (document.getElementById('applications-nav-btn')?.classList.contains('active')) {
+                await loadApplications();
+            } else if (document.getElementById('pending-reviews-nav-btn')?.classList.contains('active')) {
+                await loadPendingReviews();
+            } else if (document.getElementById('all-reviews-nav-btn')?.classList.contains('active')) {
+                await loadAllReviews();
+            } else if (document.getElementById('google-reviews-nav-btn')?.classList.contains('active')) {
+                await loadGoogleReviews();
             } else {
                 const activeItem = document.querySelector('.dropdown-item.active');
                 const cat = activeItem ? activeItem.getAttribute('data-category') : 'Portfolio';
@@ -2091,6 +2449,716 @@
             }
         };
 
+        // ---------------------- Reviews Helpers ----------------------
+        let removeReviewPhotoFlag = false;
+
+        async function updatePendingReviewsCount() {
+            try {
+                const res = await apiRequest('/reviews/all?status=Pending');
+                const badge = document.getElementById('pending-reviews-count');
+                if (res.success && res.data.length > 0) {
+                    badge.textContent = res.data.length;
+                    badge.style.display = 'inline-block';
+                } else {
+                    badge.style.display = 'none';
+                }
+            } catch (err) {
+                console.error('Failed to update pending reviews count:', err);
+            }
+        }
+
+        async function loadPendingReviews() {
+            const list = document.getElementById('reviews-moderation-list');
+            list.innerHTML = '<p style="color: var(--t-medium); padding: 20px 0;">Loading...</p>';
+            
+            try {
+                const res = await apiRequest('/reviews/all?status=Pending');
+                if (res.success) {
+                    if (res.data.length === 0) {
+                        list.innerHTML = '<p style="color: var(--t-medium); padding: 20px 0;">No reviews awaiting approval.</p>';
+                        return;
+                    }
+
+                    list.innerHTML = res.data.map((r, index) => {
+                        const dateFormatted = new Date(r.submittedAt).toLocaleDateString(undefined, {
+                            year: 'numeric', month: 'short', day: 'numeric'
+                        });
+                        const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
+                        const companyInfo = r.company ? ` • ${r.company}` : '';
+                        const photoImg = r.photo ? `<img src="${r.photo}" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid var(--st-muted); margin-right: 15px;">` : '';
+
+                        return `
+                        <div class="item-card anim-uni-in-up" style="animation-delay: ${index * 0.1}s; display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+                            <div>
+                                <div style="display: flex; align-items: center; margin-bottom: 12px;">
+                                    ${photoImg}
+                                    <div>
+                                        <h4 style="margin: 0; font-size: 1.6rem; color: var(--t-bright); font-weight: 600;">${r.clientName}</h4>
+                                        <span style="font-size: 1.2rem; color: var(--t-medium);">${dateFormatted}${companyInfo}</span>
+                                    </div>
+                                </div>
+                                <div style="font-size: 1.8rem; color: #ffb300; margin-bottom: 8px;">${stars}</div>
+                                <p style="font-size: 1.4rem; color: var(--t-bright); line-height: 1.5; font-style: italic; margin-bottom: 16px;">"${r.reviewText}"</p>
+                            </div>
+                            <div style="display: flex; gap: 10px; margin-top: auto; width: 100%;">
+                                <button class="submit-btn" style="flex: 1; padding: 8px 12px; font-size: 1.3rem; border-radius: 8px; background: #4caf50; border-color: #4caf50; color: white;" onclick="updateReviewStatus('${r._id}', 'Approved')">Approve</button>
+                                <button class="delete-btn" style="flex: 1; padding: 8px 12px; font-size: 1.3rem; border-radius: 8px; background: #f44336; border-color: #f44336; color: white;" onclick="updateReviewStatus('${r._id}', 'Rejected')">Reject</button>
+                            </div>
+                        </div>
+                        `;
+                    }).join('');
+                } else {
+                    list.innerHTML = `<p style="color: red; padding: 20px 0;">Failed to load pending reviews: ${res.message}</p>`;
+                }
+            } catch (err) {
+                console.error(err);
+                list.innerHTML = '<p style="color: red; padding: 20px 0;">An error occurred while loading pending reviews.</p>';
+            }
+        }
+
+        window.updateReviewStatus = async function(id, newStatus) {
+            try {
+                const res = await apiRequest(`/reviews/${id}/status`, {
+                    method: 'PUT',
+                    body: JSON.stringify({ status: newStatus })
+                });
+                if (res.success) {
+                    showToast(`Review status updated to ${newStatus}.`, 'success');
+                    updatePendingReviewsCount();
+                    loadPendingReviews();
+                } else {
+                    showToast(res.message, 'error');
+                }
+            } catch (err) {
+                console.error(err);
+                showToast('Failed to update status.', 'error');
+            }
+        };
+
+        function showReviewForm(title = "Add New Testimonial") {
+            document.getElementById('review-form-action-title').textContent = title;
+            document.getElementById('review-form-container').style.display = 'block';
+            document.getElementById('add-review-btn').textContent = 'Cancel';
+        }
+        function hideReviewForm() {
+            document.getElementById('review-form').reset();
+            document.getElementById('review-id').value = '';
+            setStarRating(5);
+            
+            document.getElementById('review-photo-preview').style.display = 'none';
+            document.getElementById('review-photo-preview').querySelector('img').src = '';
+            removeReviewPhotoFlag = false;
+
+            document.getElementById('review-form-container').style.display = 'none';
+            document.getElementById('add-review-btn').textContent = '+ Add Review';
+        }
+
+        function setStarRating(ratingVal) {
+            document.getElementById('review-rating').value = ratingVal;
+            document.querySelectorAll('#review-rating-stars .star-btn').forEach(star => {
+                const val = parseInt(star.getAttribute('data-value'));
+                if (val <= ratingVal) {
+                    star.className = 'ph-fill ph-star star-btn';
+                    star.style.color = '#ffb300';
+                } else {
+                    star.className = 'ph ph-star star-btn';
+                    star.style.color = 'var(--t-medium)';
+                }
+            });
+        }
+
+        async function loadAllReviews() {
+            const list = document.getElementById('reviews-all-list');
+            list.innerHTML = '<p style="color: var(--t-medium); padding: 20px 0;">Loading...</p>';
+            
+            try {
+                const res = await apiRequest('/reviews/all');
+                if (res.success) {
+                    if (res.data.length === 0) {
+                        list.innerHTML = '<p style="color: var(--t-medium); padding: 20px 0;">No reviews found.</p>';
+                        return;
+                    }
+
+                    list.innerHTML = res.data.map((r, index) => {
+                        let statusColor = '#3f51b5'; // default Pending/New
+                        if (r.status === 'Approved') statusColor = '#4caf50';
+                        if (r.status === 'Rejected') statusColor = '#f44336';
+
+                        const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
+                        const companyInfo = r.company ? ` • ${r.company}` : '';
+                        const photoImg = r.photo ? `<img src="${r.photo}" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid var(--st-muted); margin-right: 15px;">` : '';
+
+                        return `
+                        <div class="item-card anim-uni-in-up" style="animation-delay: ${index * 0.1}s; display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+                            <div>
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 12px;">
+                                    <div style="display: flex; align-items: center;">
+                                        ${photoImg}
+                                        <div>
+                                            <h4 style="margin: 0; font-size: 1.6rem; color: var(--t-bright); font-weight: 600;">${r.clientName}</h4>
+                                            <span style="font-size: 1.2rem; color: var(--t-medium);">${r.source || 'Admin'}${companyInfo}</span>
+                                        </div>
+                                    </div>
+                                    <span style="font-size: 1.0rem; font-weight: 600; text-transform: uppercase; padding: 2px 6px; border-radius: 4px; border: 1px solid ${statusColor}; color: ${statusColor};">${r.status}</span>
+                                </div>
+                                <div style="font-size: 1.8rem; color: #ffb300; margin-bottom: 8px;">${stars}</div>
+                                <p style="font-size: 1.4rem; color: var(--t-bright); line-height: 1.5; font-style: italic; margin-bottom: 16px;">"${r.reviewText}"</p>
+                            </div>
+                            <div style="margin-top: auto; display: flex; flex-direction: column; gap: 8px; width: 100%;">
+                                <div style="display: flex; align-items: center; justify-content: space-between; font-size: 1.2rem; color: var(--t-medium); background: var(--base); padding: 6px 10px; border-radius: 6px;">
+                                    <span>Featured Status</span>
+                                    <input type="checkbox" ${r.isFeatured ? 'checked' : ''} onchange="toggleReviewFeatured('${r._id}', this.checked)" style="cursor: pointer; width: 18px; height: 18px;">
+                                </div>
+                                <div class="item-card-actions" style="display: flex; gap: 10px; width: 100%;">
+                                    <button class="submit-btn" style="flex: 1; padding: 8px 12px; font-size: 1.3rem; border-radius: 8px;" onclick="editReview('${r._id}')">Edit</button>
+                                    <button class="delete-btn" style="flex: 1; padding: 8px 12px; font-size: 1.3rem; border-radius: 8px;" onclick="deleteReview('${r._id}')">Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                        `;
+                    }).join('');
+                } else {
+                    list.innerHTML = `<p style="color: red; padding: 20px 0;">Failed to load reviews: ${res.message}</p>`;
+                }
+            } catch (err) {
+                console.error(err);
+                list.innerHTML = '<p style="color: red; padding: 20px 0;">An error occurred while loading reviews.</p>';
+            }
+        }
+
+        window.toggleReviewFeatured = async function(id, isChecked) {
+            try {
+                const res = await apiRequest(`/reviews/${id}`, {
+                    method: 'PUT',
+                    body: JSON.stringify({ isFeatured: isChecked })
+                });
+                if (res.success) {
+                    showToast(`Review is ${isChecked ? 'now' : 'no longer'} featured.`, 'success');
+                    loadAllReviews();
+                } else {
+                    showToast(res.message, 'error');
+                }
+            } catch (err) {
+                console.error(err);
+                showToast('Failed to toggle featured status.', 'error');
+            }
+        };
+
+        window.editReview = async function(id) {
+            const res = await apiRequest('/reviews/all');
+            if (res.success) {
+                const r = res.data.find(item => item._id === id);
+                if (r) {
+                    document.getElementById('review-id').value = r._id;
+                    document.getElementById('review-clientName').value = r.clientName || '';
+                    document.getElementById('review-company').value = r.company || '';
+                    document.getElementById('review-reviewText').value = r.reviewText || '';
+                    document.getElementById('review-isFeatured').checked = !!r.isFeatured;
+                    
+                    setStarRating(r.rating || 5);
+                    
+                    const preview = document.getElementById('review-photo-preview');
+                    if (r.photo) {
+                        preview.style.display = 'block';
+                        preview.querySelector('img').src = r.photo;
+                    } else {
+                        preview.style.display = 'none';
+                        preview.querySelector('img').src = '';
+                    }
+                    removeReviewPhotoFlag = false;
+                    
+                    showReviewForm("Edit Testimonial");
+                    document.getElementById('review-form-container').scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        };
+
+        window.deleteReview = async function(id) {
+            if (confirm('Are you sure you want to delete this testimonial?')) {
+                const res = await apiRequest(`/reviews/${id}`, { method: 'DELETE' });
+                if (res.success) {
+                    showToast('Testimonial deleted successfully!', 'success');
+                    updatePendingReviewsCount();
+                    loadAllReviews();
+                } else {
+                    showToast(res.message, 'error');
+                }
+            }
+        };
+
+        async function loadGoogleReviews() {
+            const list = document.getElementById('google-reviews-list');
+            list.innerHTML = '<p style="color: var(--t-medium); padding: 20px 0;">Loading...</p>';
+            
+            try {
+                const res = await apiRequest('/google-reviews');
+                if (res.success) {
+                    if (res.data.length === 0) {
+                        list.innerHTML = '<p style="color: var(--t-medium); padding: 20px 0;">No cached Google reviews found.</p>';
+                        return;
+                    }
+
+                    // Update fetchedAt timestamp
+                    const stamp = document.getElementById('google-reviews-timestamp');
+                    if (res.data[0].fetchedAt) {
+                        const timeStr = new Date(res.data[0].fetchedAt).toLocaleString();
+                        stamp.textContent = `Last fetched: ${timeStr}`;
+                    } else {
+                        stamp.textContent = 'Last fetched: Not available';
+                    }
+
+                    list.innerHTML = res.data.map((r, index) => {
+                        const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
+                        const photoImg = r.authorPhotoUrl ? `<img src="${r.authorPhotoUrl}" style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover; margin-right: 12px; background: #fff;">` : '';
+
+                        return `
+                        <div class="item-card anim-uni-in-up" style="animation-delay: ${index * 0.1}s; display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+                            <div>
+                                <div style="display: flex; align-items: center; margin-bottom: 12px;">
+                                    ${photoImg}
+                                    <div>
+                                        <h4 style="margin: 0; font-size: 1.5rem; color: var(--t-bright); font-weight: 600;">${r.authorName}</h4>
+                                        <span style="font-size: 1.1rem; color: var(--t-medium);">${r.relativeTimeDescription || ''}</span>
+                                    </div>
+                                    <i class="ph-bold ph-google-logo" style="margin-left: auto; font-size: 2rem; color: #4285f4;"></i>
+                                </div>
+                                <div style="font-size: 1.6rem; color: #ffb300; margin-bottom: 8px;">${stars}</div>
+                                <p style="font-size: 1.3rem; color: var(--t-bright); line-height: 1.5; font-style: italic; margin-bottom: 0;">"${r.reviewText || ''}"</p>
+                            </div>
+                        </div>
+                        `;
+                    }).join('');
+                } else {
+                    list.innerHTML = `<p style="color: red; padding: 20px 0;">Failed to load Google reviews: ${res.message}</p>`;
+                }
+            } catch (err) {
+                console.error(err);
+                list.innerHTML = '<p style="color: red; padding: 20px 0;">An error occurred while loading Google reviews.</p>';
+            }
+        }
+
+        async function refreshGoogleReviews() {
+            const btn = document.getElementById('refresh-google-reviews-btn');
+            const originalBtnText = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<i class="ph ph-spinner-gap loading-icon" style="vertical-align: middle; margin-right: 4px;"></i> Refreshing...';
+
+            try {
+                const res = await apiRequest('/google-reviews/refresh', { method: 'POST' });
+                if (res.success) {
+                    showToast(res.message, 'success');
+                    await loadGoogleReviews();
+                } else {
+                    showToast(res.message, 'error');
+                }
+            } catch (err) {
+                console.error(err);
+                showToast('An error occurred during refresh.', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalBtnText;
+            }
+        }
+
+        // ---------------------- Jobs and Applications Helpers ----------------------
+        function renderJobSkills() {
+            const container = document.getElementById('job-skills-container');
+            if (container) {
+                container.innerHTML = activeJobSkills.map(skill => `
+                    <span class="tag tag-default tag-outline-medium" style="display: inline-flex; align-items: center; gap: 6px; font-size: 1.2rem; padding: 4px 10px;">
+                        ${skill}
+                        <i class="ph ph-x" style="cursor: pointer; font-size: 1.2rem; margin-left: 4px;" onclick="removeJobSkill('${skill}')"></i>
+                    </span>
+                `).join('');
+            }
+        }
+        window.removeJobSkill = function(skill) {
+            activeJobSkills = activeJobSkills.filter(s => s !== skill);
+            renderJobSkills();
+        };
+
+        function showJobForm(title = "Add New Job Posting") {
+            document.getElementById('job-form-action-title').textContent = title;
+            document.getElementById('job-form-container').style.display = 'block';
+            document.getElementById('add-job-btn').textContent = 'Cancel';
+        }
+        function hideJobForm() {
+            document.getElementById('job-form').reset();
+            document.getElementById('job-id').value = '';
+            activeJobSkills = [];
+            renderJobSkills();
+            
+            const salaryWrapper = document.getElementById('salary-range-wrapper');
+            if (salaryWrapper) {
+                salaryWrapper.style.display = 'none';
+            }
+            
+            document.getElementById('job-form-container').style.display = 'none';
+            document.getElementById('add-job-btn').textContent = '+ Add Job Posting';
+        }
+
+        async function loadJobs() {
+            const list = document.getElementById('jobs-list');
+            list.innerHTML = '<p style="color: var(--t-medium); padding: 20px 0;">Loading...</p>';
+            
+            try {
+                // Fetch jobs and applications concurrently to count matches
+                const [jobsRes, appsRes] = await Promise.all([
+                    apiRequest('/jobs/all'),
+                    apiRequest('/applications')
+                ]);
+                
+                if (jobsRes.success && appsRes.success) {
+                    if (jobsRes.data.length === 0) {
+                        list.innerHTML = '<p style="color: var(--t-medium); padding: 20px 0;">No job postings found.</p>';
+                        return;
+                    }
+
+                    // Pre-calculate application counts per job
+                    const appCounts = {};
+                    appsRes.data.forEach(app => {
+                        const jId = app.jobId && app.jobId._id ? app.jobId._id : app.jobId;
+                        if (jId) {
+                            appCounts[jId] = (appCounts[jId] || 0) + 1;
+                        }
+                    });
+
+                    list.innerHTML = jobsRes.data.map((j, index) => {
+                        const count = appCounts[j._id] || 0;
+                        const statusColor = j.isActive ? '#4caf50' : '#ff9800';
+                        const statusLabel = j.isActive ? 'Active' : 'Inactive';
+                        
+                        // Extra attributes list
+                        const details = [];
+                        if (j.experienceLevel) details.push(`Exp: ${j.experienceLevel}`);
+                        if (j.minExperienceYears !== undefined && j.minExperienceYears !== null) {
+                            const minExp = j.minExperienceYears;
+                            const maxExp = (j.maxExperienceYears !== undefined && j.maxExperienceYears !== null) ? j.maxExperienceYears : '+';
+                            details.push(`Years: ${minExp}-${maxExp}`);
+                        }
+                        if (j.workMode) details.push(`Mode: ${j.workMode}`);
+                        if (j.city) details.push(`City: ${j.city}`);
+                        if (j.salaryDisclosed && (j.salaryMin !== undefined || j.salaryMax !== undefined)) {
+                            details.push(`Salary: ${j.salaryMin || 0} - ${j.salaryMax || 0} PKR`);
+                        } else if (!j.salaryDisclosed) {
+                            details.push('Salary: Market Comp.');
+                        }
+                        if (j.applicationDeadline) {
+                            const deadlineFormatted = new Date(j.applicationDeadline).toLocaleDateString(undefined, {
+                                month: 'short', day: 'numeric', year: 'numeric'
+                            });
+                            details.push(`Deadline: ${deadlineFormatted}`);
+                        }
+                        details.push(`Status: ${j.status || 'Open'}`);
+
+                        return `
+                        <div class="item-card anim-uni-in-up" style="animation-delay: ${index * 0.1}s; display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+                            <div>
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 8px;">
+                                    <h4 style="margin: 0; font-size: 1.8rem; color: var(--t-bright); font-weight: 600; line-height: 1.3; word-break: break-word;">${j.title}</h4>
+                                    <span style="font-size: 1.0rem; font-weight: 600; text-transform: uppercase; padding: 2px 6px; border-radius: 4px; border: 1px solid ${statusColor}; color: ${statusColor};">${statusLabel}</span>
+                                </div>
+                                
+                                <div style="margin-bottom: 16px; display: flex; flex-direction: column; gap: 8px;">
+                                    <div>
+                                        <span style="font-size: 1.1rem; color: var(--t-medium); text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 2px; font-weight: 500;">Department</span>
+                                        <span style="font-size: 1.3rem; color: var(--t-bright); font-weight: 500;">${j.department}</span>
+                                    </div>
+                                    <div>
+                                        <span style="font-size: 1.1rem; color: var(--t-medium); text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 2px; font-weight: 500;">Location & Type</span>
+                                        <span style="font-size: 1.3rem; color: var(--t-bright); font-weight: 400;">${j.location} • ${j.type}</span>
+                                    </div>
+                                    <div>
+                                        <span style="font-size: 1.1rem; color: var(--t-medium); text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 2px; font-weight: 500;">Posting Details</span>
+                                        <span style="font-size: 1.2rem; color: var(--t-bright); font-weight: 400; line-height: 1.4;">${details.join(' | ')}</span>
+                                    </div>
+                                    <div>
+                                        <span style="font-size: 1.1rem; color: var(--t-medium); text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 2px; font-weight: 500;">Display Order</span>
+                                        <span style="font-size: 1.3rem; color: var(--t-bright); font-weight: 500;">${j.order !== undefined ? j.order : 0}</span>
+                                    </div>
+                                    <div style="margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--st-muted);">
+                                        <button class="submit-btn" style="width: auto; padding: 6px 12px; font-size: 1.2rem; background: var(--base-tint); border: 2px solid var(--st-muted); color: var(--accent);" onclick="viewJobApplications('${j._id}')">
+                                            <i class="ph ph-user-list" style="vertical-align: middle; margin-right: 4px;"></i> Applications (${count})
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="margin-top: auto; display: flex; flex-direction: column; gap: 8px; width: 100%;">
+                                <div style="display: flex; align-items: center; justify-content: space-between; font-size: 1.2rem; color: var(--t-medium); background: var(--base); padding: 6px 10px; border-radius: 6px;">
+                                    <span>Active Status</span>
+                                    <input type="checkbox" ${j.isActive ? 'checked' : ''} onchange="toggleJobActive('${j._id}', this.checked)" style="cursor: pointer; width: 18px; height: 18px;">
+                                </div>
+                                <div class="item-card-actions" style="display: flex; gap: 10px; width: 100%;">
+                                    <button class="submit-btn" style="flex: 1; padding: 8px 12px; font-size: 1.3rem; border-radius: 8px;" onclick="editJob('${j._id}')">Edit</button>
+                                    <button class="delete-btn" style="flex: 1; padding: 8px 12px; font-size: 1.3rem; border-radius: 8px;" onclick="deleteJob('${j._id}')">Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                        `;
+                    }).join('');
+                } else {
+                    list.innerHTML = `<p style="color: red; padding: 20px 0;">Failed to load job postings: ${jobsRes.message || appsRes.message}</p>`;
+                }
+            } catch (err) {
+                console.error(err);
+                list.innerHTML = '<p style="color: red; padding: 20px 0;">An error occurred while fetching job postings.</p>';
+            }
+        }
+
+        window.toggleJobActive = async function(id, isChecked) {
+            try {
+                const res = await apiRequest(`/jobs/${id}`, {
+                    method: 'PUT',
+                    body: JSON.stringify({ isActive: isChecked })
+                });
+                if (res.success) {
+                    showToast(`Job posting is now ${isChecked ? 'active' : 'inactive'}.`, 'success');
+                    loadJobs();
+                } else {
+                    showToast(res.message, 'error');
+                }
+            } catch (err) {
+                console.error(err);
+                showToast('Failed to toggle status.', 'error');
+            }
+        };
+
+        window.editJob = async function(id) {
+            const res = await apiRequest('/jobs/all');
+            if (res.success) {
+                const job = res.data.find(j => j._id === id);
+                if (job) {
+                    document.getElementById('job-id').value = job._id;
+                    document.getElementById('job-title').value = job.title || '';
+                    document.getElementById('job-department').value = job.department || '';
+                    document.getElementById('job-description').value = job.description || '';
+                    document.getElementById('job-location').value = job.location || '';
+                    document.getElementById('job-type').value = job.type || '';
+                    document.getElementById('job-order').value = job.order || 0;
+                    document.getElementById('job-isActive').checked = !!job.isActive;
+
+                    // Populate new fields
+                    document.getElementById('job-experienceLevel').value = job.experienceLevel || '';
+                    document.getElementById('job-minExperienceYears').value = (job.minExperienceYears !== undefined && job.minExperienceYears !== null) ? job.minExperienceYears : '';
+                    document.getElementById('job-maxExperienceYears').value = (job.maxExperienceYears !== undefined && job.maxExperienceYears !== null) ? job.maxExperienceYears : '';
+                    document.getElementById('job-workMode').value = job.workMode || '';
+                    document.getElementById('job-city').value = job.city || '';
+                    
+                    const salaryDisclosed = !!job.salaryDisclosed;
+                    document.getElementById('job-salaryDisclosed').checked = salaryDisclosed;
+                    document.getElementById('salary-range-wrapper').style.display = salaryDisclosed ? 'flex' : 'none';
+                    document.getElementById('job-salaryMin').value = (job.salaryMin !== undefined && job.salaryMin !== null) ? job.salaryMin : '';
+                    document.getElementById('job-salaryMax').value = (job.salaryMax !== undefined && job.salaryMax !== null) ? job.salaryMax : '';
+                    
+                    document.getElementById('job-educationRequirement').value = job.educationRequirement || '';
+                    
+                    activeJobSkills = job.skills || [];
+                    renderJobSkills();
+                    
+                    document.getElementById('job-numberOfOpenings').value = job.numberOfOpenings || 1;
+                    
+                    if (job.applicationDeadline) {
+                        const dateStr = new Date(job.applicationDeadline).toISOString().split('T')[0];
+                        document.getElementById('job-applicationDeadline').value = dateStr;
+                    } else {
+                        document.getElementById('job-applicationDeadline').value = '';
+                    }
+                    
+                    document.getElementById('job-status').value = job.status || 'Open';
+                    document.getElementById('job-applicationEmail').value = job.applicationEmail || '';
+                    
+                    showJobForm("Edit Job Posting");
+                    document.getElementById('job-form-container').scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        };
+
+        window.deleteJob = async function(id) {
+            if (confirm('Are you sure you want to delete this job posting? (This will not delete associated applications, but their job reference might be broken).')) {
+                const res = await apiRequest(`/jobs/${id}`, { method: 'DELETE' });
+                if (res.success) {
+                    showToast('Job posting deleted successfully!', 'success');
+                    loadJobs();
+                } else {
+                    showToast(res.message, 'error');
+                }
+            }
+        };
+
+        window.viewJobApplications = function(jobId) {
+            // Deactivate other tabs
+            document.querySelectorAll('.dropdown-item').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.admin-nav-btn').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById('applications-nav-btn').classList.add('active');
+            document.getElementById('careers-dropdown-btn').classList.add('active');
+            
+            // Switch to applications tab
+            switchSection('applications-manager');
+            
+            // Pre-select job filter and load applications
+            setTimeout(() => {
+                const select = document.getElementById('application-job-filter');
+                if (select) {
+                    select.value = jobId;
+                }
+                loadApplications(jobId);
+            }, 100);
+        };
+
+        async function loadApplications(filterJobId = 'all') {
+            const list = document.getElementById('applications-list');
+            list.innerHTML = '<p style="color: var(--t-medium); padding: 20px 0;">Loading...</p>';
+            
+            try {
+                // Fetch jobs first to populate the filter selector
+                const jobsRes = await apiRequest('/jobs/all');
+                if (jobsRes.success) {
+                    const select = document.getElementById('application-job-filter');
+                    const currentValue = filterJobId;
+                    select.innerHTML = '<option value="all">Show All</option>' + 
+                        jobsRes.data.map(j => `<option value="${j._id}">${j.title} (${j.department})</option>`).join('');
+                    select.value = currentValue;
+                }
+
+                // Build application endpoint with filter
+                const endpoint = filterJobId !== 'all' ? `/applications?jobId=${filterJobId}` : '/applications';
+                const res = await apiRequest(endpoint);
+                
+                if (res.success) {
+                    if (res.data.length === 0) {
+                        list.innerHTML = '<p style="color: var(--t-medium); padding: 20px 0;">No applications found.</p>';
+                        return;
+                    }
+                    
+                    list.innerHTML = res.data.map((app, index) => {
+                        const jobTitle = app.jobId ? app.jobId.title : 'Deleted Job';
+                        const jobDept = app.jobId ? `• ${app.jobId.department}` : '';
+                        const dateFormatted = new Date(app.appliedAt).toLocaleDateString(undefined, {
+                            year: 'numeric', month: 'short', day: 'numeric'
+                        });
+
+                        const statuses = ['New', 'Reviewed', 'Interviewing', 'Rejected', 'Hired'];
+                        const statusOptions = statuses.map(s => `
+                            <option value="${s}" ${app.status === s ? 'selected' : ''}>${s}</option>
+                        `).join('');
+
+                        // Determine color for status outline badge
+                        let statusColor = '#3f51b5'; // default New
+                        if (app.status === 'Reviewed') statusColor = '#2196f3';
+                        if (app.status === 'Interviewing') statusColor = '#9c27b0';
+                        if (app.status === 'Rejected') statusColor = '#f44336';
+                        if (app.status === 'Hired') statusColor = '#4caf50';
+
+                        // Resume button
+                        const resumeLabel = app.resumeType === 'file' ? 'View Resume (File)' : 'View Resume (Link)';
+                        const resumeIcon = app.resumeType === 'file' ? 'ph-file' : 'ph-link';
+
+                        return `
+                        <div class="item-card anim-uni-in-up" style="animation-delay: ${index * 0.1}s; display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+                            <div>
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 8px;">
+                                    <h4 style="margin: 0; font-size: 1.8rem; color: var(--t-bright); font-weight: 600; line-height: 1.3; word-break: break-word;">${app.name}</h4>
+                                    <span style="font-size: 1.0rem; font-weight: 600; text-transform: uppercase; padding: 2px 6px; border-radius: 4px; border: 1px solid ${statusColor}; color: ${statusColor};">${app.status}</span>
+                                </div>
+                                
+                                <div style="margin-bottom: 12px; font-size: 1.2rem; color: var(--t-medium);">
+                                    Applied on: <strong>${dateFormatted}</strong>
+                                </div>
+
+                                <div style="margin-bottom: 16px; display: flex; flex-direction: column; gap: 8px;">
+                                    <div>
+                                        <span style="font-size: 1.1rem; color: var(--t-medium); text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 2px; font-weight: 500;">Role</span>
+                                        <span style="font-size: 1.3rem; color: var(--t-bright); font-weight: 500;">${jobTitle} ${jobDept}</span>
+                                    </div>
+                                    <div>
+                                        <span style="font-size: 1.1rem; color: var(--t-medium); text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 2px; font-weight: 500;">Contact</span>
+                                        <span style="font-size: 1.3rem; color: var(--t-bright); font-weight: 400; display: block; word-break: break-all;">
+                                            <a href="mailto:${app.email}" style="color: var(--accent); text-decoration: none;">${app.email}</a>
+                                        </span>
+                                        <span style="font-size: 1.3rem; color: var(--t-bright); font-weight: 400; display: block; margin-top: 2px;">
+                                            <a href="tel:${app.phone}" style="color: var(--accent); text-decoration: none;">${app.phone}</a>
+                                        </span>
+                                    </div>
+                                    <div style="margin-top: 8px;">
+                                        <a href="${app.resumeUrl}" target="_blank" class="submit-btn btn-anim" style="display: inline-flex; align-items: center; gap: 6px; width: auto; padding: 6px 12px; font-size: 1.2rem; text-decoration: none; border-radius: 6px;">
+                                            <i class="ph ${resumeIcon}"></i> ${resumeLabel}
+                                        </a>
+                                    </div>
+                                    
+                                    ${app.coverLetter ? `
+                                    <div style="margin-top: 10px;">
+                                        <button class="submit-btn" style="width: auto; padding: 4px 8px; font-size: 1.1rem; background: transparent; border: 1px solid var(--st-muted); color: var(--t-medium);" onclick="toggleCoverLetter('${app._id}')">
+                                            View Cover Letter
+                                        </button>
+                                        <div id="coverletter-${app._id}" style="display: none; margin-top: 8px; padding: 10px; background: var(--base); border-radius: 6px; border: 1px solid var(--st-muted); font-size: 1.2rem; line-height: 1.4; color: var(--t-bright); max-height: 150px; overflow-y: auto; white-space: pre-wrap;">${app.coverLetter}</div>
+                                    </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                            <div style="margin-top: auto; display: flex; flex-direction: column; gap: 8px; width: 100%;">
+                                <div style="display: flex; flex-direction: column; gap: 4px; font-size: 1.2rem; color: var(--t-medium); background: var(--base); padding: 8px 10px; border-radius: 6px; border: 1px solid var(--st-muted);">
+                                    <span style="font-size: 1.0rem; text-transform: uppercase; font-weight: 500;">Change Status</span>
+                                    <select onchange="updateApplicationStatus('${app._id}', this.value)" style="cursor: pointer; width: 100%; padding: 4px; font-size: 1.2rem; background: var(--base-tint); border: 1px solid var(--st-muted); color: var(--t-bright); border-radius: 4px;">
+                                        ${statusOptions}
+                                    </select>
+                                </div>
+                                <div style="display: flex; width: 100%;">
+                                    <button class="delete-btn" style="width: 100%; padding: 8px 12px; font-size: 1.3rem; border-radius: 8px;" onclick="deleteApplication('${app._id}')">Delete Candidate</button>
+                                </div>
+                            </div>
+                        </div>
+                        `;
+                    }).join('');
+                } else {
+                    list.innerHTML = `<p style="color: red; padding: 20px 0;">Failed to load applications: ${res.message}</p>`;
+                }
+            } catch (err) {
+                console.error(err);
+                list.innerHTML = '<p style="color: red; padding: 20px 0;">An error occurred while loading applications.</p>';
+            }
+        }
+
+        window.toggleCoverLetter = function(id) {
+            const div = document.getElementById(`coverletter-${id}`);
+            if (div) {
+                div.style.display = div.style.display === 'none' ? 'block' : 'none';
+            }
+        };
+
+        window.updateApplicationStatus = async function(id, newStatus) {
+            try {
+                const res = await apiRequest(`/applications/${id}/status`, {
+                    method: 'PUT',
+                    body: JSON.stringify({ status: newStatus })
+                });
+                if (res.success) {
+                    showToast(`Candidate status updated to ${newStatus}.`, 'success');
+                    // Reload currently selected filter
+                    const select = document.getElementById('application-job-filter');
+                    loadApplications(select ? select.value : 'all');
+                } else {
+                    showToast(res.message, 'error');
+                }
+            } catch (err) {
+                console.error(err);
+                showToast('Failed to update status.', 'error');
+            }
+        };
+
+        window.deleteApplication = async function(id) {
+            if (confirm('Are you sure you want to delete this job application? This action is permanent.')) {
+                const res = await apiRequest(`/applications/${id}`, { method: 'DELETE' });
+                if (res.success) {
+                    showToast('Application deleted successfully!', 'success');
+                    const select = document.getElementById('application-job-filter');
+                    loadApplications(select ? select.value : 'all');
+                } else {
+                    showToast(res.message, 'error');
+                }
+            }
+        };
+
         // ---------------------- Event listeners ----------------------
         document.addEventListener('DOMContentLoaded', async () => {
             if (authToken) {
@@ -2166,9 +3234,49 @@
                 worksDropdown.classList.remove('open');
                 worksDropdown.style.display = 'none';
             }
+
+            // Careers dropdown toggle
+            const careersBtn = document.getElementById('careers-dropdown-btn');
+            const careersDropdown = document.getElementById('careers-dropdown');
             
-            // Dropdown item clicks
-            document.querySelectorAll('.dropdown-item').forEach(item => {
+            if (careersBtn) {
+                careersBtn.addEventListener('click', () => {
+                    careersBtn.classList.toggle('open');
+                    careersDropdown.classList.toggle('open');
+                    careersDropdown.style.display = careersDropdown.classList.contains('open') ? 'block' : 'none';
+                });
+            }
+
+            function closeCareersDropdown() {
+                if (careersBtn) {
+                    careersBtn.classList.remove('open');
+                    careersDropdown.classList.remove('open');
+                    careersDropdown.style.display = 'none';
+                }
+            }
+
+            // Reviews dropdown toggle
+            const reviewsBtn = document.getElementById('reviews-dropdown-btn');
+            const reviewsDropdown = document.getElementById('reviews-dropdown');
+            
+            if (reviewsBtn) {
+                reviewsBtn.addEventListener('click', () => {
+                    reviewsBtn.classList.toggle('open');
+                    reviewsDropdown.classList.toggle('open');
+                    reviewsDropdown.style.display = reviewsDropdown.classList.contains('open') ? 'block' : 'none';
+                });
+            }
+
+            function closeReviewsDropdown() {
+                if (reviewsBtn) {
+                    reviewsBtn.classList.remove('open');
+                    reviewsDropdown.classList.remove('open');
+                    reviewsDropdown.style.display = 'none';
+                }
+            }
+            
+            // Dropdown item clicks for works categories only
+            document.querySelectorAll('#works-dropdown .dropdown-item').forEach(item => {
                 item.addEventListener('click', () => {
                     document.querySelectorAll('.dropdown-item').forEach(btn => btn.classList.remove('active'));
                     item.classList.add('active');
@@ -2177,12 +3285,68 @@
                     document.getElementById('team-nav-btn')?.classList.remove('active');
                     // Deactivate Services nav
                     document.getElementById('services-nav-btn')?.classList.remove('active');
+                    // Deactivate Careers nav
+                    document.getElementById('careers-dropdown-btn')?.classList.remove('active');
+                    // Deactivate Reviews nav
+                    document.getElementById('reviews-dropdown-btn')?.classList.remove('active');
+                    
+                    closeCareersDropdown();
+                    closeReviewsDropdown();
                     
                     activeCategory = item.getAttribute('data-category');
                     document.getElementById('current-category-title').textContent = `Manage Work: ${activeCategory}`;
                     switchSection('work-manager');
                     hideForm();
                     loadWorks(activeCategory);
+                });
+            });
+
+            // Careers dropdown items click
+            document.querySelectorAll('#careers-dropdown .dropdown-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    document.querySelectorAll('.dropdown-item').forEach(btn => btn.classList.remove('active'));
+                    document.querySelectorAll('.admin-nav-btn').forEach(btn => btn.classList.remove('active'));
+                    
+                    item.classList.add('active');
+                    document.getElementById('careers-dropdown-btn').classList.add('active');
+                    
+                    closeWorksDropdown();
+                    closeReviewsDropdown();
+                    
+                    if (item.id === 'jobs-nav-btn') {
+                        switchSection('jobs-manager');
+                        hideJobForm();
+                        loadJobs();
+                    } else if (item.id === 'applications-nav-btn') {
+                        switchSection('applications-manager');
+                        loadApplications();
+                    }
+                });
+            });
+
+            // Reviews dropdown items click
+            document.querySelectorAll('#reviews-dropdown .dropdown-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    document.querySelectorAll('.dropdown-item').forEach(btn => btn.classList.remove('active'));
+                    document.querySelectorAll('.admin-nav-btn').forEach(btn => btn.classList.remove('active'));
+                    
+                    item.classList.add('active');
+                    document.getElementById('reviews-dropdown-btn').classList.add('active');
+                    
+                    closeWorksDropdown();
+                    closeCareersDropdown();
+                    
+                    if (item.id === 'pending-reviews-nav-btn') {
+                        switchSection('reviews-moderation-manager');
+                        loadPendingReviews();
+                    } else if (item.id === 'all-reviews-nav-btn') {
+                        switchSection('reviews-all-manager');
+                        hideReviewForm();
+                        loadAllReviews();
+                    } else if (item.id === 'google-reviews-nav-btn') {
+                        switchSection('google-reviews-manager');
+                        loadGoogleReviews();
+                    }
                 });
             });
             
@@ -2272,9 +3436,13 @@
             teamBtn.addEventListener('click', () => {
                 document.querySelectorAll('.dropdown-item').forEach(btn => btn.classList.remove('active'));
                 document.getElementById('works-dropdown-btn').classList.remove('active');
+                document.getElementById('careers-dropdown-btn')?.classList.remove('active');
+                document.getElementById('reviews-dropdown-btn')?.classList.remove('active');
                 teamBtn.classList.add('active');
                 
                 closeWorksDropdown();
+                closeCareersDropdown();
+                closeReviewsDropdown();
                 
                 switchSection('team-manager');
                 hideTeamForm();
@@ -2445,9 +3613,13 @@
                     document.querySelectorAll('.dropdown-item').forEach(btn => btn.classList.remove('active'));
                     document.getElementById('works-dropdown-btn').classList.remove('active');
                     document.getElementById('team-nav-btn').classList.remove('active');
+                    document.getElementById('careers-dropdown-btn')?.classList.remove('active');
+                    document.getElementById('reviews-dropdown-btn')?.classList.remove('active');
                     servicesBtn.classList.add('active');
                     
                     closeWorksDropdown();
+                    closeCareersDropdown();
+                    closeReviewsDropdown();
                     
                     switchSection('services-manager');
                     hideServiceForm();
@@ -2751,6 +3923,249 @@
                 saveBtn.disabled = false;
                 saveBtn.textContent = originalBtnText;
             }
+        });
+
+        // Jobs Form Toggles
+        document.getElementById('add-job-btn').addEventListener('click', () => {
+            const container = document.getElementById('job-form-container');
+            container.style.display === 'none' ? showJobForm() : hideJobForm();
+        });
+        
+        document.getElementById('cancel-job-form-btn').addEventListener('click', hideJobForm);
+
+        // Salary disclose checkbox toggle handler
+        const salaryDisclosedCheckbox = document.getElementById('job-salaryDisclosed');
+        const salaryRangeWrapper = document.getElementById('salary-range-wrapper');
+        if (salaryDisclosedCheckbox && salaryRangeWrapper) {
+            salaryDisclosedCheckbox.addEventListener('change', (e) => {
+                salaryRangeWrapper.style.display = e.target.checked ? 'flex' : 'none';
+            });
+        }
+
+        // Skills Tags chip controller
+        const jobSkillsInput = document.getElementById('job-skills-input');
+        if (jobSkillsInput) {
+            jobSkillsInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ',') {
+                    e.preventDefault();
+                    const skillVal = jobSkillsInput.value.trim().replace(/,/g, '');
+                    if (skillVal && !activeJobSkills.includes(skillVal)) {
+                        activeJobSkills.push(skillVal);
+                        renderJobSkills();
+                    }
+                    jobSkillsInput.value = '';
+                }
+            });
+        }
+
+        // Job Form Submit
+        document.getElementById('job-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('job-id').value;
+            const isEdit = !!id;
+
+            const title = document.getElementById('job-title').value.trim();
+            const department = document.getElementById('job-department').value;
+            const description = document.getElementById('job-description').value.trim();
+            const location = document.getElementById('job-location').value.trim();
+            const type = document.getElementById('job-type').value.trim();
+            const order = parseInt(document.getElementById('job-order').value) || 0;
+            const isActive = document.getElementById('job-isActive').checked;
+
+            // Extra Pakistani recruitment fields
+            const experienceLevel = document.getElementById('job-experienceLevel').value;
+            const minExpVal = document.getElementById('job-minExperienceYears').value;
+            const minExperienceYears = minExpVal !== '' ? parseInt(minExpVal) : null;
+            const maxExpVal = document.getElementById('job-maxExperienceYears').value;
+            const maxExperienceYears = maxExpVal !== '' ? parseInt(maxExpVal) : null;
+            
+            const workMode = document.getElementById('job-workMode').value;
+            const city = document.getElementById('job-city').value.trim();
+            
+            const salaryDisclosed = document.getElementById('job-salaryDisclosed').checked;
+            const minSalVal = document.getElementById('job-salaryMin').value;
+            const salaryMin = minSalVal !== '' ? parseInt(minSalVal) : null;
+            const maxSalVal = document.getElementById('job-salaryMax').value;
+            const salaryMax = maxSalVal !== '' ? parseInt(maxSalVal) : null;
+            
+            const educationRequirement = document.getElementById('job-educationRequirement').value.trim();
+            const skills = activeJobSkills;
+            
+            const numberOfOpenings = parseInt(document.getElementById('job-numberOfOpenings').value) || 1;
+            
+            const deadlineVal = document.getElementById('job-applicationDeadline').value;
+            const applicationDeadline = deadlineVal !== '' ? new Date(deadlineVal) : null;
+            
+            const status = document.getElementById('job-status').value;
+            const applicationEmail = document.getElementById('job-applicationEmail').value.trim();
+
+            if (!title || !department || !description || !location || !type) {
+                showToast('All starred fields are required!', 'warning');
+                return;
+            }
+
+            const jobData = { 
+                title, department, description, location, type, order, isActive,
+                experienceLevel, minExperienceYears, maxExperienceYears,
+                workMode, city, salaryDisclosed, salaryMin, salaryMax,
+                educationRequirement, skills, numberOfOpenings,
+                applicationDeadline, status, applicationEmail
+            };
+            
+            const saveBtn = e.target.querySelector('button[type="submit"]');
+            const originalBtnText = saveBtn.textContent;
+            saveBtn.disabled = true;
+            saveBtn.textContent = 'Saving...';
+
+            try {
+                let res;
+                if (isEdit) {
+                    res = await apiRequest(`/jobs/${id}`, {
+                        method: 'PUT',
+                        body: JSON.stringify(jobData)
+                    });
+                } else {
+                    res = await apiRequest('/jobs', {
+                        method: 'POST',
+                        body: JSON.stringify(jobData)
+                    });
+                }
+
+                if (res.success) {
+                    showToast(isEdit ? 'Job posting updated successfully!' : 'Job posting created successfully!', 'success');
+                    hideJobForm();
+                    loadJobs();
+                } else {
+                    showToast(res.message, 'error');
+                }
+            } catch (err) {
+                console.error(err);
+                showToast('An error occurred while saving the job posting.', 'error');
+            } finally {
+                saveBtn.disabled = false;
+                saveBtn.textContent = originalBtnText;
+            }
+        });
+
+        // Reviews Form Toggles
+        document.getElementById('add-review-btn').addEventListener('click', () => {
+            const container = document.getElementById('review-form-container');
+            container.style.display === 'none' ? showReviewForm() : hideReviewForm();
+        });
+        
+        document.getElementById('cancel-review-form-btn').addEventListener('click', hideReviewForm);
+
+        // Star rating click handler
+        document.querySelectorAll('#review-rating-stars .star-btn').forEach(star => {
+            star.addEventListener('click', (e) => {
+                const val = parseInt(e.target.getAttribute('data-value'));
+                setStarRating(val);
+            });
+        });
+
+        // Photo upload preview handler
+        const reviewPhotoInput = document.getElementById('review-photo');
+        const reviewPhotoPreview = document.getElementById('review-photo-preview');
+        const reviewPhotoImg = reviewPhotoPreview.querySelector('img');
+        const removeReviewPhotoBtn = document.getElementById('remove-review-photo-btn');
+
+        if (reviewPhotoInput) {
+            reviewPhotoInput.addEventListener('change', () => {
+                if (reviewPhotoInput.files.length > 0) {
+                    const file = reviewPhotoInput.files[0];
+                    removeReviewPhotoFlag = false;
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        reviewPhotoPreview.style.display = 'block';
+                        reviewPhotoImg.src = event.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        if (removeReviewPhotoBtn) {
+            removeReviewPhotoBtn.addEventListener('click', () => {
+                reviewPhotoInput.value = '';
+                reviewPhotoImg.src = '';
+                reviewPhotoPreview.style.display = 'none';
+                removeReviewPhotoFlag = true;
+            });
+        }
+
+        // Reviews Form Submit
+        document.getElementById('review-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('review-id').value;
+            const isEdit = !!id;
+
+            const clientName = document.getElementById('review-clientName').value.trim();
+            const company = document.getElementById('review-company').value.trim();
+            const rating = document.getElementById('review-rating').value;
+            const reviewText = document.getElementById('review-reviewText').value.trim();
+            const isFeatured = document.getElementById('review-isFeatured').checked;
+
+            if (!clientName || !rating || !reviewText) {
+                showToast('Name, rating, and review text are required!', 'warning');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('clientName', clientName);
+            formData.append('company', company);
+            formData.append('rating', rating);
+            formData.append('reviewText', reviewText);
+            formData.append('isFeatured', isFeatured);
+
+            if (reviewPhotoInput.files.length > 0) {
+                formData.append('photo', reviewPhotoInput.files[0]);
+            }
+            if (isEdit && removeReviewPhotoFlag) {
+                formData.append('removePhoto', 'true');
+            }
+
+            const saveBtn = e.target.querySelector('button[type="submit"]');
+            const originalBtnText = saveBtn.textContent;
+            saveBtn.disabled = true;
+            saveBtn.textContent = 'Saving...';
+
+            try {
+                let res;
+                if (isEdit) {
+                    res = await apiRequest(`/reviews/${id}`, {
+                        method: 'PUT',
+                        body: formData
+                    });
+                } else {
+                    res = await apiRequest('/reviews/admin', {
+                        method: 'POST',
+                        body: formData
+                    });
+                }
+
+                if (res.success) {
+                    showToast(isEdit ? 'Testimonial updated successfully!' : 'Testimonial created successfully!', 'success');
+                    hideReviewForm();
+                    updatePendingReviewsCount();
+                    loadAllReviews();
+                } else {
+                    showToast(res.message, 'error');
+                }
+            } catch (err) {
+                console.error(err);
+                showToast('An error occurred while saving the testimonial.', 'error');
+            } finally {
+                saveBtn.disabled = false;
+                saveBtn.textContent = originalBtnText;
+            }
+        });
+
+        // Google reviews refresh listener
+        document.getElementById('refresh-google-reviews-btn').addEventListener('click', refreshGoogleReviews);
+
+        // Application job filter select listener
+        document.getElementById('application-job-filter').addEventListener('change', (e) => {
+            loadApplications(e.target.value);
         });
 
         window.deleteWork = async function(id) {
