@@ -57,6 +57,25 @@
  * Table of Contents End
  * ------------------------------------------------ */
 
+// Global Maintenance Mode check
+(function() {
+  const currentPath = window.location.pathname;
+  if (currentPath.includes('admin') || currentPath.includes('maintenance')) {
+    return;
+  }
+  const apiBase = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:9000/api' : '/api';
+  fetch(apiBase + '/settings/maintenance')
+    .then(r => r.json())
+    .then(data => {
+      if (data.success && data.maintenanceMode) {
+        window.location.href = 'maintenance.html';
+      }
+    })
+    .catch(err => {
+      console.warn('Failed to verify maintenance mode:', err);
+    });
+})();
+
 gsap.registerPlugin(ScrollTrigger);
 gsap.registerPlugin(Flip);
 

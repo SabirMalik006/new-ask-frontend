@@ -1023,6 +1023,11 @@
 
                             <!-- Fixed bottom buttons -->
                             <div style="padding: 10px 12px 14px; display: flex; flex-direction: column; gap: 8px; border-top: 2px solid var(--st-muted);">
+                            <button id="settings-nav-btn" class="admin-nav-btn" title="Settings">
+                                <span class="icon-wrapper"><i class="ph ph-sliders"></i></span>
+                                <span>Settings</span>
+                            </button>
+
                             <button id="color-switcher" class="admin-nav-btn" title="Theme">
                                 <span class="icon-wrapper">
                                     <i class="ph ph-sun icon-light" style="display: block;"></i>
@@ -1796,6 +1801,54 @@
                                   <!-- Clients List -->
                                   <div id="clients-list" class="items-list">
                                       <!-- Dynamic list of clients -->
+                                  </div>
+                              </section>
+
+                              <!-- Settings Section -->
+                              <section id="settings-manager" class="admin-section">
+                                  <div class="section-header">
+                                      <div style="display: flex; align-items: center; gap: 12px;">
+                                          <h2 class="section-title">System Settings</h2>
+                                      </div>
+                                  </div>
+
+                                  <!-- Maintenance Mode Setting Card -->
+                                  <div class="form-container" style="background: var(--base-tint); border: 2px solid var(--st-muted); border-radius: var(--_radius-m); padding: 24px; margin-bottom: 24px;">
+                                      <h3 style="margin: 0 0 10px 0; font-size: 1.8rem; color: var(--t-bright); font-weight: 600;">Maintenance Mode</h3>
+                                      <p style="margin: 0 0 20px 0; font-size: 1.3rem; color: var(--t-medium);">Toggling maintenance mode will immediately redirect all public visitors to a "Website Under Maintenance" page.</p>
+                                      
+                                      <div style="display: flex; align-items: center; gap: 15px;">
+                                          <button id="toggle-maintenance-btn" class="submit-btn btn-anim" style="width: auto; padding: 10px 24px;">
+                                              Enable Maintenance Mode
+                                          </button>
+                                          <span id="maintenance-status-badge" style="padding: 6px 12px; border-radius: 20px; font-size: 1.2rem; font-weight: 700; background: rgba(0, 230, 118, 0.1); color: #00e676;">
+                                              OFFLINE (INACTIVE)
+                                          </span>
+                                      </div>
+                                  </div>
+
+                                  <!-- Admin Credentials Update Card -->
+                                  <div class="form-container" style="background: var(--base-tint); border: 2px solid var(--st-muted); border-radius: var(--_radius-m); padding: 24px;">
+                                      <h3 style="margin: 0 0 10px 0; font-size: 1.8rem; color: var(--t-bright); font-weight: 600;">Update Admin Credentials</h3>
+                                      <p style="margin: 0 0 20px 0; font-size: 1.3rem; color: var(--t-medium);">Change your login email address and security password.</p>
+                                      
+                                      <form id="admin-credentials-form" style="display: flex; flex-direction: column; gap: 16px; max-width: 450px;">
+                                          <div class="form-group">
+                                              <label style="display: block; margin-bottom: 6px; font-size: 1.3rem; color: var(--t-bright);">Login Email</label>
+                                              <input type="email" id="settings-admin-email" placeholder="admin@askwebsolutions.com" style="width: 100%; padding: 10px 14px; background: var(--base); border: 1px solid var(--st-muted); border-radius: var(--_radius-m); color: var(--t-bright); font-size: 1.3rem; outline: none;">
+                                          </div>
+                                          
+                                          <div class="form-group">
+                                              <label style="display: block; margin-bottom: 6px; font-size: 1.3rem; color: var(--t-bright);">New Password (leave empty to keep unchanged)</label>
+                                              <input type="password" id="settings-admin-password" placeholder="Min 6 characters" style="width: 100%; padding: 10px 14px; background: var(--base); border: 1px solid var(--st-muted); border-radius: var(--_radius-m); color: var(--t-bright); font-size: 1.3rem; outline: none;">
+                                          </div>
+
+                                          <div id="credentials-status-msg" style="display: none; padding: 10px 14px; border-radius: var(--_radius-m); font-size: 1.2rem;"></div>
+
+                                          <button type="submit" class="submit-btn" style="width: auto; padding: 10px 24px; align-self: flex-start;">
+                                              Save Credentials
+                                          </button>
+                                      </form>
                                   </div>
                               </section>
                         </div>
@@ -3124,34 +3177,36 @@
             list.innerHTML = '<p style="color: var(--t-medium); padding: 20px 0;">Loading...</p>';
             
             try {
-                const res = await apiRequest('/google-reviews');
+                const res = await apiRequest('/google-reviews?limit=100');
                 if (res.success) {
-                    if (res.data.length === 0) {
+                    const reviews = res.data.reviews || [];
+                    if (reviews.length === 0) {
                         list.innerHTML = '<p style="color: var(--t-medium); padding: 20px 0;">No cached Google reviews found.</p>';
                         return;
                     }
 
-                    // Update fetchedAt timestamp
+                    // Update fetchedAt timestamp using scrapedAt
                     const stamp = document.getElementById('google-reviews-timestamp');
-                    if (res.data[0].fetchedAt) {
-                        const timeStr = new Date(res.data[0].fetchedAt).toLocaleString();
+                    if (reviews[0].scrapedAt) {
+                        const timeStr = new Date(reviews[0].scrapedAt).toLocaleString();
                         stamp.textContent = `Last fetched: ${timeStr}`;
                     } else {
                         stamp.textContent = 'Last fetched: Not available';
                     }
 
-                    list.innerHTML = res.data.map((r, index) => {
+                    list.innerHTML = reviews.map((r, index) => {
                         const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
-                        const photoImg = r.authorPhotoUrl ? `<img src="${r.authorPhotoUrl}" style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover; margin-right: 12px; background: #fff;">` : '';
+                        const photoImg = r.reviewerPhoto ? `<img src="${r.reviewerPhoto}" style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover; margin-right: 12px; background: #fff;">` : '';
+                        const relativeTime = (r.rawData && r.rawData.relative_date) || (r.reviewDate ? new Date(r.reviewDate).toLocaleDateString() : '');
 
                         return `
-                        <div class="item-card anim-uni-in-up" style="animation-delay: ${index * 0.1}s; display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+                        <div class="item-card anim-uni-in-up" style="animation-delay: ${index * 0.05}s; display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
                             <div>
                                 <div style="display: flex; align-items: center; margin-bottom: 12px;">
                                     ${photoImg}
                                     <div>
-                                        <h4 style="margin: 0; font-size: 1.5rem; color: var(--t-bright); font-weight: 600;">${r.authorName}</h4>
-                                        <span style="font-size: 1.1rem; color: var(--t-medium);">${r.relativeTimeDescription || ''}</span>
+                                        <h4 style="margin: 0; font-size: 1.5rem; color: var(--t-bright); font-weight: 600;">${r.reviewerName || 'Anonymous'}</h4>
+                                        <span style="font-size: 1.1rem; color: var(--t-medium);">${relativeTime}</span>
                                     </div>
                                     <i class="ph-bold ph-google-logo" style="margin-left: auto; font-size: 2rem; color: #4285f4;"></i>
                                 </div>
@@ -3840,6 +3895,22 @@
                         loadClientShowcase();
                     }
                 });
+            });
+
+            // Settings navigation button click
+            document.getElementById('settings-nav-btn')?.addEventListener('click', () => {
+                document.querySelectorAll('.dropdown-item').forEach(btn => btn.classList.remove('active'));
+                document.querySelectorAll('.admin-nav-btn').forEach(btn => btn.classList.remove('active'));
+                
+                document.getElementById('settings-nav-btn').classList.add('active');
+                
+                closeWorksDropdown();
+                closeCareersDropdown();
+                closeReviewsDropdown();
+                closeClientsDropdown();
+                
+                switchSection('settings-manager');
+                loadSettings();
             });
             
             // Form toggle buttons
@@ -4748,6 +4819,120 @@
         // Inquiry status filter select listener
         document.getElementById('inquiry-status-filter').addEventListener('change', () => {
             loadInquiries();
+        });
+
+        // Settings Functions & Listeners
+        async function loadSettings() {
+            try {
+                const res = await apiRequest('/settings/maintenance');
+                if (res.success) {
+                    updateMaintenanceUI(res.maintenanceMode);
+                } else {
+                    showToast('Failed to fetch settings: ' + res.message, 'error');
+                }
+            } catch (err) {
+                console.error(err);
+                showToast('Failed to load settings', 'error');
+            }
+        }
+
+        function updateMaintenanceUI(isActive) {
+            const btn = document.getElementById('toggle-maintenance-btn');
+            const badge = document.getElementById('maintenance-status-badge');
+            
+            if (isActive) {
+                btn.textContent = 'Disable Maintenance Mode';
+                btn.style.background = '#444';
+                badge.textContent = 'ONLINE (MAINTENANCE ACTIVE)';
+                badge.style.background = 'rgba(235, 143, 0, 0.1)';
+                badge.style.color = '#eb8f00';
+            } else {
+                btn.textContent = 'Enable Maintenance Mode';
+                btn.style.background = '';
+                badge.textContent = 'OFFLINE (INACTIVE)';
+                badge.style.background = 'rgba(0, 230, 118, 0.1)';
+                badge.style.color = '#00e676';
+            }
+        }
+
+        document.getElementById('toggle-maintenance-btn').addEventListener('click', async () => {
+            const badge = document.getElementById('maintenance-status-badge');
+            const isCurrentlyActive = badge.textContent.includes('ONLINE');
+            const nextState = !isCurrentlyActive;
+            
+            const btn = document.getElementById('toggle-maintenance-btn');
+            const originalText = btn.textContent;
+            btn.textContent = 'Processing...';
+            btn.disabled = true;
+            
+            try {
+                const res = await apiRequest('/settings/maintenance', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ maintenanceMode: nextState })
+                });
+                
+                if (res.success) {
+                    updateMaintenanceUI(res.maintenanceMode);
+                    showToast(res.message, 'success');
+                } else {
+                    showToast(res.message, 'error');
+                }
+            } catch (err) {
+                console.error(err);
+                showToast('Failed to toggle maintenance mode', 'error');
+            } finally {
+                btn.textContent = originalText;
+                btn.disabled = false;
+            }
+        });
+
+        document.getElementById('admin-credentials-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const emailInput = document.getElementById('settings-admin-email');
+            const passwordInput = document.getElementById('settings-admin-password');
+            
+            const email = emailInput.value.trim();
+            const password = passwordInput.value.trim();
+            
+            if (!email && !password) {
+                showToast('Please enter an email or password to update.', 'error');
+                return;
+            }
+            
+            const body = {};
+            if (email) body.email = email;
+            if (password) body.password = password;
+            
+            const btn = e.target.querySelector('button[type="submit"]');
+            const originalText = btn.innerHTML;
+            btn.textContent = 'Saving...';
+            btn.disabled = true;
+            
+            try {
+                const res = await apiRequest('/settings/admin-credentials', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                });
+                
+                if (res.success) {
+                    showToast(res.message, 'success');
+                    passwordInput.value = '';
+                    if (email) {
+                        emailInput.placeholder = email;
+                        emailInput.value = '';
+                    }
+                } else {
+                    showToast(res.message, 'error');
+                }
+            } catch (err) {
+                console.error(err);
+                showToast(err.message || 'Failed to update credentials', 'error');
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
         });
 
         // Google reviews refresh listener

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Website Under Maintenance | ASK Websolutions</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="plugins.css">
+  <link rel="stylesheet" href="main.css">
+  <link rel="stylesheet" href="loader.css">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <style>
+    body {
+      background-color: #0b0b0b;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      font-family: 'Funnel Display', sans-serif;
+      overflow: hidden;
+    }
+    .maintenance-container {
+      text-align: center;
+      max-width: 600px;
+      padding: 40px;
+      background: #141414;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 24px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      position: relative;
+    }
+    .maintenance-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 24px;
+      background: linear-gradient(135deg, rgba(235, 143, 0, 0.1), transparent);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .icon-wrapper {
+      position: relative;
+      z-index: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: rgba(235, 143, 0, 0.1);
+      color: #eb8f00;
+      font-size: 3.5rem;
+      margin-bottom: 24px;
+      animation: pulse 2s infinite ease-in-out;
+    }
+    h1 {
+      font-size: 2.8rem;
+      font-weight: 800;
+      margin: 0 0 16px 0;
+      letter-spacing: -0.5px;
+      z-index: 1;
+      position: relative;
+      background: linear-gradient(to right, #ffffff, #aaaaaa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    p {
+      font-size: 1.4rem;
+      color: #888888;
+      line-height: 1.6;
+      margin: 0 0 32px 0;
+      z-index: 1;
+      position: relative;
+    }
+    .gears-animation {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 30px;
+      z-index: 1;
+      position: relative;
+    }
+    .gear {
+      font-size: 3rem;
+      color: rgba(255, 255, 255, 0.15);
+      animation: spin 6s infinite linear;
+    }
+    .gear-ccw {
+      animation: spin-ccw 6s infinite linear;
+      font-size: 2rem;
+      margin-top: 10px;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(235, 143, 0, 0.4); }
+      50% { transform: scale(1.05); box-shadow: 0 0 20px 10px rgba(235, 143, 0, 0); }
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    @keyframes spin-ccw {
+      0% { transform: rotate(360deg); }
+      100% { transform: rotate(0deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="maintenance-container">
+    <div class="icon-wrapper">
+      <i class="ph ph-wrench"></i>
+    </div>
+    <div class="gears-animation">
+      <i class="ph ph-gear gear"></i>
+      <i class="ph ph-gear gear gear-ccw"></i>
+    </div>
+    <h1>Under Maintenance</h1>
+    <p>We are currently updating our website to bring you a better experience. We will be back online shortly. Thank you for your patience!</p>
+  </div>
+
+  <script>
+    // Asynchronously check if maintenance mode has been disabled, to redirect users back to the index page immediately!
+    const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:9000/api' : '/api';
+    
+    async function checkMaintenance() {
+      try {
+        const res = await fetch(`${API_BASE}/settings/maintenance`);
+        const data = await res.json();
+        if (data.success && !data.maintenanceMode) {
+          window.location.href = 'index.html';
+        }
+      } catch (err) {
+        console.error('Failed to check maintenance mode status:', err);
+      }
+    }
+
+    // Poll status every 5 seconds
+    setInterval(checkMaintenance, 5000);
+    checkMaintenance();
+  </script>
+</body>
+</html>

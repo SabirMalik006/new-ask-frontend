@@ -69,6 +69,118 @@
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
+    .review-text-truncated {
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .read-more-btn {
+      background: none;
+      border: none;
+      color: var(--accent, #4285f4);
+      cursor: pointer;
+      font-size: 1.2rem;
+      font-weight: 600;
+      padding: 4px 0;
+      margin-top: 4px;
+    }
+    .read-more-btn:hover {
+      text-decoration: underline;
+    }
+    .owner-response-box {
+      margin-top: 12px;
+      padding: 12px 14px;
+      background: var(--base);
+      border: 1px solid var(--st-muted);
+      border-radius: var(--_radius-m, 8px);
+      font-size: 1.25rem;
+      color: var(--t-medium);
+      line-height: 1.5;
+    }
+    .owner-response-box .owner-label {
+      font-weight: 700;
+      color: var(--t-bright);
+      font-size: 1.15rem;
+      margin-bottom: 4px;
+      display: block;
+    }
+    .rating-bar-fill {
+      height: 100%;
+      background: #ffb300;
+      border-radius: 4px;
+      transition: width 0.5s ease;
+    }
+    .rating-bar-track {
+      flex: 1;
+      height: 8px;
+      background: var(--st-muted);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .rating-summary-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.2rem;
+      color: var(--t-medium);
+      margin-bottom: 4px;
+    }
+    .rating-summary-row .star-num {
+      width: 14px;
+      text-align: right;
+      font-weight: 600;
+      color: var(--t-bright);
+    }
+    .rating-summary-row .count {
+      width: 30px;
+      text-align: right;
+      font-size: 1.1rem;
+    }
+    .pagination-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      margin-top: 30px;
+      flex-wrap: wrap;
+    }
+    .page-btn {
+      min-width: 36px;
+      height: 36px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--st-muted);
+      border-radius: 6px;
+      background: transparent;
+      color: var(--t-bright);
+      font-size: 1.2rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .page-btn:hover {
+      border-color: var(--accent, #4285f4);
+      color: var(--accent, #4285f4);
+    }
+    .page-btn.active {
+      background: var(--accent, #4285f4);
+      border-color: var(--accent, #4285f4);
+      color: #fff;
+    }
+    .page-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    .review-date-text {
+      font-size: 1.1rem;
+      color: var(--t-medium);
+      margin-bottom: 6px;
+    }
+    .google-review-card img[data-src] {
+      background: var(--st-muted);
+    }
   </style>
 </head>
 
@@ -340,6 +452,25 @@
               </div>
             </div>
 
+            <!-- Rating Summary Stats (hidden until Google reviews load) -->
+            <div id="rating-stats-section" style="display: none; margin-bottom: 30px;">
+              <div class="row gx-0">
+                <div class="col-12 col-xl-2 mxd-grid-item no-margin"></div>
+                <div class="col-12 col-xl-10 mxd-grid-item no-margin">
+                  <div style="background: var(--base-tint); border: 2px solid var(--st-muted); border-radius: var(--_radius-m, 12px); padding: 24px 30px; display: flex; gap: 30px; flex-wrap: wrap; align-items: flex-start;">
+                    <!-- Big average -->
+                    <div style="text-align: center; min-width: 100px;">
+                      <div id="avg-rating-big" style="font-size: 3.6rem; font-weight: 800; color: var(--t-bright); line-height: 1;">0</div>
+                      <div id="avg-stars-display" style="font-size: 1.6rem; color: #ffb300; margin: 4px 0;"></div>
+                      <div id="total-reviews-count" style="font-size: 1.2rem; color: var(--t-medium);">0 reviews</div>
+                    </div>
+                    <!-- Distribution bars -->
+                    <div id="rating-distribution" style="flex: 1; min-width: 200px;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <!-- Testimonials Grid List -->
             <div class="row gx-0">
               <div class="col-12 col-xl-2 mxd-grid-item no-margin"></div>
@@ -351,6 +482,8 @@
                     <p class="t-bright" style="font-size: 1.5rem;">Loading testimonials...</p>
                   </div>
                 </div>
+                <!-- Pagination -->
+                <div id="reviews-pagination" class="pagination-wrapper" style="display: none;"></div>
               </div>
             </div>
 
@@ -635,28 +768,27 @@
 
   <!-- Fetch & Render Testimonials -->
   <script>
-    const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
-      ? 'http://localhost:9000/api' 
-      : 'https://askwebsolutions-backend.up.railway.app/api'; 
+    const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+      ? 'http://localhost:9000/api'
+      : 'https://askwebsolutions-backend.up.railway.app/api';
 
+    const REVIEWS_PER_PAGE = 6;
     let allLoadedReviews = [];
+    let siteReviewsCache = [];
+    let googleStatsCache = null;
+    let currentFilter = 'all';
+    let currentPage = 1;
 
     document.addEventListener('DOMContentLoaded', () => {
-      // Star rating form helper initialization
       setRatingSelection(5);
-      
-      // Load all reviews
       loadPublicReviews();
 
-      // Hook star rating click listeners
       document.querySelectorAll('#rating-stars-selection .star-opt').forEach(star => {
         star.addEventListener('click', (e) => {
-          const ratingVal = parseInt(e.target.getAttribute('data-rating'));
-          setRatingSelection(ratingVal);
+          setRatingSelection(parseInt(e.target.getAttribute('data-rating')));
         });
       });
 
-      // Hook filter pills
       document.querySelectorAll('#reviews-filters button').forEach(btn => {
         btn.addEventListener('click', (e) => {
           document.querySelectorAll('#reviews-filters button').forEach(b => {
@@ -665,13 +797,12 @@
           });
           e.target.classList.remove('tag-outline-medium');
           e.target.classList.add('tag-opposite');
-
-          const filter = e.target.getAttribute('data-filter');
-          renderFilteredReviews(filter);
+          currentFilter = e.target.getAttribute('data-filter');
+          currentPage = 1;
+          renderCurrentPage();
         });
       });
 
-      // Hook form submit
       document.getElementById('public-review-form').addEventListener('submit', handleReviewSubmit);
     });
 
@@ -689,125 +820,293 @@
       });
     }
 
+    function timeAgo(dateInput) {
+      if (!dateInput) return '';
+      const date = new Date(dateInput);
+      const now = new Date();
+      const seconds = Math.floor((now - date) / 1000);
+      if (seconds < 60) return 'just now';
+      const minutes = Math.floor(seconds / 60);
+      if (minutes < 60) return minutes + ' minute' + (minutes > 1 ? 's' : '') + ' ago';
+      const hours = Math.floor(minutes / 60);
+      if (hours < 24) return hours + ' hour' + (hours > 1 ? 's' : '') + ' ago';
+      const days = Math.floor(hours / 24);
+      if (days < 30) return days + ' day' + (days > 1 ? 's' : '') + ' ago';
+      const months = Math.floor(days / 30);
+      if (months < 12) return months + ' month' + (months > 1 ? 's' : '') + ' ago';
+      const years = Math.floor(months / 12);
+      return years + ' year' + (years > 1 ? 's' : '') + ' ago';
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
     async function loadPublicReviews() {
       const container = document.getElementById('reviews-list-container');
       try {
         const [siteRes, googleRes] = await Promise.all([
-          fetch(`${API_BASE}/reviews`).then(r => r.json()).catch(() => ({ success: false, data: [] })),
-          fetch(`${API_BASE}/google-reviews`).then(r => r.json()).catch(() => ({ success: false, data: [] }))
+          fetch(API_BASE + '/reviews').then(r => r.json()).catch(() => ({ success: false, data: [] })),
+          fetch(API_BASE + '/google-reviews?limit=500').then(r => r.json()).catch(() => ({ success: false, data: { reviews: [] } }))
         ]);
 
-        let siteReviews = [];
-        let googleReviews = [];
-
-        // Handle Site Testimonials
         if (siteRes && siteRes.success) {
-          siteReviews = siteRes.data.map(item => ({ ...item, isGoogle: false }));
+          siteReviewsCache = siteRes.data.map(item => ({ ...item, isGoogle: false }));
         }
 
-        // Fetch google reviews safely
         if (googleRes && googleRes.success) {
-          googleReviews = googleRes.data.map(item => ({ ...item, isGoogle: true }));
+          const gd = googleRes.data;
+          googleStatsCache = {
+            averageRating: gd.averageRating || 0,
+            totalReviews: gd.totalReviews || 0,
+            ratingDistribution: gd.ratingDistribution || { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }
+          };
+          const gReviews = (gd.reviews || []).map(item => ({
+            ...item,
+            isGoogle: true,
+            clientName: item.reviewerName || 'Anonymous',
+            photo: item.reviewerPhoto || null,
+            reviewText: item.reviewText || '',
+            reviewDate: item.reviewDate,
+            ownerResponse: item.ownerResponse || null,
+            ownerResponseDate: item.ownerResponseDate || null,
+          }));
+          allLoadedReviews = [...siteReviewsCache, ...gReviews];
+        } else {
+          allLoadedReviews = [...siteReviewsCache];
         }
 
-        // Merge all reviews
-        allLoadedReviews = [...siteReviews, ...googleReviews];
-
-        // Sort reviews: featured first, then by date (most recent first)
         allLoadedReviews.sort((a, b) => {
-          // If featured site review, bubble to top
-          const aFeatured = a.isFeatured ? 1 : 0;
-          const bFeatured = b.isFeatured ? 1 : 0;
-          if (aFeatured !== bFeatured) {
-            return bFeatured - aFeatured;
-          }
-
-          // Otherwise sort by date
-          const aTime = a.isGoogle ? (a.googleReviewTime * 1000) : new Date(a.submittedAt || a.createdAt).getTime();
-          const bTime = b.isGoogle ? (b.googleReviewTime * 1000) : new Date(b.submittedAt || b.createdAt).getTime();
-          return bTime - aTime;
+          const aF = a.isFeatured ? 1 : 0;
+          const bF = b.isFeatured ? 1 : 0;
+          if (aF !== bF) return bF - aF;
+          const aT = new Date(a.reviewDate || a.submittedAt || a.createdAt).getTime();
+          const bT = new Date(b.reviewDate || b.submittedAt || b.createdAt).getTime();
+          return bT - aT;
         });
 
-        renderFilteredReviews('all');
+        renderRatingStats();
+        renderCurrentPage();
       } catch (err) {
         console.error(err);
-        container.innerHTML = '<div class="col-12 text-center"><p style="color: red;">Failed to load reviews. Please reload the page.</p></div>';
+        container.innerHTML = '<div class="col-12 text-center" style="padding: 40px 0;"><p style="color: #ff4444; font-size: 1.4rem;">Failed to load reviews. Please reload the page.</p></div>';
       }
     }
 
-    function renderFilteredReviews(filter) {
-      const container = document.getElementById('reviews-list-container');
-      
-      let filtered = allLoadedReviews;
-      if (filter === 'site') {
-        filtered = allLoadedReviews.filter(r => !r.isGoogle);
-      } else if (filter === 'google') {
-        filtered = allLoadedReviews.filter(r => r.isGoogle);
+    function renderRatingStats() {
+      const section = document.getElementById('rating-stats-section');
+      if (!googleStatsCache || googleStatsCache.totalReviews === 0) {
+        section.style.display = 'none';
+        return;
       }
+      section.style.display = 'block';
 
-      if (filtered.length === 0) {
-        container.innerHTML = '<div class="col-12 text-center" style="padding: 40px 0;"><p style="color: var(--t-medium); font-size: 1.4rem;">No reviews to display in this category.</p></div>';
+      document.getElementById('avg-rating-big').textContent = googleStatsCache.averageRating.toFixed(1);
+
+      const fullStars = Math.floor(googleStatsCache.averageRating);
+      const halfStar = googleStatsCache.averageRating - fullStars >= 0.5;
+      let starsHtml = '';
+      for (let i = 0; i < 5; i++) {
+        if (i < fullStars) starsHtml += '<i class="ph-fill ph-star"></i>';
+        else if (i === fullStars && halfStar) starsHtml += '<i class="ph-fill ph-star-half"></i>';
+        else starsHtml += '<i class="ph ph-star"></i>';
+      }
+      document.getElementById('avg-stars-display').innerHTML = starsHtml;
+      document.getElementById('total-reviews-count').textContent = googleStatsCache.totalReviews + ' Google review' + (googleStatsCache.totalReviews !== 1 ? 's' : '');
+
+      const dist = googleStatsCache.ratingDistribution;
+      const total = googleStatsCache.totalReviews;
+      let distHtml = '';
+      for (let s = 5; s >= 1; s--) {
+        const count = dist[s] || 0;
+        const pct = total > 0 ? Math.round((count / total) * 100) : 0;
+        distHtml += '<div class="rating-summary-row">' +
+          '<span class="star-num">' + s + '</span>' +
+          '<i class="ph-fill ph-star" style="color: #ffb300; font-size: 1.3rem;"></i>' +
+          '<div class="rating-bar-track"><div class="rating-bar-fill" style="width: ' + pct + '%;"></div></div>' +
+          '<span class="count">' + count + '</span>' +
+          '</div>';
+      }
+      document.getElementById('rating-distribution').innerHTML = distHtml;
+    }
+
+    function getFilteredReviews() {
+      if (currentFilter === 'site') return allLoadedReviews.filter(r => !r.isGoogle);
+      if (currentFilter === 'google') return allLoadedReviews.filter(r => r.isGoogle);
+      return allLoadedReviews;
+    }
+
+    function renderCurrentPage() {
+      const filtered = getFilteredReviews();
+      const totalPages = Math.ceil(filtered.length / REVIEWS_PER_PAGE);
+      if (currentPage > totalPages) currentPage = totalPages || 1;
+
+      const start = (currentPage - 1) * REVIEWS_PER_PAGE;
+      const pageReviews = filtered.slice(start, start + REVIEWS_PER_PAGE);
+
+      renderReviewCards(pageReviews);
+      renderPagination(totalPages, filtered.length);
+    }
+
+    function renderReviewCards(reviews) {
+      const container = document.getElementById('reviews-list-container');
+
+      if (reviews.length === 0) {
+        container.innerHTML = '<div class="col-12 text-center" style="padding: 50px 0;"><p style="color: var(--t-medium); font-size: 1.5rem;">No reviews to display in this category.</p></div>';
         return;
       }
 
-      container.innerHTML = filtered.map((r, index) => {
+      container.innerHTML = reviews.map((r, index) => {
         const isFeatured = !r.isGoogle && r.isFeatured;
         const cardClass = isFeatured ? 'review-card featured-card' : 'review-card';
         const featuredBadgeHtml = isFeatured ? '<span class="featured-badge">Featured</span>' : '';
-        
-        // Stars HTML
-        const starHtml = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
 
-        // Google badge check
-        const badgeHtml = r.isGoogle 
-          ? `<span class="tag tag-default tag-outline-medium" style="font-size: 1.1rem; padding: 2px 8px; pointer-events: none; border-color: rgba(66, 133, 244, 0.4); color: #4285f4; margin-left: auto; display: inline-flex; align-items: center; gap: 4px; border-radius: 4px;"><i class="ph ph-google-logo"></i> Posted on Google</span>`
+        const starsHtml = '<span style="color: #ffb300;">' + '★'.repeat(r.rating) + '</span><span style="color: var(--st-muted);">' + '★'.repeat(5 - r.rating) + '</span>';
+
+        const badgeHtml = r.isGoogle
+          ? '<span class="tag tag-default tag-outline-medium" style="font-size: 1.05rem; padding: 2px 8px; pointer-events: none; border-color: rgba(66, 133, 244, 0.4); color: #4285f4; margin-left: auto; display: inline-flex; align-items: center; gap: 4px; border-radius: 4px;"><i class="ph ph-google-logo"></i> Google</span>'
           : '';
 
-        // Details / Sub-header
-        let subtitle = r.isGoogle ? 'Verified Google Review' : (r.company || 'Client Partner');
+        const subtitle = r.isGoogle ? 'Verified Google Review' : (r.company || 'Client Partner');
 
-        // Render Photo or Initials
         let photoHtml = '';
-        const imgUrl = r.isGoogle ? r.authorPhotoUrl : r.photo;
-        const name = r.isGoogle ? r.authorName : r.clientName;
+        const imgUrl = r.isGoogle ? r.photo : r.photo;
+        const name = escapeHtml(r.clientName);
 
         if (imgUrl) {
-          photoHtml = `<img src="${imgUrl}" alt="${name}" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid var(--st-muted); margin-right: 15px; background: #fff;">`;
+          photoHtml = '<img data-src="' + escapeHtml(imgUrl) + '" alt="' + name + '" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid var(--st-muted); margin-right: 15px; background: var(--st-muted);" loading="lazy">';
         } else {
-          // Initials fallback
-          const parts = name.split(' ');
+          const parts = r.clientName ? r.clientName.split(' ') : ['?'];
           const initials = parts.map(p => p[0]).slice(0, 2).join('').toUpperCase();
-          photoHtml = `<div style="width: 50px; height: 50px; border-radius: 50%; background: var(--st-muted); color: var(--t-bright); font-size: 1.5rem; font-weight: 700; display: flex; align-items: center; justify-content: center; margin-right: 15px;">${initials}</div>`;
+          photoHtml = '<div style="width: 50px; height: 50px; border-radius: 50%; background: var(--st-muted); color: var(--t-bright); font-size: 1.5rem; font-weight: 700; display: flex; align-items: center; justify-content: center; margin-right: 15px; flex-shrink: 0;">' + initials + '</div>';
         }
 
-        return `
-        <div class="col-12 col-md-6 anim-uni-in-up" style="animation-delay: ${index * 0.05}s;">
-          <div class="${cardClass}" style="background: var(--base-tint); border: 2px solid var(--st-muted); border-radius: var(--_radius-m); padding: 30px; height: 100%; display: flex; flex-direction: column; justify-content: space-between; min-height: 190px;">
-            ${featuredBadgeHtml}
-            <div>
-              <div style="display: flex; align-items: center; margin-bottom: 16px;">
-                ${photoHtml}
-                <div>
-                  <h4 style="margin: 0; font-size: 1.5rem; font-weight: 600; color: var(--t-bright);">${name}</h4>
-                  <span style="font-size: 1.1rem; color: var(--t-medium);">${subtitle}</span>
-                </div>
-                ${badgeHtml}
-              </div>
-              <div style="font-size: 1.6rem; color: #ffb300; margin-bottom: 12px; font-weight: 600;">${starHtml}</div>
-              <p style="font-size: 1.35rem; color: var(--t-bright); line-height: 1.55; font-style: italic; margin-bottom: 0;">"${r.reviewText || ''}"</p>
-            </div>
-          </div>
-        </div>
-        `;
+        const reviewDateStr = r.reviewDate || r.submittedAt || r.createdAt;
+        const dateDisplay = timeAgo(reviewDateStr);
+        const dateHtml = dateDisplay ? '<div class="review-date-text">' + escapeHtml(dateDisplay) + '</div>' : '';
+
+        const rawText = r.reviewText || '';
+        const needsTruncate = rawText.length > 250;
+        const truncatedClass = needsTruncate ? ' review-text-truncated' : '';
+        const textId = 'rtxt-' + (r._id || r.reviewId || index);
+        const readMoreHtml = needsTruncate
+          ? '<button class="read-more-btn" onclick="toggleReadMore(\'' + textId + '\', this)">Read more</button>'
+          : '';
+
+        let ownerResponseHtml = '';
+        if (r.ownerResponse) {
+          ownerResponseHtml = '<div class="owner-response-box"><span class="owner-label">Response from the owner</span>' + escapeHtml(r.ownerResponse) + '</div>';
+        }
+
+        const linkHtml = r.isGoogle && r.reviewUrl
+          ? '<a href="' + escapeHtml(r.reviewUrl) + '" target="_blank" rel="noopener" style="font-size: 1.1rem; color: var(--accent, #4285f4); text-decoration: none; display: inline-block;">View on Google &rarr;</a>'
+          : '';
+
+        let actionsHtml = '';
+        if (readMoreHtml || linkHtml) {
+          actionsHtml = '<div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px; width: 100%;">' +
+            '<div>' + readMoreHtml + '</div>' +
+            '<div>' + linkHtml + '</div>' +
+            '</div>';
+        }
+
+        return '<div class="col-12 col-md-6 anim-uni-in-up" style="animation-delay: ' + (index * 0.05) + 's;">' +
+          '<div class="' + cardClass + ' google-review-card" style="background: var(--base-tint); border: 2px solid var(--st-muted); border-radius: var(--_radius-m, 12px); padding: 28px; height: 100%; display: flex; flex-direction: column; justify-content: space-between; min-height: 200px;">' +
+          featuredBadgeHtml +
+          '<div>' +
+          '<div style="display: flex; align-items: center; margin-bottom: 14px;">' + photoHtml +
+          '<div style="min-width: 0;">' +
+          '<h4 style="margin: 0; font-size: 1.5rem; font-weight: 600; color: var(--t-bright); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">' + name + '</h4>' +
+          '<span style="font-size: 1.1rem; color: var(--t-medium);">' + escapeHtml(subtitle) + '</span>' +
+          '</div>' + badgeHtml +
+          '</div>' +
+          '<div style="font-size: 1.5rem; margin-bottom: 6px;">' + starsHtml + '</div>' +
+          dateHtml +
+          '<p id="' + textId + '" style="font-size: 1.35rem; color: var(--t-bright); line-height: 1.55; font-style: italic; margin-bottom: 0;" class="' + truncatedClass + '">\u201C' + escapeHtml(rawText) + '\u201D</p>' +
+          actionsHtml +
+          '</div>' +
+          ownerResponseHtml +
+          '</div></div>';
       }).join('');
+
+      lazyLoadImages();
+    }
+
+    function toggleReadMore(id, btn) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const isTruncated = el.classList.contains('review-text-truncated');
+      if (isTruncated) {
+        el.classList.remove('review-text-truncated');
+        btn.textContent = 'Read less';
+      } else {
+        el.classList.add('review-text-truncated');
+        btn.textContent = 'Read more';
+      }
+    }
+
+    function renderPagination(totalPages, totalItems) {
+      const wrapper = document.getElementById('reviews-pagination');
+      if (totalPages <= 1 || totalItems === 0) {
+        wrapper.style.display = 'none';
+        return;
+      }
+      wrapper.style.display = 'flex';
+
+      let html = '';
+      html += '<button class="page-btn" onclick="goToPage(' + (currentPage - 1) + ')" ' + (currentPage <= 1 ? 'disabled' : '') + '>&laquo;</button>';
+
+      const maxVisible = 5;
+      let startP = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+      let endP = Math.min(totalPages, startP + maxVisible - 1);
+      if (endP - startP < maxVisible - 1) startP = Math.max(1, endP - maxVisible + 1);
+
+      if (startP > 1) {
+        html += '<button class="page-btn" onclick="goToPage(1)">1</button>';
+        if (startP > 2) html += '<span style="color: var(--t-medium); padding: 0 4px;">...</span>';
+      }
+
+      for (let i = startP; i <= endP; i++) {
+        html += '<button class="page-btn' + (i === currentPage ? ' active' : '') + '" onclick="goToPage(' + i + ')">' + i + '</button>';
+      }
+
+      if (endP < totalPages) {
+        if (endP < totalPages - 1) html += '<span style="color: var(--t-medium); padding: 0 4px;">...</span>';
+        html += '<button class="page-btn" onclick="goToPage(' + totalPages + ')">' + totalPages + '</button>';
+      }
+
+      html += '<button class="page-btn" onclick="goToPage(' + (currentPage + 1) + ')" ' + (currentPage >= totalPages ? 'disabled' : '') + '>&raquo;</button>';
+
+      wrapper.innerHTML = html;
+    }
+
+    function goToPage(page) {
+      const filtered = getFilteredReviews();
+      const totalPages = Math.ceil(filtered.length / REVIEWS_PER_PAGE);
+      if (page < 1 || page > totalPages) return;
+      currentPage = page;
+      renderCurrentPage();
+      window.scrollTo({ top: document.getElementById('reviews-list-container').offsetTop - 120, behavior: 'smooth' });
+    }
+
+    function lazyLoadImages() {
+      document.querySelectorAll('img[data-src]').forEach(img => {
+        if (img.dataset.src) {
+          img.src = img.dataset.src;
+          img.removeAttribute('data-src');
+        }
+      });
     }
 
     async function handleReviewSubmit(e) {
       e.preventDefault();
-      
+
       const btn = document.getElementById('submit-review-btn');
       const msg = document.getElementById('form-message');
-      
+
       msg.style.display = 'none';
       msg.className = '';
       msg.textContent = '';
@@ -816,66 +1115,63 @@
       const company = document.getElementById('review-company-name').value.trim();
       const rating = document.getElementById('review-rating-value').value;
       const reviewText = document.getElementById('review-text').value.trim();
-      const photoFileInput = document.getElementById('review-photo-file');
 
       if (!name || !rating || !reviewText) {
-        msg.textContent = 'Name, rating, and testimonial are required fields.';
-        msg.style.display = 'block';
-        msg.style.color = '#ff4444';
-        msg.style.background = 'rgba(255, 68, 68, 0.08)';
-        msg.style.border = '1px solid rgba(255, 68, 68, 0.25)';
+        showFormMessage('Name, rating, and testimonial are required fields.', 'error');
         return;
       }
-
-      const payload = {
-        clientName: name,
-        company: company,
-        rating: Number(rating),
-        reviewText: reviewText,
-        source: 'Public Submission'
-      };
 
       const originalHtml = btn.innerHTML;
       btn.disabled = true;
       btn.innerHTML = '<span class="btn-caption">Submitting...</span>';
 
       try {
-        const res = await fetch(`${API_BASE}/reviews`, {
+        const res = await fetch(API_BASE + '/reviews', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(payload)
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            clientName: name,
+            company: company,
+            rating: Number(rating),
+            reviewText: reviewText,
+            source: 'Public Submission'
+          })
         });
         const result = await res.json();
 
         if (result.success) {
-          msg.textContent = "Thanks for your review! It will appear once approved by our team.";
-          msg.style.display = 'block';
-          msg.style.color = '#4caf50';
-          msg.style.background = 'rgba(76, 175, 80, 0.08)';
-          msg.style.border = '1px solid rgba(76, 175, 80, 0.25)';
-
-          // Reset Form
+          showFormMessage('Thanks for your review! It will appear once approved by our team.', 'success');
           document.getElementById('public-review-form').reset();
           setRatingSelection(5);
         } else {
-          msg.textContent = result.message || 'Submission failed. Please try again.';
-          msg.style.display = 'block';
-          msg.style.color = '#ff4444';
-          msg.style.background = 'rgba(255, 68, 68, 0.08)';
-          msg.style.border = '1px solid rgba(255, 68, 68, 0.25)';
+          showFormMessage(result.message || 'Submission failed. Please try again.', 'error');
         }
       } catch (err) {
         console.error(err);
-        msg.textContent = 'Failed to submit review. Server connection error.';
-        msg.style.display = 'block';
-        msg.style.color = '#ff4444';
-        msg.style.background = 'rgba(255, 68, 68, 0.08)';
-        msg.style.border = '1px solid rgba(255, 68, 68, 0.25)';
+        showFormMessage('Failed to submit review. Server connection error.', 'error');
       } finally {
         btn.disabled = false;
         btn.innerHTML = originalHtml;
+      }
+    }
+
+    function showFormMessage(text, type) {
+      const msg = document.getElementById('form-message');
+      msg.textContent = text;
+      msg.style.display = 'block';
+      msg.style.borderRadius = 'var(--_radius-m, 8px)';
+      msg.style.fontSize = '1.3rem';
+      msg.style.fontWeight = '500';
+      msg.style.padding = '12px 16px';
+      msg.style.marginBottom = '20px';
+      if (type === 'success') {
+        msg.style.color = '#4caf50';
+        msg.style.background = 'rgba(76, 175, 80, 0.08)';
+        msg.style.border = '1px solid rgba(76, 175, 80, 0.25)';
+      } else {
+        msg.style.color = '#ff4444';
+        msg.style.background = 'rgba(255, 68, 68, 0.08)';
+        msg.style.border = '1px solid rgba(255, 68, 68, 0.25)';
       }
     }
   </script>
