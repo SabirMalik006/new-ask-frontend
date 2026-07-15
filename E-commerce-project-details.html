@@ -81,6 +81,48 @@
       align-items: center;
       cursor: pointer;
     }
+
+    /* Top Page Headline Spacing Override */
+    .page-main-headline {
+        padding-top: 6rem !important;
+    }
+    @media only screen and (min-width: 768px) {
+        .page-main-headline {
+            padding-top: 8rem !important;
+        }
+    }
+
+    /* Per-Project List Spacing Overrides */
+    .work-item .mxd-section-inner-headline {
+        padding-top: 5rem !important;
+        padding-bottom: 3rem !important;
+    }
+    .work-item .mxd-section-inner-headline .mxd-container.grid-container {
+        max-width: 1400px !important;
+        margin: 0 auto !important;
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+    }
+
+    /* Sticky Scroll Stacking System Overrides */
+    .work-image-stack {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+    .work-image-panel {
+        position: sticky;
+        top: 20px;
+        height: auto;
+        overflow: hidden;
+        width: 100%;
+        border-radius: 32px;
+        background: var(--base);
+        border: 1px solid #161616 !important;
+    }
+    html[color-scheme="dark"] .work-image-panel {
+        border: 1px solid #ffffff !important;
+    }
   </style>
 </head>
 
@@ -306,7 +348,7 @@
   <main id="mxd-page-content" class="mxd-page-content inner-page-content">
     
     <!-- Section - Inner Page Headline Start -->
-    <div class="mxd-section mxd-section-inner-headline padding-default" style="padding-bottom: 0;">
+    <div class="mxd-section mxd-section-inner-headline padding-default page-main-headline" style="padding-bottom: 0;">
       <div class="mxd-container grid-container">
         <!-- Block - Inner Page Headline Start -->
         <div class="mxd-block loading-wrap">
@@ -631,6 +673,24 @@
     const API_ROOT = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:9000/api' : '/api';
     const category = 'E-commerce';
 
+    window.adjustPanelAspectRatio = function(img) {
+        if (img && img.naturalWidth && img.naturalHeight) {
+            const panel = img.closest('.work-image-panel');
+            if (panel) {
+                panel.style.aspectRatio = `${img.naturalWidth} / ${img.naturalHeight}`;
+            }
+        }
+    };
+
+    window.adjustVideoAspectRatio = function(video) {
+        if (video && video.videoWidth && video.videoHeight) {
+            const panel = video.closest('.work-image-panel');
+            if (panel) {
+                panel.style.aspectRatio = `${video.videoWidth} / ${video.videoHeight}`;
+            }
+        }
+    };
+
     function getOptimizedCloudinaryUrl(url, transformations) {
         if (url && url.includes('cloudinary.com')) {
             const parts = url.split('/upload/');
@@ -674,57 +734,33 @@
                     const mediaItemsHTML = mediaList.map((m, mediaIndex) => {
                         if (m.type === 'video') {
                             return `
-                                <!-- video item -->
-                                <div class="mxd-project-cards__item mxd-grid-item">
-                                    <div class="mxd-project-cards__inner bg-base-tint radius-m video-container" style="position: relative;">
-                                        <video class="menu-video" preload="metadata" ${m.poster ? `poster="${m.poster}"` : ''} style="width: 100%; height: auto; display: block; object-fit: contain;">
-                                            <source type="video/mp4" src="${m.url}">
-                                        </video>
-                                        <div class="play-button" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 50px; color: white; background: rgba(0, 0, 0, 0.6); width: 80px; height: 80px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; z-index: 2;">▶</div>
-                                    </div>
+                                <div class="work-image-panel video-container" style="position: relative;">
+                                    <video class="menu-video" preload="metadata" ${m.poster ? `poster="${m.poster}"` : ''} onloadedmetadata="window.adjustVideoAspectRatio(this)" style="width: 100%; height: 100%; display: block; object-fit: contain;">
+                                        <source type="video/mp4" src="${m.url}">
+                                    </video>
+                                    <div class="play-button" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 50px; color: white; background: rgba(0, 0, 0, 0.6); width: 80px; height: 80px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; z-index: 2;">▶</div>
                                 </div>
                             `;
                         } else {
-                            const optimizedUrl = getOptimizedCloudinaryUrl(m.url, 'w_1200,q_auto,f_auto');
-                            const bgClass = (mediaIndex % 4 === 0) ? 'bg-accent' : 'bg-base-tint';
+                            const optimizedUrl = getOptimizedCloudinaryUrl(m.url, 'w_1400,q_auto,f_auto');
                             return `
-                                <!-- image item -->
-                                <div class="mxd-project-cards__item mxd-grid-item">
-                                    <div class="mxd-project-cards__inner ${bgClass} radius-m">
-                                        <img src="${optimizedUrl}" alt="Project Preview" style="object-fit: contain; width: 100%; height: auto; display: block;">
-                                    </div>
+                                <div class="work-image-panel">
+                                    <img src="${optimizedUrl}" alt="Project Preview" onload="window.adjustPanelAspectRatio(this)" style="width: 100%; height: 100%; object-fit: contain; display: block;">
                                 </div>
                             `;
                         }
                     }).join('');
 
-                    const dividerHTML = index > 0 ? `
-                        <div style="position: relative; height: 0.2rem; margin: 80px 0; width: 100%;">
-                            <div class="mxd-project__divider anim-uni-in-up"></div>
-                        </div>
-                    ` : '';
-
                     return `
                         <div class="work-item" data-work-id="${w._id}">
-                            ${dividerHTML}
                             <!-- Section - Inner Page Headline Start -->
                             <div class="mxd-section mxd-section-inner-headline padding-default">
                                 <div class="mxd-container grid-container">
                                     <div class="mxd-block loading-wrap">
                                         <div class="container-fluid px-0">
                                             <div class="row g-0">
-                                                <!-- Project Link on the Left -->
-                                                <div class="col-12 col-xl-2 mxd-grid-item no-margin">
-                                                    <div class="mxd-block__name name-project-link loading__fade">
-                                                        <a class="btn btn-anim btn-line-small btn-muted slide-right-up" href="#0">
-                                                            <span class="btn-caption">Project ${index + 1}</span>
-                                                            <i class="ph ph-arrow-up-right"></i>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                
                                                 <!-- Project Content in the Middle -->
-                                                <div class="col-12 col-xl-6 mxd-grid-item no-margin">
+                                                <div class="col-12 col-xl-8 mxd-grid-item no-margin">
                                                     <div class="loading__item" style="margin-bottom: 20px;">
                                                         <h2 style="font-size: 2.8rem; font-weight: 700; color: var(--t-bright); margin: 0; line-height: 1.3;">${w.title}</h2>
                                                     </div>
@@ -775,15 +811,9 @@
                                 </div>
                             </div>
                             
-                            <!-- Section - Project Details Start (Collage Grid) -->
-                            <div class="mxd-section mxd-project overflow-hidden" style="padding-top: 0;">
-                                <div class="mxd-container grid-container">
-                                    <div class="mxd-project__block no-margin">
-                                        <div class="mxd-project-cards-masonry">
-                                            ${mediaItemsHTML}
-                                        </div>
-                                    </div>
-                                </div>
+                            <!-- Section - Project Details Start (Sticky Stacked Media) -->
+                            <div class="work-image-stack" style="position: relative; width: 100%;">
+                                ${mediaItemsHTML}
                             </div>
                         </div>
                     `;
@@ -812,6 +842,23 @@
                     }
                 });
 
+                // Check and adjust aspect ratio for any already completed/cached images and videos
+                container.querySelectorAll('.work-image-panel img').forEach(img => {
+                    if (img.complete) {
+                        window.adjustPanelAspectRatio(img);
+                    } else {
+                        img.addEventListener('load', () => window.adjustPanelAspectRatio(img));
+                    }
+                });
+
+                container.querySelectorAll('.work-image-panel video').forEach(video => {
+                    if (video.readyState >= 1) {
+                        window.adjustVideoAspectRatio(video);
+                    } else {
+                        video.addEventListener('loadedmetadata', () => window.adjustVideoAspectRatio(video));
+                    }
+                });
+
                 // Trigger GSAP reveal animations manually for our dynamic elements
                 setTimeout(() => {
                     const dynamicItems = container.querySelectorAll('.loading__item');
@@ -826,30 +873,6 @@
                             { opacity: 0 }, 
                             { opacity: 1, duration: 0.8, ease: 'none', delay: 0.5, stagger: 0.08 }
                         );
-
-                        // Animate masonry grid items as they scroll into view (triggered once)
-                        const masonryItems = container.querySelectorAll('.mxd-project-cards-masonry .mxd-project-cards__item');
-                        masonryItems.forEach((element, imgIndex) => {
-                            const isLeft = (imgIndex % 2 === 0);
-                            gsap.fromTo(element, {
-                                opacity: 0,
-                                y: 50,
-                                x: isLeft ? -50 : 50,
-                                scale: 1.05,
-                            }, {
-                                y: 0,
-                                x: 0,
-                                opacity: 1,
-                                scale: 1,
-                                duration: 0.7,
-                                ease: 'power2.out',
-                                scrollTrigger: {
-                                    trigger: element,
-                                    start: 'top 95%',
-                                    once: true
-                                }
-                            });
-                        });
                     }
                 }, 100);
 

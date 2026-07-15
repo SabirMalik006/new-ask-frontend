@@ -1478,23 +1478,27 @@ function getCurrentTheme(){
 }
 function loadTheme(theme){
   const root = document.querySelector(':root');
-  if(theme === "light"){
-    themeBtn.innerHTML = `<span class="icon-wrapper"><i class="ph ph-moon"></i></span><span>Theme</span>`;
-  } else {
-    themeBtn.innerHTML = `<span class="icon-wrapper"><i class="ph ph-sun"></i></span><span>Theme</span>`;
+  if (themeBtn) {
+    if(theme === "light"){
+      themeBtn.innerHTML = `<span class="icon-wrapper"><i class="ph ph-moon"></i></span>`;
+    } else {
+      themeBtn.innerHTML = `<span class="icon-wrapper"><i class="ph ph-sun"></i></span>`;
+    }
   }
   root.setAttribute('color-scheme', `${theme}`);
 };
-themeBtn.addEventListener('click', () => {
-  let theme = getCurrentTheme();
-  if(theme === 'dark'){
-    theme = 'light';
-  } else {
-    theme = 'dark';
-  }
-  localStorage.setItem('template.theme', `${theme}`);
-  loadTheme(theme);
-});
+if (themeBtn) {
+  themeBtn.addEventListener('click', () => {
+    let theme = getCurrentTheme();
+    if(theme === 'dark'){
+      theme = 'light';
+    } else {
+      theme = 'dark';
+    }
+    localStorage.setItem('template.theme', `${theme}`);
+    loadTheme(theme);
+  });
+}
 window.addEventListener('DOMContentLoaded', () => {
   loadTheme(getCurrentTheme());
 });

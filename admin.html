@@ -1240,9 +1240,9 @@
                                              </div>
                                          </div>
 
-                                         <!-- E-commerce Mixed-Media Uploads -->
+                                         <!-- Project Mixed-Media Uploads -->
                                          <div id="ecommerce-media-group" style="display: none; margin-bottom: 20px;">
-                                              <label style="font-weight: bold; font-size: 1.3rem; display: block; margin-bottom: 6px;">E-commerce Mixed-Media Grid</label>
+                                              <label style="font-weight: bold; font-size: 1.3rem; display: block; margin-bottom: 6px;">Project Mixed-Media Grid (Images / Videos)</label>
                                              <div id="ecommerce-media-list" style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 15px;">
                                                  <!-- Dynamic media items will render here -->
                                              </div>
@@ -2041,21 +2041,19 @@
             if (ecommerceGroup) ecommerceGroup.style.display = 'none';
             if (videoGroup) videoGroup.style.display = 'none';
             if (servicelistGroup) servicelistGroup.style.display = 'none';
-            if (traditionalMediaGroup) traditionalMediaGroup.style.display = 'block';
-            if (ecommerceMediaGroup) ecommerceMediaGroup.style.display = 'none';
+            
+            // ALWAYS hide traditional media (heroImage / galleryImages inputs) and ALWAYS show mixed media uploads grid
+            if (traditionalMediaGroup) traditionalMediaGroup.style.display = 'none';
+            if (ecommerceMediaGroup) ecommerceMediaGroup.style.display = 'block';
             
             if (groups.includes('marketing')) {
                 marketingGroup.style.display = 'block';
                 if (servicelistGroup) servicelistGroup.style.display = 'block';
             } else if (groups.includes('ecommerce')) {
                 if (ecommerceGroup) ecommerceGroup.style.display = 'block';
-                if (traditionalMediaGroup) traditionalMediaGroup.style.display = 'none';
-                if (ecommerceMediaGroup) ecommerceMediaGroup.style.display = 'block';
             } else if (groups.includes('video')) {
                 if (videoGroup) videoGroup.style.display = 'block';
                 if (servicelistGroup) servicelistGroup.style.display = 'block';
-                if (traditionalMediaGroup) traditionalMediaGroup.style.display = 'none';
-                if (ecommerceMediaGroup) ecommerceMediaGroup.style.display = 'block';
             } else {
                 standardGroup.style.display = 'block';
             }
@@ -2343,9 +2341,9 @@
                 document.getElementById('work-video-platforms').value = w.platforms || '';
                 document.getElementById('work-specialization').value = w.specialization || '';
 
-                // Load E-commerce or Video Editing mixed-media slots
+                // Load mixed-media slots (with fallback to legacy heroImage + galleryImages)
                 activeEcommerceMedia = [];
-                if ((w.category === 'E-commerce' || w.category === 'Video Editing') && w.media && w.media.length > 0) {
+                if (w.media && w.media.length > 0) {
                     w.media.forEach(m => {
                         activeEcommerceMedia.push({
                             type: m.type,
@@ -2355,6 +2353,27 @@
                             posterFile: null
                         });
                     });
+                } else {
+                    if (w.heroImage) {
+                        activeEcommerceMedia.push({
+                            type: 'image',
+                            url: w.heroImage,
+                            poster: '',
+                            file: null,
+                            posterFile: null
+                        });
+                    }
+                    if (w.galleryImages && w.galleryImages.length > 0) {
+                        w.galleryImages.forEach(img => {
+                            activeEcommerceMedia.push({
+                                type: 'image',
+                                url: img,
+                                poster: '',
+                                file: null,
+                                posterFile: null
+                            });
+                        });
+                    }
                 }
                 window.renderEcommerceMedia();
 
@@ -4398,61 +4417,38 @@
             formData.append('order', document.getElementById('work-order').value);
             formData.append('tags', activeTags.join(','));
 
-            if (isEcommerce || isVideo) {
-                // Serialize mixed media layout structure
-                const mediaLayout = [];
-                const galleryFilesToSend = [];
+            // Serialize mixed media layout structure (used for all categories now)
+            const mediaLayout = [];
+            const galleryFilesToSend = [];
+            
+            activeEcommerceMedia.forEach(m => {
+                const item = { type: m.type };
                 
-                activeEcommerceMedia.forEach(m => {
-                    const item = { type: m.type };
-                    
-                    if (m.file) {
-                        item.fileIndex = galleryFilesToSend.length;
-                        galleryFilesToSend.push(m.file);
+                if (m.file) {
+                    item.fileIndex = galleryFilesToSend.length;
+                    galleryFilesToSend.push(m.file);
+                } else {
+                    item.url = m.url || '';
+                }
+                
+                if (m.type === 'video') {
+                    if (m.posterFile) {
+                        item.posterFileIndex = galleryFilesToSend.length;
+                        galleryFilesToSend.push(m.posterFile);
                     } else {
-                        item.url = m.url || '';
+                        item.poster = m.poster || '';
                     }
-                    
-                    if (m.type === 'video') {
-                        if (m.posterFile) {
-                            item.posterFileIndex = galleryFilesToSend.length;
-                            galleryFilesToSend.push(m.posterFile);
-                        } else {
-                            item.poster = m.poster || '';
-                        }
-                    }
-                    
-                    mediaLayout.push(item);
-                });
-                
-                formData.append('mediaJSON', JSON.stringify(mediaLayout));
-                
-                // Upload files in the mapped indices inside 'galleryImages'
-                galleryFilesToSend.forEach(file => {
-                    formData.append('galleryImages', file);
-                });
-            } else {
-                // Hero image direct URL
-                const heroUrl = document.getElementById('work-heroImageUrl').value.trim();
-                formData.append('heroImageUrl', heroUrl);
-
-                // Hero image file
-                const heroInput = document.getElementById('work-heroImage');
-                if (heroInput.files.length > 0) {
-                    formData.append('heroImage', heroInput.files[0]);
                 }
-
-                // New gallery files
-                const galleryInput = document.getElementById('work-galleryImages');
-                for (let i = 0; i < galleryInput.files.length; i++) {
-                    formData.append('galleryImages', galleryInput.files[i]);
-                }
-
-                // Kept gallery image URLs
-                activeGalleryImages.forEach(url => {
-                    formData.append('galleryImages', url);
-                });
-            }
+                
+                mediaLayout.push(item);
+            });
+            
+            formData.append('mediaJSON', JSON.stringify(mediaLayout));
+            
+            // Upload files in the mapped indices inside 'galleryImages'
+            galleryFilesToSend.forEach(file => {
+                formData.append('galleryImages', file);
+            });
 
             // Show a loading/disabled state
             const saveBtn = e.target.querySelector('button[type="submit"]');

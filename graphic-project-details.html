@@ -56,6 +56,48 @@
             background-color: white !important;
             border: 1px solid black !important;
         }
+
+        /* Top Page Headline Spacing Override */
+        .page-main-headline {
+            padding-top: 6rem !important;
+        }
+        @media only screen and (min-width: 768px) {
+            .page-main-headline {
+                padding-top: 8rem !important;
+            }
+        }
+
+        /* Per-Project List Spacing Overrides */
+        .work-item .mxd-section-inner-headline {
+            padding-top: 5rem !important;
+            padding-bottom: 3rem !important;
+        }
+
+        /* Centered Grid to Reduce Card Size & Keep Images Balanced */
+        .mxd-project-cards-masonry {
+            display: flex !important;
+            flex-wrap: wrap !important;
+            justify-content: center !important;
+            gap: 20px !important;
+            width: 100% !important;
+            max-width: 900px !important; /* Constrains card size horizontally */
+            margin: 0 auto !important; /* Centers the constrained container */
+            column-count: auto !important; /* Reset CSS column-count */
+        }
+        .mxd-project-cards-masonry .mxd-project-cards__item {
+            display: block !important;
+            flex: 0 1 calc(50% - 20px) !important;
+            max-width: calc(50% - 20px) !important;
+            min-width: 290px !important;
+            margin: 0 !important;
+            break-inside: auto !important; /* Reset column breaks */
+        }
+        @media only screen and (max-width: 767px) {
+            .mxd-project-cards-masonry .mxd-project-cards__item {
+                flex: 0 1 100% !important;
+                max-width: 100% !important;
+            }
+        }
      </style>
 
 </head>
@@ -288,7 +330,7 @@
     <main id="mxd-page-content" class="mxd-page-content inner-page-content">
 
         <!-- Section - Inner Page Headline Start -->
-        <div class="mxd-section mxd-section-inner-headline padding-default" style="padding-bottom: 0;">
+        <div class="mxd-section mxd-section-inner-headline padding-default page-main-headline" style="padding-bottom: 0;">
             <div class="mxd-container grid-container">
                 <!-- Block - Inner Page Headline Start -->
                 <div class="mxd-block loading-wrap">
@@ -668,13 +710,21 @@
                             </div>
                         ` : '';
 
-                        // Compile project images in order (heroImage first, then galleryImages)
+                        // Compile project images in order (media array first, fallback to heroImage + galleryImages)
                         const imagesList = [];
-                        if (w.heroImage) {
-                            imagesList.push(w.heroImage);
-                        }
-                        if (w.galleryImages && w.galleryImages.length > 0) {
-                            imagesList.push(...w.galleryImages);
+                        if (w.media && w.media.length > 0) {
+                            w.media.forEach(m => {
+                                if (m.type === 'image') {
+                                    imagesList.push(m.url);
+                                }
+                            });
+                        } else {
+                            if (w.heroImage) {
+                                imagesList.push(w.heroImage);
+                            }
+                            if (w.galleryImages && w.galleryImages.length > 0) {
+                                imagesList.push(...w.galleryImages);
+                            }
                         }
 
                         const imageItemsHTML = imagesList.map((imgUrl, imgIndex) => {
@@ -702,7 +752,6 @@
                         if (w.isOtherCreatives) {
                             return `
                                 <div class="work-item" data-work-id="${w._id}">
-                                    ${dividerHTML}
                                     <!-- Section - Inner Page Headline Start -->
                                     <div class="mxd-section mxd-section-inner-headline padding-default">
                                         <div class="mxd-container grid-container">
@@ -710,14 +759,7 @@
                                                 <div class="container-fluid px-0">
                                                     <div class="row g-0">
                                                         <!-- Project Link on the Left -->
-                                                        <div class="col-12 col-xl-2 mxd-grid-item no-margin">
-                                                            <div class="mxd-block__name name-project-link loading__fade">
-                                                                <a class="btn btn-anim btn-line-small btn-muted slide-right-up" href="#0">
-                                                                    <span class="btn-caption">Other Creatives</span>
-                                                                    <i class="ph ph-arrow-up-right"></i>
-                                                                </a>
-                                                            </div>
-                                                        </div>
+                                                        <div class="col-12 col-xl-2 mxd-grid-item no-margin"></div>
                                                         
                                                         <!-- Project Content in the Middle -->
                                                         <div class="col-12 col-xl-10 mxd-grid-item no-margin">
@@ -750,7 +792,6 @@
 
                         return `
                             <div class="work-item" data-work-id="${w._id}">
-                                ${dividerHTML}
                                 <!-- Section - Inner Page Headline Start -->
                                 <div class="mxd-section mxd-section-inner-headline padding-default">
                                     <div class="mxd-container grid-container">
@@ -758,14 +799,7 @@
                                             <div class="container-fluid px-0">
                                                 <div class="row g-0">
                                                     <!-- Project Link on the Left -->
-                                                    <div class="col-12 col-xl-2 mxd-grid-item no-margin">
-                                                        <div class="mxd-block__name name-project-link loading__fade">
-                                                            <a class="btn btn-anim btn-line-small btn-muted slide-right-up" href="#0">
-                                                                <span class="btn-caption">Project ${index + 1}</span>
-                                                                <i class="ph ph-arrow-up-right"></i>
-                                                            </a>
-                                                        </div>
-                                                    </div>
+                                                    <div class="col-12 col-xl-2 mxd-grid-item no-margin"></div>
                                                     
                                                     <!-- Project Content in the Middle -->
                                                     <div class="col-12 col-xl-6 mxd-grid-item no-margin">
